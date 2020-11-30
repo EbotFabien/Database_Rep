@@ -1,0 +1,54 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Expert</h1>
+    </div>
+    <!-- Content Row -->
+
+    <div class="row">
+        <!-- Area Chart -->
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+	        <div class="card-header py-3">
+	            <h6 class="m-0 font-weight-bold text-primary">Expert</h6>
+	        </div>
+	        <div class="card-body">
+	            <div class="table-responsive">
+	                <table class="table table-bordered table-dark" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">NOM</th>
+                        <th scope="col">TITRE</th>
+                        <th scope="col">TYPE</th>
+                        <th scope="col">EMAIL</th>
+                        <th scope="col">NUMERO</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {%for expert in Expert %}
+                            <tr>
+                                <th scope="row">{{expert.id}}</th>
+                                <td>{{expert.TITRE}}</td>
+                                <td>{{expert.NOM}}</td>
+                                <td>{{expert.TYPE}}</td>
+                                <td>{{expert.EMAIL}}</td>
+                                <td>{{expert.NUMERO}}</td>
+                                <td><button type="button" class="btn btn-primary">Modifier</button></td>
+                                <td><a href="{{ url_for('users.delete',id=expert.id,type1='expert' )}}"><button type="button" class="btn btn-danger">Supprimer</button></a></td>
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+    <!-- Pie Chart --> 
+</div>
+
+    <!-- Content Row -->
+</div>
+{% endblock %}

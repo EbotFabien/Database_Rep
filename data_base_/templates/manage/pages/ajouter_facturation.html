@@ -1,0 +1,276 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+ <div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Facturation</h1>
+    </div>
+    <!-- Content Row -->
+
+    <div class="row">
+        <!-- Area Chart -->
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+	        <div class="card-header py-3">
+	            <h6 class="m-0 font-weight-bold">Ajouter un Facturation</h6>
+	        </div>
+	        <div class="card-body">
+	            <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="p-5">
+                            {% with messages = get_flashed_messages(with_categories=true)%}
+                            {% if messages %}
+                            {%for category,message in messages%}
+                            <div class="alert alert-{{category}}">
+                                {{message}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                            <form class="user" method="POST">
+                                {{ form.hidden_tag() }}
+                                <fieldset class="form-group">
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        {{form.Pays.label(class="form-control-label")}}
+
+                                    {% if form.Pays.errors %}
+                                        {{ form.Pays(class="form-control form-control-lg is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.Pays.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.Pays(class="form-control form-control-lg")}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{form.ID_Destinataire.label(class="form-control-label")}}
+                                    
+                                        {% if form.ID_Destinataire.errors %}
+                                            {{ form.ID_Destinataire(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.ID_Destinataire.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.ID_Destinataire(class="form-control form-control-lg")}}
+                                            {% endif %}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{form.Numero_de_compte.label(class="form-control-label")}}
+                                    
+                                        {% if form.Numero_de_compte.errors %}
+                                            {{ form.Numero_de_compte(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Numero_de_compte.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.Numero_de_compte(class="form-control form-control-lg")}}
+                                            {% endif %}
+                                    </div>   
+                                    <div class="col-sm-4">
+                                        {{form.ID_expediteur.label(class="form-control-label")}}
+                                    
+                                        {% if form.ID_expediteur.errors %}
+                                            {{ form.ID_expediteur(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.ID_expediteur.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.ID_expediteur(class="form-control form-control-lg")}}
+                                            {% endif %}
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{form.contact.label(class="form-control-label")}}
+
+                                    {% if form.contact.errors %}
+                                        {{ form.contact(class="form-control form-control-lg is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.contact.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.contact(class="form-control form-control-lg")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{form.montant.label(class="form-control-label")}}
+
+                                    {% if form.montant.errors %}
+                                        {{ form.montant(class="form-control form-control-lg is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.montant.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.montant(class="form-control form-control-lg")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{form.TVA.label(class="form-control-label")}}
+
+                                    {% if form.TVA.errors %}
+                                        {{ form.TVA(class="form-control form-control-lg is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.TVA.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.TVA(class="form-control form-control-lg")}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{form.total.label(class="form-control-label")}}
+
+                                        {% if form.total.errors %}
+                                            {{ form.total(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.total.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.total(class="form-control form-control-lg")}}
+                                            {% endif %}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{form.Type_.label(class="form-control-label")}}
+
+                                        {% if form.Type_.errors %}
+                                            {{ form.Type_(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Type_.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.Type_(class="form-control form-control-lg")}}
+                                            {% endif %}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{form.ID_proprietaire.label(class="form-control-label")}}
+
+                                        {% if form.ID_proprietaire.errors %}
+                                            {{ form.ID_proprietaire(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.ID_proprietaire.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.ID_proprietaire(class="form-control form-control-lg")}}
+                                            {% endif %}
+                                    </div>
+                                </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4 mb-3 mb-sm-0">
+                                            {{form.ID_locataire.label(class="form-control-label")}}
+    
+                                            {% if form.ID_locataire.errors %}
+                                                {{ form.ID_locataire(class="form-control form-control-lg is-invalid") }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.ID_locataire.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                {% else %}
+                                                    {{form.ID_locataire(class="form-control form-control-lg")}}
+                                                {% endif %}
+                                        </div>
+                                        <div class="col-sm-4">
+                                            {{form.ville.label(class="form-control-label")}}
+    
+                                            {% if form.ville.errors %}
+                                                {{ form.ville(class="form-control form-control-lg is-invalid") }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.ville.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                {% else %}
+                                                    {{form.ville(class="form-control form-control-lg")}}
+                                                {% endif %}
+                                        </div>
+                                        <div class="col-sm-4">
+                                            {{form.surface.label(class="form-control-label")}}
+    
+                                            {% if form.surface.errors %}
+                                                {{ form.surface(class="form-control form-control-lg is-invalid") }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.surface.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                {% else %}
+                                                    {{form.surface(class="form-control form-control-lg")}}
+                                                {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                            {{form.tarifs.label(class="form-control-label")}}
+    
+                                            {% if form.tarifs.errors %}
+                                                {{ form.tarifs(class="form-control form-control-lg is-invalid") }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.tarifs.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                {% else %}
+                                                    {{form.tarifs(class="form-control form-control-lg")}}
+                                                {% endif %}
+                                        </div>
+                                        <div class="col-sm-6">
+                                            {{form.appt_pav.label(class="form-control-label")}}
+    
+                                            {% if form.appt_pav.errors %}
+                                                {{ form.appt_pav(class="form-control form-control-lg is-invalid") }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.appt_pav.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                {% else %}
+                                                    {{form.appt_pav(class="form-control form-control-lg")}}
+                                                {% endif %}
+                                        </div>
+                                        
+                                    </div>  
+    
+                                <div class="form-group">
+                                    {{form.submit(class="btn btn-success")}}   
+                                </div>
+                            <fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+	        </div>
+	    </div>
+	</div>
+    <!-- Pie Chart --> 
+</div>
+
+    <!-- Content Row -->
+</div>
+    <!-- /.container-fluid -->
+{%endblock%}
