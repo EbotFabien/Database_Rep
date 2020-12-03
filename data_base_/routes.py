@@ -176,6 +176,39 @@ def login():
     #hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
     #expert.password = hashed_password
     #db.session.commit()
+     #db.drop_all()
+    #db.create_all()
+    #expert__('Interv')
+    #expert__('CONCESS')
+    #expert__('Manager_chiffrage')
+    #expert__('Agent_chiffrage')
+    ##expert__('Respon Cell Dev')
+    #expert__('agent Cell Dev')
+    #expert__('Agent CellTech')
+    #expert__('Respon Cell Tech')
+    #expert__('Suiveur Cell Tech')
+    #expert__('Respon Cell Planif')
+    #expert__('Suiveur Cell Planif')
+    #expert__('Agent saisie Cell Planif')
+    #insert_client('Bailleur')
+    #insert_client('Locataire')
+    #insert_client('Prop')
+    #Missions()
+    #loc = ("C:/Users/user/Downloads/Base histo missions EDL 2020-08.xlsx")
+    #wb_obj = openpyxl.load_workbook(loc)
+    #sheet=wb_obj.active
+
+    #mission_=list(Mission.query.all())
+    #for i in mission:
+    #print(mission_[0].id)
+    #for i in range(1,500):
+     #   for a in range(0,500):
+      #      mission_[a].DATE_REALISE_EDL =sheet["M"][i].value
+       #     mission_[a].Date_chiffrage_regle =sheet["AG"][i].value
+        #    mission_[a].DATE_FACTURE = sheet["AP"][i].value
+         #   mission_[a].DATE_FACT_REGLEE = sheet["AS"][i].value
+          #  db.session.commit()
+        #print(sheet["AS"][i].value)
 
     if current_user.is_authenticated:
        return redirect(url_for('users.main'))
