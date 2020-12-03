@@ -32,7 +32,7 @@
                             <!-- <th scope="col">CP</th> -->
                             <th scope="col">VILLE</th>
                             <!-- <th scope="col">Zone_de_région_du_client</th> -->
-                            <th>Action</th>
+                            <!--th>Action</th-->
                         </tr>
                         </thead>
                         <tbody>
@@ -51,9 +51,8 @@
                                     <!-- <td>{{client_.CP}}</td> -->
                                     <td>{{client_.VILLE}}</td>
                                     <!-- <td>{{client_.Zone_de_région_du_client}}</td> -->
-                                    {{% if current_user.TYPE == 'Audit' %}}
-                                    <td style="display: flex"><a href="/ajoutez/agenda/{{client_.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{client_.id}}">créer un agenda</a></td>   
-                                    {{% endif %}}
+                                    
+                                    <!--td style="display: flex"><a href="/ajoutez/agenda/{{client_.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{client_.id}}">créer un agenda</a></td-->     
                                 </tr>
                             <div id="modaledit{{client_.id}}" class="modal fade" role="dialog">
                                 <div class="modal-dialog">

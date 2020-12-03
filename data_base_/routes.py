@@ -66,7 +66,8 @@ def ajouter_facturation():
 def mission():
     if current_user.TYPE == "Admin":
         mission_=list(Mission.query.all())
-        return render_template('Data.html',Mission=mission_,legend="mission")
+        print(mission_)
+        return render_template('manage/pages/mission.html',Mission=mission_,legend="mission")
 
     return redirect(url_for('users.main'))
 
@@ -171,10 +172,10 @@ def login():
     #expert=Expert('Mr.','Audit','Audit','test0001@gmail.com','1234567')
     #db.session.add(expert)
     #db.session.commit()
-    expert=Expert.query.filter_by(NOM="DETOC XAVIER").first()
-    hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
-    expert.password = hashed_password
-    db.session.commit()
+    #expert=Expert.query.filter_by(NOM="DETOC XAVIER").first()
+    #hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
+    #expert.password = hashed_password
+    #db.session.commit()
 
     if current_user.is_authenticated:
        return redirect(url_for('users.main'))
@@ -216,11 +217,12 @@ def ajout_agenda():
         client = Client.query.get(request.form.get('id'))
         #expert_audit=Expert.query.filter(and_(Expert.NOM == str(current_user.NOM), Expert.TYPE =='audit_planner')).first() #type='audit_planner'
         agen=Agenda(client.id,int(request.form['Audit_planner']),int(request.form['Agent_referent']),
-       request.form['Lieu'],request.form['Date'])
+        request.form['Lieu'],request.form['Date'])
         db.session.add(agen)
         db.session.commit()
         return redirect(url_for('users.agenda'))
-    return redirect(url_for('users.client'))
+    return render_template('manage/pages/ajouter_agenda.html', legend="agenda")
+    #return redirect(url_for('users.client'))
 
 @users.route('/delete/<int:id>/<string:type1>', methods = ['GET', 'POST'])
 def delete(id,type1):

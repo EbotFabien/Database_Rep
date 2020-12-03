@@ -31,13 +31,13 @@
                         {%for expert in Expert %}
                             <tr>
                                 <th scope="row">{{expert.id}}</th>
-                                <td>{{expert.TITRE}}</td>
                                 <td>{{expert.NOM}}</td>
+                                <td>{{expert.TITRE}}</td>
                                 <td>{{expert.TYPE}}</td>
                                 <td>{{expert.EMAIL}}</td>
                                 <td>{{expert.NUMERO}}</td>
-                                <td><button type="button" class="btn btn-primary">Modifier</button></td>
-                                <td><a href="{{ url_for('users.delete',id=expert.id,type1='expert' )}}"><button type="button" class="btn btn-danger">Supprimer</button></a></td>
+                                <!--td><button type="button" class="btn btn-primary">Modifier</button></td>
+                                <td><a href="{{ url_for('users.delete',id=expert.id,type1='expert' )}}"><button type="button" class="btn btn-danger">Supprimer</button></a></td-->
                             </tr>
                         {%endfor%}
                     </tbody>
