@@ -1,0 +1,238 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+ <div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">CLIENT</h1>
+    </div>
+    <!-- Content Row -->
+
+    <div class="row">
+        <!-- Area Chart -->
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+	        <div class="card-header py-3">
+	            <h6 class="m-0 font-weight-bold">MODIFIER LE CLIENT <small>{{client.NOM}}</small></h6>
+	        </div>
+	        <div class="card-body">
+	            <div class="row">
+                    <div class="col-lg-9 mx-auto">
+                        <div class="p-5">
+                            {% with messages = get_flashed_messages(with_categories=true)%}
+                            {% if messages %}
+                            {%for category,message in messages%}
+                            <div class="alert alert-{{category}}">
+                                {{message}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                            <form class="user" method="POST" action="{{url_for('users.update_client', id=client.id)}}">
+                                {{ form.hidden_tag() }}
+                                <fieldset class="form-group">
+                                <div class="form-group row">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{form.Numero_de_compte.label(class="form-control-label")}}
+                    
+                                        {% if form.Numero_de_compte.errors %}
+                                        {{form.Numero_de_compte(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.Numero_de_compte.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {#form.Numero_de_compte(class="form-control form-control-lg")#}
+                                        <input type="text" class="form-control form-control-lg" name="Numero_de_compte" value="{{client.Numero_de_compte}}">
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{form.Type.label(class="form-control-label")}}
+ 
+                                    {% if form.Type.errors %}
+                                        <select class="form-control form-control-lg" name="TYPE">
+                                            
+                                            <option value="BAILLEUR" {% if client.TYPE == "BAILLEUR" %} selected {%endif%}>BAILLEUR</option>
+                                            <option value="LOCATAIRE" {% if client.TYPE == "LOCATAIRE" %} selected {%endif%}>LOCATAIRE</option>
+                                        </select>
+                                        {# <input type="text" name="TYPE" class="form-control form-control-lg is-invalid" value="{{client.TYPE}}"> #}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.Type.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                          <select class="form-control form-control-lg" name="TYPE">
+                                             <option value="BAILLEUR" {% if client.TYPE == "BAILLEUR" %} selected {%endif%}>BAILLEUR</option>
+                                            <option value="LOCATAIRE" {% if client.TYPE == "LOCATAIRE" %} selected {%endif%}>LOCATAIRE</option>
+                                        </select>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{form.Societe.label(class="form-control-label")}}
+
+                                    {% if form.Societe.errors %}
+                                         <input type="text" name="SOCIETE" class="form-control form-control-lg is-invalid" value="{{client.SOCIETE}}">
+                                        <div class="invalid-feedback">
+                                            {% for error in form.Societe.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            <input type="text" name="SOCIETE" class="form-control form-control-lg" value="{{client.SOCIETE}}">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">   
+                                      {{form.email.label(class="form-control-label")}}   
+
+                                        {% if form.email.errors %}
+                                             <input type="text" name="EMAIL" class="form-control form-control-lg is-invalid" value="{{client.EMAIL}}">
+                                            <div class="invalid-feedback">
+                                                {% for error in form.email.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                <input type="text" name="EMAIL" class="form-control form-control-lg" value="{{client.EMAIL}}">
+                                            {% endif %}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{form.Adresse1.label(class="form-control-label")}}
+                                    
+                                        {% if form.Adresse1.errors %}
+                                            <input type="text" name="ADRESSE1" class="form-control form-control-lg is-invalid" value="{{client.ADRESSE1}}">
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Adresse1.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                 <input type="text" name="ADRESSE1" class="form-control form-control-lg" value="{{client.ADRESSE1}}">
+                                            {% endif %}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{form.Adresse2.label(class="form-control-label")}}
+                                    
+                                        {% if form.Adresse2.errors %}
+                                            <input type="text" name="ADRESSE2" class="form-control form-control-lg is-invalid" value="{{client.ADRESSE2}}">
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Adresse2.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                 <input type="text" name="ADRESSE2" class="form-control form-control-lg" value="{{client.ADRESSE2}}">
+                                            {% endif %}
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{form.Titre.label(class="form-control-label")}}
+
+                                    {% if form.Titre.errors %}
+                                         <input type="text" name="TITRE" class="form-control form-control-lg is-invalid" value="{{client.TITRE}}">
+                                        <div class="invalid-feedback">
+                                            {% for error in form.Titre.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            <input type="text" name="TITRE" class="form-control form-control-lg" value="{{client.TITRE}}">
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{form.NOM.label(class="form-control-label")}}
+
+                                    {% if form.NOM.errors %}
+                                         <input type="text" name="NOM" class="form-control form-control-lg is-invalid" value="{{client.NOM}}">
+                                        <div class="invalid-feedback">
+                                            {% for error in form.NOM.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                             <input type="text" name="NOM" class="form-control form-control-lg" value="{{client.NOM}}">
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{form.Numero.label(class="form-control-label")}}
+
+                                    {% if form.Numero.errors %}
+                                         <input type="text" name="NUMERO" class="form-control form-control-lg is-invalid" value="{{client.NUMERO}}">
+                                        <div class="invalid-feedback">
+                                            {% for error in form.Numero.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            <input type="text" name="NUMERO" class="form-control form-control-lg" value="{{client.NUMERO}}">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{form.CP.label(class="form-control-label")}}
+
+                                        {% if form.CP.errors %}
+                                            <input type="text" name="CP" class="form-control form-control-lg is-invalid" value="{{client.CP}}">
+                                            <div class="invalid-feedback">
+                                                {% for error in form.CP.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                 <input type="text" name="CP" class="form-control form-control-lg" value="{{client.CP}}">
+                                            {% endif %}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{form.Ville.label(class="form-control-label")}}
+
+                                        {% if form.Ville.errors %}
+                                             <input type="text" name="VILLE" class="form-control form-control-lg is-invalid" value="{{client.VILLE}}">
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Ville.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                <input type="text" name="VILLE" class="form-control form-control-lg" value="{{client.VILLE}}">
+                                            {% endif %}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{form.Pays.label(class="form-control-label")}}
+
+                                        {% if form.Pays.errors %}
+                                             <input type="text" name="Pays" class="form-control form-control-lg is-invalid" value="{{client.Pays}}">
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Pays.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                 <input type="text" name="Pays" class="form-control form-control-lg" value="{{client.Pays}}">
+                                            {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 mt-4">
+                                        <div class="form-group">
+                                            {{form.modifier(class="btn btn-success btn-block")}}   
+                                        </div>
+                                    </div>
+                            <fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+	        </div>
+	    </div>
+	</div>
+    <!-- Pie Chart --> 
+</div>
+
+    <!-- Content Row -->
+</div>
+    <!-- /.container-fluid -->
+{%endblock%}

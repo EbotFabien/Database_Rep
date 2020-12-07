@@ -180,9 +180,13 @@ body {
   background: #de9729!important;
 }
 
+.text-white {
+  color: #fff!important;
+}
+
 .table thead th {
   font-family: 'Roboto', sans-serif;
-  text-transform: lowercase;
+  text-transform: capitalize;
 }
 .breadcrumb {
     display: -ms-flexbox;
@@ -213,4 +217,13 @@ body {
     border-top: 1px solid #dee2e6;
     font-family: 'Roboto';
     text-transform: lowercase;
+}
+
+#wrapper #content-wrapper {
+  background: #fff!important;
+}
+
+.btn-primary {
+  background: #e09929!important;
+  border: 1px solid #e09929!important;
 }

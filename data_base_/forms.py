@@ -159,7 +159,9 @@ class Client_Form(FlaskForm):
     Pays=StringField("Pays ",
                         validators=[DataRequired()])
 
-    submit = SubmitField('Créer un Client')
+    submit = SubmitField('enregistre')
+
+    modifier = SubmitField('modifier')
 
 
 

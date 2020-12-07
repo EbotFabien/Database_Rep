@@ -35,7 +35,44 @@ def ajouter_client():
         return render_template('manage/pages/ajouter_client.html',form=form,legend="client")
     else:
         return redirect(url_for('users.main'))
-   
+
+@users.route('/show/<int:id>/client', methods=['GET'])
+@login_required
+def show_client(id):
+    if current_user.TYPE == "Admin":
+        client = Client.query.filter_by(id=id).first_or_404()
+        return render_template('manage/pages/show_client.html', client="client")
+
+@users.route('/edit/<int:id>/client', methods=['GET'])
+@login_required
+def edit_client(id):
+    if current_user.TYPE == "Admin":
+        form = Client_Form()
+        client = Client.query.filter_by(id=id).first_or_404()
+        return render_template('manage/pages/edit_client.html', client=client,form=form)
+
+@users.route('/update/<int:id>/client', methods=['POST', 'PUT'])
+@login_required
+def update_client(id):
+    if current_user.TYPE == "Admin":
+        client = Client.query.filter_by(id=id).first_or_404()
+        client.EMAIL = request.form['EMAIL']
+        client.Numero_de_compte = request.form['Numero_de_compte']
+        client.VILLE = request.form['VILLE']
+        client.Pays = request.form['Pays']
+        client.SOCIETE = request.form['SOCIETE']
+        client.NUMERO = request.form['NUMERO']
+        client.TITRE = request.form['TITRE']
+        client.TYPE = request.form['TYPE']
+        client.CP = request.form['CP']
+        client.ADRESSE1 = request.form['ADRESSE1']
+        client.ADRESSE2 = request.form['ADRESSE2']
+        client.NOM = request.form['NOM']
+        
+        db.session.commit()
+        flash(f'Les donnes du client a été modifiées','success')
+    return redirect(url_for('users.edit_client', id=id))
+       
 
 @users.route('/facturation')
 @login_required
@@ -244,7 +281,7 @@ def update():
     return redirect(url_for('users.client'))
 
 @users.route('/ajoutez/agenda', methods = ['GET', 'POST'])
-def ajout_agenda():
+def ajout_agenda(): 
     if request.method == 'POST':
         print('ok1')
         client = Client.query.get(request.form.get('id'))
