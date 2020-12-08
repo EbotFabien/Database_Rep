@@ -29,7 +29,7 @@ def ajouter_client():
             db.session.add(user)
             db.session.commit()
             db.session.commit()
-           # flash(f'Client cree avec succes','success')
+            flash(f'Client créé avec succès','success')
             return redirect(url_for('users.client'))
             
         return render_template('manage/pages/ajouter_client.html',form=form,legend="client")
@@ -68,6 +68,7 @@ def update_client(id):
         client.ADRESSE1 = request.form['ADRESSE1']
         client.ADRESSE2 = request.form['ADRESSE2']
         client.NOM = request.form['NOM']
+        # client.ABONNEMENT = request.form['ABONNEMENT']
         
         db.session.commit()
         flash(f'Les donnes du client a été modifiées','success')
