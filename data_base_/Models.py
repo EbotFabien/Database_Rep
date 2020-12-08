@@ -193,8 +193,8 @@ class Tarifs(db.Model):
     Prix  = db.Column(db.String) 
     
     
-    def __init__(service_offert,Type,Prix):
-        self.Service_offert =service_offert
+    def __init__(self, service_offert,Type,Prix):
+        self.Service_offert = service_offert
         self.Type =Type
         self.Prix = Prix
 

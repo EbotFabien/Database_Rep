@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm,RecaptchaField, Recaptcha
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField
+from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField
 from wtforms.validators import DataRequired,length,Email,EqualTo,ValidationError
 from data_base_.Models import Expert ,Client
 
@@ -72,6 +72,15 @@ class Chiffrage_Form(FlaskForm):
                            validators=[DataRequired()])
 
     submit = SubmitField('Créer un Chiffrage')
+
+class Tarif_Form(FlaskForm):
+  service = StringField('Service offert', validators=[DataRequired()])
+  type_de_tarif = SelectField('Type', choices=[('basic', 'basic'), ('premium', 'premium')])
+  prix = StringField('prix', validators=[DataRequired()])
+
+  submit = SubmitField('Créer')
+
+  modifier = SubmitField('Modifier')
 
 class Facturation_Form(FlaskForm):
     

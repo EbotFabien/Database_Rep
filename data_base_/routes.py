@@ -1,6 +1,6 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 from data_base_.Models import  db,Tarifs,Chiffrage,Mission,Client,Expert,Agenda,Facturation
-from data_base_.forms import (RegistrationForm , LoginForm ,tableform,Client_Form,Facturation_Form,Chiffrage_Form)
+from data_base_.forms import (RegistrationForm , LoginForm ,tableform,Client_Form,Facturation_Form,Chiffrage_Form, Tarif_Form)
 from data_base_ import bcrypt
 from data_base_.data  import Missions,expert_,insert_client
 from sqlalchemy import or_, and_
@@ -140,10 +140,46 @@ def ajouter_expert():
 @login_required
 def tarifs():
     if current_user.TYPE == "Admin":
-        tarifs_=list(Tarifs.query.all())
-        return render_template('Data.html',legend="tarifs",Tarifs=tarifs_)
+        tarifs=list(Tarifs.query.all())
+        return render_template('manage/pages/tarif.html',legend="tarifs",tarifs=tarifs)
 
     return redirect(url_for('users.main'))
+
+
+@users.route('/ajouter/tarifs/', methods=['GET','POST'])
+@login_required
+def ajouter_tarif():
+    if current_user.TYPE == 'Admin':
+        form = Tarif_Form()
+        if form.validate_on_submit():
+            tarif = Tarifs(service_offert=form.service.data, Type=form.type_de_tarif.data, Prix=form.prix.data)
+            db.session.add(tarif)
+            db.session.commit()
+            flash(f'Le tarif a été créé avec succès', 'success')
+            return redirect(url_for('users.tarifs'))
+        return render_template('manage/pages/ajouter_tarif.html',form=form, legend="expert")
+    return redirect(url_for('users.main'))
+
+@users.route('/edit/<int:id>/tarif')
+@login_required
+def edit_tarif(id):
+    if current_user.TYPE == "Admin":
+        form = Tarif_Form()
+        tarif = Tarifs.query.filter_by(id=id).first_or_404()
+        return render_template('manage/pages/edit_tarif.html', tarif=tarif,form=form)
+
+@users.route('/update/<int:id>/tarif', methods=['POST', 'PUT'])
+@login_required
+def update_tarif(id):
+    if current_user.TYPE == 'Admin':
+        tarif = Tarifs.query.filter_by(id=id).first_or_404()
+        tarif.Service_offert = request.form['service']
+        tarif.Prix = request.form['prix']
+        tarif.Type = request.form['type_de_tarif']
+        db.session.commit()
+        flash(f'Les donnes du tarif a été modifiées','success')
+    return redirect(url_for('users.edit_tarif', id=id))
+       
 
 @users.route('/chiffrage')
 @login_required
