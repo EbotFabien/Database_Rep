@@ -13,7 +13,8 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
 	        <div class="card-header py-3">
-	            <h6 class="m-0 font-weight-bold">MODIFIER LE CLIENT <small>{{client.NOM}}</small></h6>
+	            <h6 class="m-0 font-weight-bold d-inline">MODIFIER LE CLIENT <small>{{client.NOM}}</small></h6>
+                <a href="/client" class="btn btn-primary btn-sm pull-right"><i class="fa fa-users"></i></a>
 	        </div>
 	        <div class="card-body">
 	            <div class="row">
@@ -44,7 +45,7 @@
                                         </div>
                                     {% else %}
                                         {#form.Numero_de_compte(class="form-control form-control-lg")#}
-                                        <input type="text" class="form-control form-control-lg" name="Numero_de_compte" value="{{client.Numero_de_compte}}">
+                                        <input type="text" disabled class="form-control form-control-lg" name="Numero_de_compte" value="{{client.Numero_de_compte}}">
                                     {% endif %}
                                     </div>
                                     <div class="col-sm-4">

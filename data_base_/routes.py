@@ -41,7 +41,7 @@ def ajouter_client():
 def show_client(id):
     if current_user.TYPE == "Admin":
         client = Client.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/show_client.html', client="client")
+        return render_template('manage/pages/show_client.html', client=client)
 
 @users.route('/edit/<int:id>/client', methods=['GET'])
 @login_required
@@ -57,7 +57,7 @@ def update_client(id):
     if current_user.TYPE == "Admin":
         client = Client.query.filter_by(id=id).first_or_404()
         client.EMAIL = request.form['EMAIL']
-        client.Numero_de_compte = request.form['Numero_de_compte']
+        # client.Numero_de_compte = request.form['Numero_de_compte']
         client.VILLE = request.form['VILLE']
         client.Pays = request.form['Pays']
         client.SOCIETE = request.form['SOCIETE']

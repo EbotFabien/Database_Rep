@@ -132,28 +132,28 @@ class Client_Form(FlaskForm):
     Titre=SelectField('Titre',
                              choices=[('Madam', 'Madam'), ('Monsieur', 'Monsieur')])
 
-    NOM =StringField('NOM',
+    NOM =StringField('Noms',
                            validators=[DataRequired()])
     
-    email =StringField('email',
+    email =StringField('E-mail',
                            validators=[DataRequired(),Email()])
 
-    Numero =StringField('Number',
+    Numero =StringField('Tel',
                            validators=[DataRequired()])
 
-    Adresse1=StringField('Adresse1',
+    Adresse1=StringField('Adresse 1',
                            validators=[DataRequired()])
 
-    Adresse2=StringField('Adresse2',
+    Adresse2=StringField('Adresse 2',
                            validators=[DataRequired()])
 
-    CP=StringField('CP',
+    CP=StringField('Code Postal',
                            validators=[DataRequired()])
     
     Ville=StringField('Ville',
                            validators=[DataRequired()])
     
-    Numero_de_compte=StringField("Numero_de_compte ",
+    Numero_de_compte=StringField("Numero de compte ",
                            validators=[DataRequired()])
 
     Pays=StringField("Pays ",
