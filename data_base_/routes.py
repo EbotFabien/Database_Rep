@@ -3,7 +3,7 @@ from data_base_.Models import  db,Tarifs,Chiffrage,Mission,Client,Expert,Agenda,
 from data_base_.forms import (RegistrationForm , LoginForm ,tableform,Client_Form,Facturation_Form,Chiffrage_Form, Tarif_Form)
 from data_base_ import bcrypt
 from data_base_.data  import Missions,expert_,insert_client
-from sqlalchemy import or_, and_
+from sqlalchemy import or_, and_, desc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 
 users =Blueprint('users',__name__)
@@ -113,7 +113,7 @@ def mission():
 @login_required
 def expert():
     if current_user.TYPE == "Admin":
-        expert_=list(Expert.query.all()) 
+        expert_=list(Expert.query.order_by(desc(Expert.id)).all()) 
         return render_template('manage/pages/expert.html',Expert=expert_, legend="expert")
 
     return redirect(url_for('users.main'))
@@ -135,6 +135,35 @@ def ajouter_expert():
     else:
         return redirect(url_for('users.main'))
 
+@users.route('/edit/<int:id>/expert', methods=['GET'])
+@login_required
+def edit_expert(id):
+    if current_user.TYPE == 'Admin':
+        form = RegistrationForm()
+        expert = Expert.query.filter_by(id=id).first_or_404()
+        return render_template('manage/pages/edit_expert.html', form=form, expert=expert)
+
+@users.route('/update/<int:id>/expert', methods=['POST', 'PUT'])
+@login_required
+def update_expert(id):
+    if current_user.TYPE == 'Admin':
+        form = RegistrationForm()
+        expert = Expert.query.filter_by(id=id).first_or_404()
+        expert.TITRE = request.form['TITRE']
+        expert.NOM = request.form['username']
+        expert.TYPE = request.form['TYPE']
+        expert.NUMERO = request.form['Numero']
+        expert.EMAIL = request.form['email']
+        if "password" in request.args:
+            hashed_password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
+            expert.password = hashed_password
+        save = db.session.commit()
+        if save:
+            flash(f'Les information de l\'expert n\'a pas ete modifier', 'danger')
+        else:
+            flash(f'Les information de l\'expert a ete modifier', 'success')
+        return redirect(url_for('users.edit_expert', id=id))
+    return redirect(url_for('users.main'))
 
 @users.route('/tarifs')
 @login_required

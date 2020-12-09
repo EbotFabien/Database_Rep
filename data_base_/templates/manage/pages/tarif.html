@@ -13,10 +13,20 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
 	        <div class="card-header py-3">
-	            <h6 class="m-0 font-weight-bold">Tarifs</h6>
+	            <h6 class="m-0 font-weight-bold d-inline">Tarifs</h6>
+	            <a href="/ajouter/tarifs" title="ajouter un tarif" class="btn btn-primary btn-sm pull-right"><i class="fa fa-euro"></i></a>
 	        </div>
 	        <div class="card-body">
 	            <div class="table-responsive">
+	            	 {% with messages = get_flashed_messages(with_categories=true)%}
+                            {% if messages %}
+                            {%for category,message in messages%}
+                            <div class="alert alert-{{category}}">
+                                {{message}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
 	               <table class="table" id="dataTable">
 		                <thead>
 		                    <tr>

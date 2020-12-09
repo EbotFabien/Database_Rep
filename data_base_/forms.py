@@ -12,25 +12,25 @@ class RegistrationForm(FlaskForm):
     username =StringField("Nom d'utilisateur",
                                 validators=[DataRequired(),length(min=4 ,max=20)])
     
-    Numero =StringField('Numero',
+    Numero =StringField('Tel',
                                 validators=[DataRequired(),length(min=4 ,max=20)])
 
     email =StringField('E-mail',
                            validators=[DataRequired(),Email()])
     password =PasswordField('Mot de pass',
-                                  validators=[DataRequired(),length(min=8 ,max=20)])
+                                  validators=[length(min=8 ,max=20)])
     confirm_password =PasswordField('Confirmer le mot de pass',
-                                  validators=[DataRequired(),EqualTo('password')])
+                                  validators=[EqualTo('password')])
 
-    Type_Expert=SelectField('Type_Expert',
+    Type_Expert=SelectField('Type d\'expert',
                              choices=[('Interv', 'Interv'), ('CONCESS', 'CONCESS'), ('agent Cell Dev', 'agent Cell Dev'),('Interv', 'Interv'),('Suiveur Cell Tech', 'Suiveur Cell Tech'),('Suiveur Cell Planif', 'Suiveur Cell Planif'),('Admin', 'Admin'),('Audit', 'Audit')])
 
     Titre=SelectField('Titre',
                              choices=[('MME', 'MME'), ('M.', 'M.')])
 
-    submit = SubmitField('Créer mon compte')
+    submit = SubmitField('Créer')
 
-    submit_form = SubmitField('enregistre')
+    modifier = SubmitField('Modifier')
     
     def validate_username(self,username):
         user = Expert.query.filter_by(NOM=username.data).first()

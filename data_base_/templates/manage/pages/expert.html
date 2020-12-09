@@ -12,32 +12,40 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
 	        <div class="card-header py-3">
-	            <h6 class="m-0 font-weight-bold text-primary">Expert</h6>
+	            <h6 class="m-0 font-weight-bold d-inline">Expert</h6>
+                <a href="/ajouter/expert" title="ajouter un expert" class="btn btn-primary btn-sm pull-right"><i class="fa fa-user-plus"></i></a>
 	        </div>
 	        <div class="card-body">
 	            <div class="table-responsive">
-	                <table class="table table-bordered table-dark" id="dataTable" width="100%" cellspacing="0">
+                     {% with messages = get_flashed_messages(with_categories=true)%}
+                            {% if messages %}
+                            {%for category,message in messages%}
+                            <div class="alert alert-{{category}}">
+                                {{message}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+	                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
                         <th scope="col">id</th>
-                        <th scope="col">NOM</th>
-                        <th scope="col">TITRE</th>
-                        <th scope="col">TYPE</th>
-                        <th scope="col">EMAIL</th>
-                        <th scope="col">NUMERO</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Numero</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
                         {%for expert in Expert %}
                             <tr>
                                 <th scope="row">{{expert.id}}</th>
-                                <td>{{expert.NOM}}</td>
-                                <td>{{expert.TITRE}}</td>
+                                <td>{{expert.TITRE}} {{expert.NOM}}</td>
                                 <td>{{expert.TYPE}}</td>
-                                <td>{{expert.EMAIL}}</td>
+                                <td>{{expert.EMAIL|truncate(15, True)}}</td>
                                 <td>{{expert.NUMERO}}</td>
-                                <!--td><button type="button" class="btn btn-primary">Modifier</button></td>
-                                <td><a href="{{ url_for('users.delete',id=expert.id,type1='expert' )}}"><button type="button" class="btn btn-danger">Supprimer</button></a></td-->
+                                <td><a href="{{url_for('users.edit_expert', id=expert.id)}}" class="btn btn-secondary btn-sm"><i class="fa fa-pen"></i></a></td>
                             </tr>
                         {%endfor%}
                     </tbody>
