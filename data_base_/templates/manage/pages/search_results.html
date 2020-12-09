@@ -1,0 +1,128 @@
+{% extends 'manage/index.html'%}
+{% block manage_content %}
+ <div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">{{title}}</h1>
+    </div>
+    <!-- Content Row -->
+
+    <div class="row">
+        <!-- Area Chart -->
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+	        <div class="card-header py-3">
+	            <h6 class="m-0 font-weight-bold">
+	            	{% if clients|length > 0 %} 
+	            		{{clients|length}} client(s) ont été trouvé(s) 
+	            	{% else %} 
+	            		Aucun client n'a été trouvé 
+	            	{% endif %} 
+	            </h6>
+	        </div>
+	        <div class="card-body">
+	            <div class="table-responsive">
+	            	{% if table == 'client' %}
+		               <table class="table" id="dataTable" style="width:100%">
+                        <thead class="">
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">Reference</th>
+                            <th scope="col">Type</th>                           
+                            <th scope="col">Nom</th>                            
+                            <th scope="col">Email</th>
+                            <th scope="col">Tel</th>
+                            <th scope="col">Adresse 1</th>                            
+                            <th scope="col">Ville</th>                            
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {%for client_ in clients %}
+                                <tr>
+                                    <th scope="row">{{client_.id}}</th>
+                                    <td>{{client_.Reference}}</td>
+                                    <td>{{client_.TYPE}}</td>                                   
+                                    <td> {{client_.NOM}}</td>                               
+                                    <td>{{client_.EMAIL}}</td>
+                                    <td>{{client_.NUMERO}}</td>
+                                    <td>{{client_.ADRESSE1|truncate(15, True)}}</td>                                   
+                                    <td>{{client_.VILLE|truncate(12, True)}}</td>   
+                                    <td style="display: flex">
+                                        <a href="{{url_for('users.edit_client', id=client_.id)}}" title="modifier" class="p-1 btn btn-secondary"><i class="fa fa-pen"></i></a> &nbsp;
+                                        <a href="{{url_for('users.show_client', id=client_.id)}}" title="voir tout les details" class="btn btn-info p-1"><i class="fa fa-eye"></i></a>
+                                        <!-- <a href="/ajoutez/agenda/{{client_.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{client_.id}}">créer un agenda</a> -->
+                                    </td>     
+                                </tr>     
+                            {%endfor%}
+                        </tbody>
+                    </table>
+			        {%endif%}
+			        {% if table == 'tarif'%}
+			        	<table class="table" id="dataTable">
+			                <thead>
+			                    <tr>
+			                        <th scope="col">id</th>
+			                        <!-- <th scope="col" title="Details_du_rendezvous">dd-rdv</th> -->
+			                        <th scope="col" title="client">Service offert</th> 
+			                        <th scope="col" title="audit_planner">Type</th>
+			                        <th scope="col" title="Agent_referent_du_client">Prix</th> 
+			                        <th scope="col" title="Validation_par_agent">TVA</th> 
+			                        <th scope="col">Action</th>		                     
+			                    </tr>
+			                </thead>
+			                <tbody>
+			                {%for tarif in tarifs %}
+			                    <tr>
+			                        <th scope="row">{{tarif.id}}</th>
+			                        <td>{{tarif.Service_offert}}</td>
+			                        <td>{{tarif.Type}}</td>
+									<td>{{tarif.Prix}}</td>
+									<td>{{tarif.tva}}</td> 
+									<td style="display: flex">
+	                                    <a href="{{url_for('users.edit_tarif', id=tarif.id)}}" title="modifier" class="p-1 btn btn-secondary"><i class="fa fa-pen"></i></a> &nbsp;
+	                                </td>    	                        
+			                    </tr>
+			                {%endfor%}
+			                </tbody>
+			            </table>
+			        {% endif %}
+
+			        {% if table == 'expert'%}
+			        	 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Numero</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {%for expert in Expert %}
+                            <tr>
+                                <th scope="row">{{expert.id}}</th>
+                                <td>{{expert.TITRE}} {{expert.NOM}}</td>
+                                <td>{{expert.TYPE}}</td>
+                                <td>{{expert.EMAIL|truncate(15, True)}}</td>
+                                <td>{{expert.NUMERO}}</td>
+                                <td><a href="{{url_for('users.edit_expert', id=expert.id)}}" class="btn btn-secondary btn-sm"><i class="fa fa-pen"></i></a></td>
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+			        {% endif %}
+	            </div>
+	        </div>
+	    </div>
+	</div>
+    <!-- Pie Chart --> 
+</div>
+
+    <!-- Content Row -->
+</div>
+    <!-- /.container-fluid -->
+{%endblock manage_content%}

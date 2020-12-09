@@ -6,21 +6,20 @@
             </button>
 
             <!-- Topbar Search -->
-            <form
-                class="d-none d-sm-inline-block form-inline navbar-search" style="width: 500px;">
+            <form method="GET" action="{{url_for('users.search')}}" class="d-none d-sm-inline-block form-inline navbar-search" style="width: 500px;">
                 <div class='row'>
                 <div class="form-group col-4">
-                    <select placeholder="" class="form-control bg-light border-0 small" style="width: 100%;">
-                        <option>client</option>
-                        <option>expert</option>
-                        <option>client</option>
+                    <select placeholder="" class="form-control bg-light border-0 small" name="table" style="width: 100%;">
+                        <option value="client" {% if table=="client"%} selected {%endif%}>client</option>
+                        <option value="expert" {% if table=="expert"%} selected {%endif%}>expert</option>
+                        <option value="tarif" {% if table=="tarif"%} selected {%endif%}>tarif</option>
                     </select>
                 </div>
                 <div class="input-group col-8">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                        aria-label="Search" aria-describedby="basic-addon2">
+                    <input type="text" class="form-control bg-light border-0 small" name="keyword" placeholder="Rechercher..."
+                        aria-label="Search" aria-describedby="basic-addon2" value="{{search}}">
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="button" style="background: #e09929!important; border: 1px solid #e09929!important;">
+                        <button class="btn btn-primary" type="sudmit" style="background: #e09929!important; border: 1px solid #e09929!important;">
                             <i class="fas fa-search fa-sm"></i>
                         </button>
                     </div>

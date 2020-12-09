@@ -466,6 +466,34 @@ def main():
             return render_template('manage/dashboard.html',title='Portail',form=form, clients=clients)
     return redirect(url_for('users.login'))
 
+@users.route('/search', methods=['GET'])
+@login_required
+def search ():
+    if current_user.TYPE == 'Admin':
+        table = request.args.get('table')
+        search = "%{}%".format(request.args.get('keyword'))
+        if table == 'client':
+            clients = Client.query.filter(Client.NOM.like(search) | Client.EMAIL.like(search) | Client.NUMERO.like(search)).all()
+            if len(clients) > 1:
+                title = "Clients"
+            else:
+                title = "Client"
+            return render_template('manage/pages/search_results.html', clients=clients, title=title, table=table, search=request.args.get('keyword'))
+        elif table == 'tarif':
+            tarifs = Tarifs.query.filter(Tarifs.Service_offert.like(search) | Tarifs.Prix.like(search) | Tarifs.Type.like(search)).all()
+            if len(tarifs) > 1:
+                title = "Tarifs"
+            else:
+                title = "Tarif"
+            return render_template('manage/pages/search_results.html', tarifs=tarifs, title=title, table=table, search=request.args.get('keyword'))
+        elif table == 'expert':
+            experts = Expert.query.filter(Expert.NOM.like(search) | Expert.EMAIL.like(search) | Expert.TYPE.like(search)).all()
+            if len(experts) > 1:
+                title = "Experts"
+            else:
+                title = "Expert"
+            return render_template('manage/pages/search_results.html', experts=experts, title=title, table=table, search=request.args.get('keyword')) 
+
 
 @users.app_errorhandler(404)
 def error_404(error):
