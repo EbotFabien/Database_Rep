@@ -48,7 +48,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
                                         {{form.ID_Destinataire.label(class="form-control-label")}}
                                     
                                         {% if form.ID_Destinataire.errors %}
@@ -61,22 +61,8 @@
                                             {% else %}
                                                 {{form.ID_Destinataire(class="form-control form-control-lg")}}
                                             {% endif %}
-                                    </div>
-                                    <div class="col-sm-4">
-                                        {{form.Numero_de_compte.label(class="form-control-label")}}
-                                    
-                                        {% if form.Numero_de_compte.errors %}
-                                            {{ form.Numero_de_compte(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Numero_de_compte.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Numero_de_compte(class="form-control form-control-lg")}}
-                                            {% endif %}
-                                    </div>   
-                                    <div class="col-sm-4">
+                                    </div>  
+                                    <div class="col-sm-6">
                                         {{form.ID_expediteur.label(class="form-control-label")}}
                                     
                                         {% if form.ID_expediteur.errors %}
@@ -93,21 +79,8 @@
 
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-4 mb-3 mb-sm-0">
-                                        {{form.contact.label(class="form-control-label")}}
 
-                                    {% if form.contact.errors %}
-                                        {{ form.contact(class="form-control form-control-lg is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.contact.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                        {% else %}
-                                            {{form.contact(class="form-control form-control-lg")}}
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
                                         {{form.montant.label(class="form-control-label")}}
 
                                     {% if form.montant.errors %}
@@ -121,7 +94,7 @@
                                             {{form.montant(class="form-control form-control-lg")}}
                                         {% endif %}
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         {{form.TVA.label(class="form-control-label")}}
 
                                     {% if form.TVA.errors %}
