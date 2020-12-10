@@ -495,6 +495,11 @@ def search ():
             return render_template('manage/pages/search_results.html', experts=experts, title=title, table=table, search=request.args.get('keyword')) 
 
 
+#@users.route('/search', methods=['GET'])
+#@login_required
+#def counts ():
+#    chiffrage_=Chiffrage.query.count()
+
 @users.app_errorhandler(404)
 def error_404(error):
     return render_template('errors/404.html'),404
