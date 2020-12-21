@@ -31,8 +31,8 @@
                             <form class="user" method="POST">
                                 {{ form.hidden_tag() }}
                                 <fieldset class="form-group">
-                                <div class="form-group row">
-                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <div class="form-group row">
+                                    {# <div class="col-sm-4 mb-3 mb-sm-0">
                                         {{form.Numero_de_compte.label(class="form-control-label")}}
                     
                                         {% if form.Numero_de_compte.errors %}
@@ -45,9 +45,42 @@
                                     {% else %}
                                         {{form.Numero_de_compte(class="form-control form-control-lg")}}
                                     {% endif %}
+                                    </div> #}
+                                    <div class="col-sm-12 pb-1">
+                                       
+                                        {{form.NOM.label(class="form-control-label")}}
+                                       
+                                       
+                                        {% if form.NOM.errors %}
+                                            {{ form.NOM(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.NOM.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.NOM(class="form-control form-control-lg")}}
+                                            {% endif %}
+                                       
                                     </div>
-                                    <div class="col-sm-4">
-                                        {{form.Type.label(class="form-control-label")}}
+
+                                     <div class="col-sm-12 pb-1">
+                                        {{form.Titre.label(class="form-control-label")}}
+
+                                        {% if form.Titre.errors %}
+                                            {{ form.Titre(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Titre.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                                {{form.Titre(class="form-control form-control-lg")}}
+                                        {% endif %}
+                                    </div>
+                                   
+                                    <div class="col-sm-12 pb-1">
+                                    {{form.Type.label(class="form-control-label")}}
  
                                     {% if form.Type.errors %}
                                         {{ form.Type(class="form-control form-control-lg is-invalid") }}
@@ -60,24 +93,25 @@
                                             {{form.Type(class="form-control form-control-lg")}}
                                         {% endif %}
                                     </div>
-                                    <div class="col-sm-4">
-                                        {{form.Societe.label(class="form-control-label")}}
 
-                                    {% if form.Societe.errors %}
-                                        {{ form.Societe(class="form-control form-control-lg is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Societe.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                        {% else %}
-                                            {{form.Societe(class="form-control form-control-lg")}}
-                                        {% endif %}
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.Societe.label(class="form-control-label")}}
+                                                                       
+
+                                        {% if form.Societe.errors %}
+                                            {{ form.Societe(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Societe.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.Societe(class="form-control form-control-lg")}}
+                                            {% endif %}
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-4 mb-3 mb-sm-0">
-                                        {{form.email.label(class="form-control-label")}}
+
+                                    <div class="col-sm-12 pb-1">
+                                         {{form.email.label(class="form-control-label")}}
                                     
                                         {% if form.email.errors %}
                                             {{ form.email(class="form-control form-control-lg is-invalid") }}
@@ -86,114 +120,29 @@
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
-                                            {% else %}
+                                        {% else %}
                                                 {{form.email(class="form-control form-control-lg")}}
-                                            {% endif %}
-                                    </div>
-                                    <div class="col-sm-4">
-                                        {{form.Adresse1.label(class="form-control-label")}}
-                                    
-                                        {% if form.Adresse1.errors %}
-                                            {{ form.Adresse1(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Adresse1.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Adresse1(class="form-control form-control-lg")}}
-                                            {% endif %}
-                                    </div>
-                                    <div class="col-sm-4">
-                                        {{form.Adresse2.label(class="form-control-label")}}
-                                    
-                                        {% if form.Adresse2.errors %}
-                                            {{ form.Adresse2(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Adresse2.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Adresse2(class="form-control form-control-lg")}}
-                                            {% endif %}
-                                    </div>
-
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-4 mb-3 mb-sm-0">
-                                        {{form.Titre.label(class="form-control-label")}}
-
-                                    {% if form.Titre.errors %}
-                                        {{ form.Titre(class="form-control form-control-lg is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Titre.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                        {% else %}
-                                            {{form.Titre(class="form-control form-control-lg")}}
                                         {% endif %}
                                     </div>
-                                    <div class="col-sm-4">
-                                        {{form.NOM.label(class="form-control-label")}}
 
-                                    {% if form.NOM.errors %}
-                                        {{ form.NOM(class="form-control form-control-lg is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.NOM.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                        {% else %}
-                                            {{form.NOM(class="form-control form-control-lg")}}
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-12 pb-1">
                                         {{form.Numero.label(class="form-control-label")}}
 
-                                    {% if form.Numero.errors %}
-                                        {{ form.Numero(class="form-control form-control-lg is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Numero.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
+                                        {% if form.Numero.errors %}
+                                            {{ form.Numero(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Numero.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
                                         {% else %}
-                                            {{form.Numero(class="form-control form-control-lg")}}
+                                                {{form.Numero(class="form-control form-control-lg")}}
                                         {% endif %}
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-4 mb-3 mb-sm-0">
-                                        {{form.CP.label(class="form-control-label")}}
 
-                                        {% if form.CP.errors %}
-                                            {{ form.CP(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.CP.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.CP(class="form-control form-control-lg")}}
-                                            {% endif %}
-                                    </div>
-                                    <div class="col-sm-4">
-                                        {{form.Ville.label(class="form-control-label")}}
+                                   
 
-                                        {% if form.Ville.errors %}
-                                            {{ form.Ville(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Ville.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Ville(class="form-control form-control-lg")}}
-                                            {% endif %}
-                                    </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-12 pb-1">
                                         {{form.Pays.label(class="form-control-label")}}
 
                                         {% if form.Pays.errors %}
@@ -203,16 +152,79 @@
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
-                                            {% else %}
+                                        {% else %}
                                                 {{form.Pays(class="form-control form-control-lg")}}
-                                            {% endif %}
+                                        {% endif %}
                                     </div>
-                                    <div class="col-sm-4 mt-4">
+
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.Ville.label(class="form-control-label")}}
+
+                                        {% if form.Ville.errors %}
+                                            {{ form.Ville(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Ville.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                                {{form.Ville(class="form-control form-control-lg")}}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-sm-12 pb-1">
+                                         {{form.CP.label(class="form-control-label")}}
+
+                                        {% if form.CP.errors %}
+                                            {{ form.CP(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.CP.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                                {{form.CP(class="form-control form-control-lg")}}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.Adresse1.label(class="form-control-label")}}
+                                    
+                                        {% if form.Adresse1.errors %}
+                                            {{ form.Adresse1(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Adresse1.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                                {{form.Adresse1(class="form-control form-control-lg")}}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-sm-12 pb-1">
+                                         {{form.Adresse2.label(class="form-control-label")}}
+                                    
+                                        {% if form.Adresse2.errors %}
+                                            {{ form.Adresse2(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Adresse2.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                                {{form.Adresse2(class="form-control form-control-lg")}}
+                                        {% endif %}
+                                    </div>
+
+                                    
+                                    <div class="col-sm-12 mt-4">
                                         <div class="form-group">
-                                            {{form.submit(class="btn btn-success")}}   
+                                            {{form.submit(class="btn btn-success btn-block")}}   
                                         </div>
                                     </div>
-                            <fieldset>
+                                    </div>                         
+                                <fieldset>
                             </form>
                         </div>
                     </div>

@@ -227,3 +227,18 @@ body {
   background: #e09929!important;
   border: 1px solid #e09929!important;
 }
+
+.fa-bars:before {
+    content: "\f0c9";
+    color: #fff!important;
+}
+
+.table {
+  border-right: 1px solid #eee!important;
+  font-size: .8rem!important;
+}
+
+.btn-mx-auto {
+  margin-left: 50%;
+  transform: translate(-50%);
+}

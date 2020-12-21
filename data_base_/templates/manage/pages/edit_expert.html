@@ -14,7 +14,7 @@
             <div class="card shadow mb-4">
 	        <div class="card-header py-3">
 	            <h6 class="m-0 font-weight-bold d-inline">Modifier l'expert <small>{{expert.NOM}}</small></h6>
-                <a href="/expert" class="btn btn-primary btn-sm pull-right"><i class="fa fa-users"></i></a>
+                <a href="/expert" class="btn btn-primary btn-sm pull-right">Tous les experts<!--<i class="fa fa-users"></i>--></a>
 	        </div>
 	        <div class="card-body">
 	            <div class="row">
@@ -143,7 +143,7 @@
                                     {% endif %}
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             {{form.password.label(class="form-control-label")}}
                                         
@@ -159,7 +159,7 @@
                                                 {% endif %}
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                          <div class="form-group">
                                             {{form.confirm_password.label(class="form-control-label")}}
                                         
@@ -178,7 +178,7 @@
                                 </div>
                             </fieldset>
                             <div class="form-group">
-                                    {{form.modifier(class="btn btn-success")}}    
+                                    {{form.modifier(class="btn btn-success btn-block")}}    
                                 </div>
                             </form>
                         </div>
