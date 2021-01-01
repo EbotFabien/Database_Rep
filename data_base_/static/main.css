@@ -9,7 +9,7 @@ body {
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
-    transform: translateY(15%);
+    transform: translateY(25%);
   }
   .outer-register {
     width: fit-content;
@@ -118,6 +118,8 @@ body {
   }
   label {
     font-family: 'Roboto', sans-serif !important;
+    font-weight: 600;
+    font-size: .75rem!important;
   }
 
 .btn-submit {
@@ -146,7 +148,7 @@ body {
   font-size: .8rem!important;
 }
 .login-box {
-  width: 345px; margin-left: auto; margin-right: auto;
+  width: 300px; margin-left: auto; margin-right: auto;
   border-radius: 4px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px 0px, rgba(0, 0, 0, 0.04) 0px 3px 1px -2px, rgba(0, 0, 0, 0.04) 0px 2px 2px 0px;
 }
@@ -220,7 +222,7 @@ body {
 }
 
 #wrapper #content-wrapper {
-  background: #fff!important;
+  background: #ecf0f3!important;
 }
 
 .btn-primary {
@@ -241,4 +243,40 @@ body {
 .btn-mx-auto {
   margin-left: 50%;
   transform: translate(-50%);
+}
+
+.button {
+  font-weight: 600;
+}
+
+.page-item.active .page-link {
+  z-index: 1;
+  color: #fff;
+  background-color: #00d1b2!important;
+  border-color: #00d1b2!important;
+}
+
+.page-link {
+  color: #007!important;
+}
+
+.card-header {
+  background-color: rgba(0,0,0,0.0)!important;
+}
+
+.subtitle {
+  font-size: .85rem!important;
+  color: rgb(143, 153, 163);
+  font-weight: 300!important;
+}
+
+.sidebar-dark .nav-item .nav-link {
+  color: #fff!important;
+}
+.sidebar-dark .nav-item .nav-link:hover {
+  color: rgba(255, 255, 255, .8);
+}
+
+h3 {
+  font-size: 1.2rem!important;
 }

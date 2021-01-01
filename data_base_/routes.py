@@ -327,6 +327,16 @@ def login():
 
     return render_template('signup.html',legend="login",form=form)
 
+@users.route('/forgot_password', methods=['GET','POST'])
+def forgot_password ():
+    form = LoginForm()
+    return render_template('forgot_password.html', form=form)
+
+@users.route('/reset_password', methods=['GET','POST'])
+def reset_password ():
+    form = LoginForm()
+    return render_template('reset_password.html', form=form)
+
 @users.route('/logout')
 def logout():
     logout_user()

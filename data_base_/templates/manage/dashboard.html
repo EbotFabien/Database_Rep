@@ -1,131 +1,40 @@
 {% extends 'manage/index.html'%}
 {% block manage_content %}
  <!-- Begin Page Content -->
-    <div class="container-fluid">
-
-        <!-- Page Heading -->
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Tableau de bord</h1>
-        </div>
-
-        <!-- Content Row -->
-        <div class="row">
-
-            <!-- Earnings (Monthly) Card Example -->
-            {%if current_user.TYPE == 'Audit' %}
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <a href="/agenda">
-                <div class="card border-left-success shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Agenda</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-              </a>
+    <section class="info-tiles">
+        <div class="tile is-ancestor has-text-centered p-2">
+            <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <p class="title">439k</p>
+                    <p class="subtitle">Bailleure</p>
+                </article>
             </div>
-            {%endif%}
-            {%if current_user.TYPE == 'Admin' or current_user.TYPE == 'CONCESS'  %}
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <a href="/chiffrage">
-                <div class="card border-left-success shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Chiffrage (Annual)</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{chiffrages|length}}</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-              </a>
+             <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <p class="title">19</p>
+                    <p class="subtitle">Chiffrage</p>
+                </article>
             </div>
-            {%endif %}
-            {%if current_user.TYPE == 'Admin' %}
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <a href="/client">
-                <div class="card border-left-info shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Clients
-                                </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{clients|length}}</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-users fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-              </a>
+            <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <p class="title">59k</p>
+                    <p class="subtitle">Expert</p>
+                </article>
             </div>
-
-            <!-- Pending Requests Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <a href="/facturations">
-                <div class="card border-left-warning shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Facturations</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{facturations|length}}</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-              </a>
-            </div>
-             <!-- Pending Requests Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <a href="/facturations">
-                <div class="card border-left-warning shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Missions</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{missions|length}}</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-list fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-              </a>
-            </div>
-            {%endif %}
-        </div>
-
-        <div class="row">
-            <div class="col-xl-12 col-lg-12">
-                
+            <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <p class="title">3.4k</p>
+                    <p class="subtitle">Locataire</p>
+                </article>
+            </div>           
+            <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <p class="title">19</p>
+                    <p class="subtitle">Mission</p>
+                </article>
             </div>
         </div>
-        <!-- Content Row -->
+    </section>
 
-
-
-        <!-- Content Row -->
-    </div>
     <!-- /.container-fluid -->
 {% endblock manage_content %}
