@@ -4,22 +4,22 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Expert</h1>
+        <h1 class="h3 mb-0 text-gray-800"></h1>
     </div>
     <!-- Content Row -->
 
     <div class="row">
         <!-- Area Chart -->
-        <div class="col-xl-12 col-lg-12">
+        <div class="col-xl-6 col-lg-6 mx-auto">
             <div class="card shadow mb-4">
-	        <div class="card-header py-3">
-	            <h6 class="m-0 font-weight-bold d-inline">Modifier l'expert <small>{{expert.NOM}}</small></h6>
-                <a href="/expert" class="btn btn-primary btn-sm pull-right">Tous les experts<!--<i class="fa fa-users"></i>--></a>
+	        <div class="card-header py-1 align-items-center d-flex justify-content-between">
+	            <h6 class="m-0 font-weight-bold d-inline"><small>{{expert.NOM}}</small></h6>
+                <a href="/expert" class="button is-small is-black">Tous les experts</a>
 	        </div>
 	        <div class="card-body">
 	            <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <div class="p-5">
+                    <div class="col-lg-12 mx-auto">
+                        <div class="">
                             {% with messages = get_flashed_messages(with_categories=true)%}
                             {% if messages %}
                             {%for category,message in messages%}
@@ -39,14 +39,14 @@
                                         {{form.username.label(class="form-control-label")}}
                                 
                                         {% if form.username.errors %}
-                                            {{form.username(class="form-control form-control-lg is-invalid", value=expert.NOM) }}
+                                            {{form.username(class="input is-small is-invalid", value=expert.NOM) }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.username.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                         {% else %}
-                                            {{form.username(class="form-control form-control-lg", value=expert.NOM)}}
+                                            {{form.username(class="input is-small", value=expert.NOM)}}
                                         {% endif %}
                                     </div>
                                    </div> 
@@ -55,14 +55,14 @@
                                         {{form.Numero.label(class="form-control-label")}}
                                 
                                         {% if form.Numero.errors %}
-                                            {{form.Numero(class="form-control form-control-lg is-invalid", value=expert.NUMERO) }}
+                                            {{form.Numero(class="input is-small is-invalid", value=expert.NUMERO) }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Numero.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                         {% else %}
-                                            {{form.Numero(class="form-control form-control-lg", value=expert.NUMERO)}}
+                                            {{form.Numero(class="input is-small", value=expert.NUMERO)}}
                                         {% endif %}
                                     </div>
                                    </div>
@@ -73,14 +73,14 @@
                                             {{form.email.label(class="form-control-label")}}
                                         
                                             {% if form.email.errors %}
-                                                {{ form.email(class="form-control form-control-lg is-invalid", value=expert.EMAIL) }}
+                                                {{ form.email(class="input is-small is-invalid", value=expert.EMAIL) }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.email.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                 {% else %}
-                                                    {{form.email(class="form-control form-control-lg", value=expert.EMAIL)}}
+                                                    {{form.email(class="input is-small", value=expert.EMAIL)}}
                                                 {% endif %}
                                         </div> 
                                     </div>
@@ -89,22 +89,22 @@
                                             {{ form.Titre.label(class="form-control-label") }}
                                            
                                             {% if form.Titre.errors %}
-                                             <select class="form-control form-control-lg is-invalid" name="TITRE">
+                                             <select class="input is-small is-invalid" name="TITRE">
                                                 <option value="M." {% if expert.TITRE == "M." %} selected {%endif%}>M</option>
                                                 <option value="MME" {% if expert.TITRE == "MME" %} selected {%endif%}>Mme</option>
                                             </select>
-                                                {# form.Titre(class="form-control form-control-lg is-invalid", value=expert.TITRE) #}
+                                                {# form.Titre(class="input is-small is-invalid", value=expert.TITRE) #}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.Titre.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                 {% else %}
-                                                <select class="form-control form-control-lg" name="TITRE">
+                                                <select class="is-small input" name="TITRE">
                                                     <option value="M." {% if expert.TITRE == "M." %} selected {%endif%}>M</option>
                                                     <option value="MME" {% if expert.TITRE == "MME" %} selected {%endif%}>Mme</option>
                                                 </select>
-                                                    {#form.Titre(class="form-control form-control-lg", value=expert.TITRE)#}
+                                                    {#form.Titre(class="input is-small", value=expert.TITRE)#}
                                                 {% endif %}
                                             </div>
                                     </div>
@@ -114,7 +114,7 @@
                                 {{form.Type_Expert.label(class="form-control-label")}}
         
                                 {% if form.Type_Expert.errors %}
-                                     <select class="form-control form-control-lg is-invalid" name="TYPE">
+                                     <select class="input is-small is-invalid" name="TYPE">
                                         <option value="Interv" {% if expert.TYPE == "Interv" %} selected {%endif%}>interv</option>
                                         <option value="CONCESS" {% if expert.TYPE == "CONCESS" %} selected {%endif%}>concess</option>
                                         <option value="agent Cell Dev" {% if expert.TYPE == "agent Cell Dev" %} selected {%endif%}>agent cell dev</option>
@@ -123,15 +123,15 @@
                                         <option value="Admin" {% if expert.TYPE == "Admin" %} selected {%endif%}>admin</option>
                                         <option value="Audit" {% if expert.TYPE == "Audit" %} selected {%endif%}>audit</option>
                                     </select>
-                                    {# form.Type_Expert(class="form-control form-control-lg is-invalid", value=expert.TYPE) #}
+                                    {# form.Type_Expert(class="input is-small is-invalid", value=expert.TYPE) #}
                                     <div class="invalid-feedback">
                                         {% for error in form.Type_Expert.errors %}
                                             <span>{{ error }}</span>
                                         {% endfor %}
                                     </div>
                                     {% else %}
-                                        {# form.Type_Expert(class="form-control form-control-lg", value=expert.TYPE) #}
-                                        <select class="form-control form-control-lg" name="TYPE">
+                                        {# form.Type_Expert(class="input is-small", value=expert.TYPE) #}
+                                        <select class="is-small input" name="TYPE">
                                             <option value="Interv" {% if expert.TYPE == "Interv" %} selected {%endif%}>interv</option>
                                             <option value="CONCESS" {% if expert.TYPE == "CONCESS" %} selected {%endif%}>concess</option>
                                             <option value="agent Cell Dev" {% if expert.TYPE == "agent Cell Dev" %} selected {%endif%}>agent cell dev</option>
@@ -148,14 +148,14 @@
                                             {{form.password.label(class="form-control-label")}}
                                         
                                             {% if form.password.errors %}
-                                                {{ form.password(class="form-control form-control-lg is-invalid") }}
+                                                {{ form.password(class="input is-small is-invalid") }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.password.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                 {% else %}
-                                                    {{form.password(class="form-control form-control-lg")}}
+                                                    {{form.password(class="input is-small")}}
                                                 {% endif %}
                                         </div>
                                     </div>
@@ -164,21 +164,21 @@
                                             {{form.confirm_password.label(class="form-control-label")}}
                                         
                                             {% if form.confirm_password.errors %}
-                                                {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
+                                                {{ form.confirm_password(class="input is-small is-invalid") }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.confirm_password.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                 {% else %}
-                                                    {{form.confirm_password(class="form-control form-control-lg")}}
+                                                    {{form.confirm_password(class="input is-small")}}
                                                 {% endif %}
                                             </div>
                                     </div>
                                 </div>
                             </fieldset>
                             <div class="form-group">
-                                    {{form.modifier(class="btn btn-success btn-block")}}    
+                                    {{form.modifier(class="button is-success is-small is-fullwidth")}}    
                                 </div>
                             </form>
                         </div>

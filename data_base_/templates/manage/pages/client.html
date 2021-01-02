@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h3 class="text-gray-800">CLIENTS</h3>
+        <h3 class="text-gray-800"></h3>
     </div>
     <!-- Content Row -->
 
@@ -11,7 +11,7 @@
         <!-- Area Chart -->
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
-	        <div class="card-header py-3" style="display: flex;justify-content: space-between;">
+	        <div class="card-header py-1 justify-content-between d-flex" style="display: flex;justify-content: space-between;"> 
 	            <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i></h6>
                 <a href="/ajouter/client" title="ajouter un client" class="button is-black is-small pull-right"><span class="is-warning">ajouter un client</span></a>
 	        </div>
@@ -20,7 +20,7 @@
                       {% with messages = get_flashed_messages(with_categories=true)%}
                             {% if messages %}
                             {%for category,message in messages%}
-                            <div class="alert alert-{{category}}">
+                            <div class="alert alert-{{category}} is-small">
                                 {{message}}
                             </div>
                             {% endfor %}

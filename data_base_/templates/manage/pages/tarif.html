@@ -4,7 +4,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Tarifs</h1>
+        <h1 class="h3 mb-0 text-gray-800"></h1>
     </div>
     <!-- Content Row -->
 
@@ -12,9 +12,9 @@
         <!-- Area Chart -->
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
-	        <div class="card-header py-3">
+	        <div class="card-header py-1 d-flex justify-content-between align-items-center">
 	            <h6 class="m-0 font-weight-bold d-inline">Tarifs</h6>
-	            <a href="/ajouter/tarifs" title="ajouter un tarif" class="btn btn-primary btn-sm pull-right"><i class="fa fa-euro"></i></a>
+	            <a href="/ajouter/tarifs" title="ajouter un tarif" class="button is-small is-black">ajoutez un tarif &nbsp;<i class="fa fa-euro"></i></a>
 	        </div>
 	        <div class="card-body">
 	            <div class="table-responsive">
@@ -27,7 +27,7 @@
                             {% endfor %}
                             {% endif %}
                             {% endwith %}
-	               <table class="table" id="dataTable">
+	               <table class="table table-bordered" id="dataTable">
 		                <thead>
 		                    <tr>
 		                        <th scope="col">id</th>
@@ -36,7 +36,8 @@
 		                        <th scope="col" title="audit_planner">Type</th>
 		                        <th scope="col" title="Agent_referent_du_client">Prix</th> 
 		                        <th scope="col" title="Validation_par_agent">TVA</th> 
-		                        <th scope="col">Action</th>		                     
+		                        <th scope="col">Modifier</th>	
+		                        <th>Suprimer</th>	                     
 		                    </tr>
 		                </thead>
 		                <tbody>
@@ -47,8 +48,11 @@
 		                        <td>{{tarif.Type}}</td>
 								<td>{{tarif.Prix}}</td>
 								<td>{{tarif.tva}}</td> 
-								<td style="display: flex">
-                                    <a href="{{url_for('users.edit_tarif', id=tarif.id)}}" title="modifier" class="p-1 btn btn-secondary"><i class="fa fa-pen"></i></a> &nbsp;
+								<td >
+                                    <a href="{{url_for('users.edit_tarif', id=tarif.id)}}" title="modifier" class="center button is-outlined-black is-small"><i class="fa fa-pen"></i></a> &nbsp;
+                                </td>   
+                                <td>
+                                    <a href="#" title="modifier" class="center button is-danger	 is-small"><i class="fa fa-trash"></i></a> &nbsp;
                                 </td>    	                        
 		                    </tr>
 		                {%endfor%}
