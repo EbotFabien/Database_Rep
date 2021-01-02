@@ -1,3 +1,9 @@
 .sidebar {
-	background: #e09929!important;
+	background: #000!important;
+}
+
+.sidebar .nav-item .nav-link span {
+	text-transform: uppercase;
+	font-weight: 400;
+	font-size: 13px;
 }

@@ -28,9 +28,9 @@ class RegistrationForm(FlaskForm):
     Titre=SelectField('Titre',
                              choices=[('MME', 'MME'), ('M.', 'M.')])
 
-    submit = SubmitField('Créer')
+    submit = SubmitField('enregistrer')
 
-    modifier = SubmitField('Modifier')
+    modifier = SubmitField('modifier')
     
     def validate_username(self,username):
         user = Expert.query.filter_by(NOM=username.data).first()
@@ -71,16 +71,16 @@ class Chiffrage_Form(FlaskForm):
     Pourcentage_gain =StringField('Pourcentage_gain',
                            validators=[DataRequired()])
 
-    submit = SubmitField('Créer un Chiffrage')
+    submit = SubmitField('enregistrer')
 
 class Tarif_Form(FlaskForm):
-  service = StringField('Service offert', validators=[DataRequired()])
+  service = StringField('Nom du service offert', validators=[DataRequired()])
   type_de_tarif = SelectField('Type', choices=[('basic', 'basic'), ('premium', 'premium')])
-  prix = StringField('prix', validators=[DataRequired()])
+  prix = StringField('Prix', validators=[DataRequired()])
 
-  submit = SubmitField('Créer')
+  submit = SubmitField('enregistrer')
 
-  modifier = SubmitField('Modifier')
+  modifier = SubmitField('modifier')
 
 class Facturation_Form(FlaskForm):
     
@@ -127,19 +127,19 @@ class Facturation_Form(FlaskForm):
                            validators=[DataRequired()])
 
 
-    submit = SubmitField('Créer une Facturation')
+    submit = SubmitField('enregistrer')
 
 
 class Client_Form(FlaskForm):
     
     Type=SelectField('Type',
-                             choices=[('BAILLEUR', 'BAILLEUR'), ('LOCATAIRE', 'LOCATAIRE')])
+                             choices=[('BAILLEUR', 'Bailleur'), ('LOCATAIRE', 'Locataire')])
 
     Societe =StringField('Societe',
                            validators=[DataRequired()])
 
-    Titre=SelectField('Titre',
-                             choices=[('Madam', 'Madam'), ('Monsieur', 'Monsieur')])
+    Titre=SelectField('Sexe',
+                             choices=[('femelle', 'femelle'), ('male', 'male')])
 
     NOM =StringField('Noms',
                            validators=[DataRequired()])
@@ -165,10 +165,10 @@ class Client_Form(FlaskForm):
     Numero_de_compte=StringField("Numero de compte ",
                            validators=[DataRequired()])
 
-    Pays=StringField("Pays ",
+    Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[DataRequired()])
 
-    submit = SubmitField('enregistre')
+    submit = SubmitField('enregistrer')
 
     modifier = SubmitField('modifier')
 

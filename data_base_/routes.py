@@ -56,17 +56,17 @@ def edit_client(id):
 def update_client(id):
     if current_user.TYPE == "Admin":
         client = Client.query.filter_by(id=id).first_or_404()
-        client.EMAIL = request.form['EMAIL']
+        client.EMAIL = request.form['email']
         # client.Numero_de_compte = request.form['Numero_de_compte']
-        client.VILLE = request.form['VILLE']
+        client.VILLE = request.form['Ville']
         client.Pays = request.form['Pays']
-        client.SOCIETE = request.form['SOCIETE']
-        client.NUMERO = request.form['NUMERO']
-        client.TITRE = request.form['TITRE']
-        client.TYPE = request.form['TYPE']
+        client.SOCIETE = request.form['Societe']
+        client.NUMERO = request.form['Numero']
+        client.TITRE = request.form['Titre']
+        client.TYPE = request.form['Type']
         client.CP = request.form['CP']
-        client.ADRESSE1 = request.form['ADRESSE1']
-        client.ADRESSE2 = request.form['ADRESSE2']
+        client.ADRESSE1 = request.form['Adresse1']
+        client.ADRESSE2 = request.form['Adresse2']
         client.NOM = request.form['NOM']
         # client.ABONNEMENT = request.form['ABONNEMENT']
         
@@ -417,6 +417,10 @@ def delete(id,type1):
 @login_required
 def main():
     if current_user.is_authenticated:
+        clients = Client.query.all()
+        missions = list(Mission.query.all())
+        facturations = list(Facturation.query.all())
+        chiffrages = list(Chiffrage.query.all())
         form = tableform()
         expert_admin=Expert.query.filter(and_(Expert.NOM == str(current_user.NOM), Expert.TYPE =='Admin')).first() #type='admin'
         expert_concess=Expert.query.filter(and_(Expert.NOM == str(current_user.NOM), Expert.TYPE =='CONCESS')).first() #type='Concess'
@@ -425,7 +429,7 @@ def main():
     # expert_admin.password = hashed_password
         #db.session.commit()
 
-        clients=list(Client.query.all())
+        # clients=list(Client.query.all())
         
         if current_user.is_authenticated and  expert_admin :
             if form.validate_on_submit:
@@ -463,7 +467,7 @@ def main():
 
         else:
             #flash(f"Vous n'est pas autorise a acceder cette table",'danger')
-            return render_template('manage/dashboard.html',title='Portail',form=form, clients=clients)
+            return render_template('manage/dashboard.html',title='Portail',form=form, clients=clients, missions=missions,facturations=facturations,chiffrages=chiffrages)
     return redirect(url_for('users.login'))
 
 @users.route('/search', methods=['GET'])
