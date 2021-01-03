@@ -13,7 +13,7 @@
             <div class="card shadow mb-4">
 	        <div class="card-header py-1 justify-content-between d-flex" style="display: flex;justify-content: space-between;"> 
 	            <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i></h6>
-                <a href="/ajouter/client" title="ajouter un client" class="button is-black is-small pull-right"><span class="is-warning">ajouter un client</span></a>
+                <a href="/" title="ajouter un client" class="button is-black is-small pull-right"><span class="is-warning">annuler</span></a>
 	        </div>
 	        <div class="card-body">
 	            <div class="table-responsive">
@@ -36,7 +36,7 @@
                             <th scope="col">Nom</th>
                             <!-- <th scope="col">NOM</th> -->
                             <th scope="col">Email</th>
-                            <th scope="col">Tel</th>
+                            <!-- <th scope="col">Tel</th> -->
                             <th scope="col">Adresse 1</th>
                             <!-- <th scope="col">ADRESSE2</th> -->
                             <!-- <th scope="col">CP</th> -->
@@ -57,7 +57,7 @@
                                     <td> {{client_.NOM | truncate(10, True)}}</td>
                                     <!-- <td>{{client_.NOM}}</td> -->
                                     <td>{{client_.EMAIL | truncate(10, True)}}</td>
-                                    <td>{{client_.NUMERO}}</td>
+                                    <!-- <td>{{client_.NUMERO | truncate(10, True)}}</td> -->
                                     <td>{{client_.ADRESSE1|truncate(10, True)}}</td>
                                     <!-- <td>{{client_.ADRESSE2}}</td> -->
                                     <!-- <td>{{client_.CP}}</td> -->
