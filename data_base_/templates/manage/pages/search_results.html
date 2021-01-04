@@ -24,36 +24,39 @@
 	        <div class="card-body">
 	            <div class="table-responsive">
 	            	{% if table == 'client' %}
-		               <table class="table" id="dataTable" style="width:100%">
+		               <table class="table table-bordered" id="dataTable" style="width:100%">
                         <thead class="">
                         <tr>
                             <th scope="col">id</th>
-                            <th scope="col">Reference</th>
+                            <!-- <th scope="col">Reference</th> -->
                             <th scope="col">Type</th>                           
                             <th scope="col">Nom</th>                            
                             <th scope="col">Email</th>
                             <th scope="col">Tel</th>
                             <th scope="col">Adresse 1</th>                            
                             <th scope="col">Ville</th>                            
-                            <th>Action</th>
+                            <th>Modifier</th>
+                            <th>Info</th>
+                            <th>Suprimer</th>
                         </tr>
                         </thead>
                         <tbody>
                             {%for client_ in clients %}
                                 <tr>
                                     <th scope="row">{{client_.id}}</th>
-                                    <td>{{client_.Reference}}</td>
+                                    {#<td>{{client_.Reference}}</td>#}
                                     <td>{{client_.TYPE}}</td>                                   
-                                    <td> {{client_.NOM}}</td>                               
+                                    <td> {{client_.NOM|truncate(15, True)}}</td>                               
                                     <td>{{client_.EMAIL}}</td>
                                     <td>{{client_.NUMERO}}</td>
                                     <td>{{client_.ADRESSE1|truncate(15, True)}}</td>                                   
                                     <td>{{client_.VILLE|truncate(12, True)}}</td>   
-                                    <td style="display: flex">
-                                        <a href="{{url_for('users.edit_client', id=client_.id)}}" title="modifier" class="p-1 btn btn-secondary"><i class="fa fa-pen"></i></a> &nbsp;
-                                        <a href="{{url_for('users.show_client', id=client_.id)}}" title="voir tout les details" class="btn btn-info p-1"><i class="fa fa-eye"></i></a>
+                                    <td>
+                                        <a href="{{url_for('users.edit_client', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen"></i></a> <!-- &nbsp; -->
                                         <!-- <a href="/ajoutez/agenda/{{client_.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{client_.id}}">créer un agenda</a> -->
-                                    </td>     
+                                    </td>  
+                                    <td> <a href="{{url_for('users.show_client', id=client_.id)}}" title="voir tout les details" class=" is-small is-primary is-fullwidth button"><i class="fa fa-eye"></i></a></td>   
+                                     <td> <a href="{{url_for('users.show_client', id=client_.id)}}" title="voir tout les details" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>   
                                 </tr>     
                             {%endfor%}
                         </tbody>

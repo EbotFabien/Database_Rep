@@ -9,7 +9,7 @@ from data_base_.Models import Expert ,Client
 
 
 class RegistrationForm(FlaskForm):
-    username =StringField("Nom d'utilisateur",
+    username =StringField("Identifiant",
                                 validators=[DataRequired(),length(min=4 ,max=20)])
     
     Numero =StringField('Tel',
@@ -45,7 +45,7 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
 
 class LoginForm(FlaskForm):
-    username =StringField("Nom d'utilisateur",
+    username =StringField("Identifiant",
                                      validators=[DataRequired(),length(min=4 ,max=20, message='Le champ est obligatoire')])
 
     password =PasswordField('Mot de passe',
