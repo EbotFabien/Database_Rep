@@ -26,7 +26,7 @@
 		                    <th scope="col">gain(%)</th>
 		                    <th>Modifier</th>
 		                    <th>Suprimer</th>
-		                    <!--th></th-->
+
 	                	</tr>
 	            	</thead>
 		            <tbody>
@@ -36,7 +36,12 @@
 		                        <td>{{chiffrage_.Mission}}</td>
 		                        <td>{{chiffrage_.Type_expert}}</td>
 		                        <td>{{chiffrage_.Pourcentage_gain}}</td>
-		                        <!--td><a href="{{ url_for('users.agenda')}}" class="g-btn g-btn--white has-border u-small">tout afficher</a></td-->
+		                        <td>
+                                    <a href="{{url_for('users.edit_chiffrage', id=chiffrage_.id)}}" title="modifier" class="center button is-outlined-black is-small"><i class="fa fa-pen"></i></a> &nbsp;
+                                </td>   
+                                <td>
+                                    <a href="{{url_for('users.delete_chiffrage', id=chiffrage_.id)}}" title="Suprimmer" class="center button is-danger	 is-small"><i class="fa fa-trash"></i></a> &nbsp;
+                                </td>
 		                    </tr>
 		                {%endfor%}                               
 		            </tbody>         

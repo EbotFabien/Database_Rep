@@ -44,6 +44,25 @@ class RegistrationForm(FlaskForm):
         if email:
             raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
 
+class RequestResetForm(FlaskForm):
+    email =StringField('Email',
+                           validators=[DataRequired(),Email()])
+    submit = SubmitField('Request Password Reset')
+
+    recaptcha = RecaptchaField(validators=[Recaptcha(message="Le reCAPTCHA n'a pas été saisi correctement. Revenez en arrière et essayez à nouveau.")])
+
+    def validate_username(self,username):
+        user = Expert.query.filter_by(EMAIL=email.data).first()## add visibility
+
+        if user is None:
+            raise ValidationError('There is no account with this email.You must register first.')
+
+class ResetPasswordForm(FlaskForm):
+    password =PasswordField('Password',
+                                  validators=[DataRequired(),length(min=8 ,max=20)])
+    confirm_password =PasswordField('ConfirmPassword',
+                                  validators=[DataRequired(),EqualTo('password')])
+    submit = SubmitField('Reset password')
 class LoginForm(FlaskForm):
     username =StringField("Identifiant",
                                      validators=[DataRequired(),length(min=4 ,max=20, message='Le champ est obligatoire')])
@@ -74,9 +93,12 @@ class Chiffrage_Form(FlaskForm):
     submit = SubmitField('enregistrer')
 
 class Tarif_Form(FlaskForm):
-  service = StringField('Nom du service offert', validators=[DataRequired()])
-  type_de_tarif = SelectField('Type', choices=[('basic', 'basic'), ('premium', 'premium')])
+  ID_client=StringField('client',
+                        validators=[DataRequired()])
+  type_de_maison = SelectField('Type', choices=[('F1', 'F1'), ('F2', 'F2'),('F3', 'F3'),('F4', 'F4'),('F5', 'F5')])
   prix = StringField('Prix', validators=[DataRequired()])
+  remise = StringField('Remise', validators=[DataRequired()])
+  
 
   submit = SubmitField('enregistrer')
 
@@ -84,9 +106,6 @@ class Tarif_Form(FlaskForm):
 
 class Facturation_Form(FlaskForm):
     
-    Date =StringField('Date',
-                                validators=[DataRequired()])
-
     Pays =StringField('Pays',
                            validators=[DataRequired()])
 
@@ -99,8 +118,6 @@ class Facturation_Form(FlaskForm):
     montant=StringField('montant',
                            validators=[DataRequired()])
 
-    TVA=StringField('Pourcentage_gain',
-                           validators=[DataRequired()])
     
     total=StringField('total',
                            validators=[DataRequired()])

@@ -44,15 +44,15 @@
 		                {%for tarif in tarifs %}
 		                    <tr>
 		                        <th scope="row">{{tarif.id}}</th>
-		                        <td>{{tarif.Service_offert}}</td>
-		                        <td>{{tarif.Type}}</td>
+		                        <td>{{tarif.reference_client}}</td>
+		                        <td>{{tarif.type_maison}}</td>
 								<td>{{tarif.Prix}}</td>
-								<td>{{tarif.tva}}</td> 
-								<td >
+								<td>{{tarif.remise}}</td> 
+								<td>
                                     <a href="{{url_for('users.edit_tarif', id=tarif.id)}}" title="modifier" class="center button is-outlined-black is-small"><i class="fa fa-pen"></i></a> &nbsp;
                                 </td>   
                                 <td>
-                                    <a href="#" title="modifier" class="center button is-danger	 is-small"><i class="fa fa-trash"></i></a> &nbsp;
+                                    <a href="{{url_for('users.delete_tarif', id=tarif.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="modifier" class="center button is-danger	 is-small"><i class="fa fa-trash"></i></a> &nbsp;
                                 </td>    	                        
 		                    </tr>
 		                {%endfor%}

@@ -34,31 +34,45 @@
                                
                                 <div class="form-group row">
                                     <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.service.label(class="form-control-label pt-2")}}
+                                        {{form.ID_client.label(class="form-control-label pt-2")}}
                     
-                                        {% if form.service.errors %}
-                                        {{form.service(class="input is-small is-invalid") }}
+                                        {% if form.ID_client.errors %}
+                                        {{form.ID_client(class="input is-small is-invalid") }}
                                         <div class="invalid-feedback">
-                                            {% for error in form.service.errors %}
+                                            {% for error in form.ID_client.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                     {% else %}
-                                        {{form.service(class="input is-small pt-2")}}
+                                        {{form.ID_client(class="input is-small pt-2")}}
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.type_de_maison.label(class="form-control-label pt-2")}}
+                    
+                                        {% if form.type_de_maison.errors %}
+                                        {{form.type_de_maison(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.type_de_maison.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.type_de_maison(class="input is-small pt-2")}}
                                     {% endif %}
                                     </div>
                                     <div class="col-sm-12 pb-1">
-                                        {{form.type_de_tarif.label(class="form-control-label pt-2")}}
+                                        {{form.remise.label(class="form-control-label pt-2")}}
 
-                                    {% if form.type_de_tarif.errors %}
-                                        {{ form.type_de_tarif(class="is-small input is-invalid") }}
+                                    {% if form.remise.errors %}
+                                        {{ form.remise(class="is-small input is-invalid") }}
                                         <div class="invalid-feedback">
-                                            {% for error in form.type_de_tarif.errors %}
+                                            {% for error in form.remise.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                         {% else %}
-                                            {{form.type_de_tarif(class="input is-small pt-2")}}
+                                            {{form.remise(class="input is-small pt-2")}}
                                         {% endif %}
                                     </div>
                                     <div class="col-sm-12 pb-1">

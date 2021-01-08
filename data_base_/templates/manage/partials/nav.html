@@ -72,6 +72,12 @@
                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                             Profile
                         </a>
+                        {% if current_user.TYPE == 'Admin' %}
+                            <a class="dropdown-item" href="{{url_for('users.up')}}"><!--check fa --->
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Import
+                            </a>
+                        {% endif  %}
                         <a class="dropdown-item" href="#">
                             <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                             Settings

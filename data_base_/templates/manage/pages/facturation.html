@@ -21,76 +21,52 @@
                         <thead class="">
                         <tr>
                             <th scope="col">id</th>
-                            <th scope="col">Reference</th>
-                            <th scope="col">Type</th>
-                            <!-- <th scope="col">SOCIETE</th> -->
-                            <th scope="col">TITRE</th>
-                            <!-- <th scope="col">NOM</th> -->
-                            <th scope="col">EMAIL</th>
-                            <th scope="col">NUMERO</th>
-                            <th scope="col">ADRESSE1</th>
-                            <!-- <th scope="col">ADRESSE2</th> -->
-                            <!-- <th scope="col">CP</th> -->
-                            <th scope="col">VILLE</th>
-                            <!-- <th scope="col">Zone_de_région_du_client</th> -->
-                            <th>Action</th>
+                            <th scope="col">Facture_no</th>
+                            <th scope="col">Date_</th>
+                            <th scope="col">Pays</th> 
+                            <th scope="col">Destinataire</th>
+                            <th scope="col">expéditeur</th> 
+                            <th scope="col">Montant</th>
+                            <th scope="col">TVA</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Type</th> 
+                            <th scope="col">Proprietaire</th> 
+                            <th scope="col">Locataire</th>
+                            <th scope="col">Ville</th> 
+                            <th scope="col">Surface</th>
+                            <th scope="col">Tarif</th>
+                            <th scope="col">Appt_Pav</th>
+                            <th>Modification</th>
+                            <th>Supprimer</th>
                         </tr>
                         </thead>
                         <tbody>
                             {%for facturation_ in Facturation %}
                                 <tr>
                                     <th scope="row">{{facturation_.id}}</th>
-                                    <td>{{facturation_.Reference}}</td>
-                                    <td>{{facturation_.TYPE}}</td>
-                                    <!-- <td>{{facturation_.SOCIETE}}</td> -->
-                                    <td>{{facturation_.TITRE}}</td>
-                                    <!-- <td>{{facturation_.NOM}}</td> -->
-                                    <td>{{facturation_.EMAIL}}</td>
-                                    <td>{{facturation_.NUMERO}}</td>
-                                    <td>{{facturation_.ADRESSE1}}</td>
-                                    <!-- <td>{{facturation_.ADRESSE2}}</td> -->
-                                    <!-- <td>{{facturation_.CP}}</td> -->
-                                    <td>{{facturation_.VILLE}}</td>
-                                    <!-- <td>{{facturation_.Zone_de_région_du_client}}</td> -->
-                                    <td style="display: flex"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modaledit{{facturation_.id}}"><i class="fas fa-eye"></i></button><a href="{{ url_for('users.delete',id=facturation_.id,type1='client' )}}" class="btn btn-danger"><i class="fas fa-trash"></i></a></td>
-                                    
+                                    <td>{{facturation_.Facture_no}}</td>
+                                    <td>{{facturation_.Date_}}</td>
+                                    <td>{{facturation_.Pays}}</td> 
+                                    <td>{{facturation_.Destinataire}}</td>
+                                    <td>{{facturation_.expéditeur}}</td> 
+                                    <td>{{facturation_.Montant}}</td>
+                                    <td>{{facturation_.TVA}}</td>
+                                    <td>{{facturation_.Total}}</td>
+                                    <td>{{facturation_.Type}}</td> 
+                                    <td>{{facturation_.Proprietaire}}</td>
+                                    <td>{{facturation_.Locataire}}</td>
+                                    <td>{{facturation_.Ville}}</td> 
+                                    <td>{{facturation_.Surface}}</td>
+                                    <td>{{facturation_.Tarif}}</td>
+                                    <td>{{facturation_.Appt_Pav}}</td>
+                                    <td>
+                                        <a href="{{url_for('users.edit_facturation', id=facturation_.id)}}" title="modifier" class="center button is-outlined-black is-small"><i class="fa fa-pen"></i></a> &nbsp;
+                                    </td>   
+                                    <td>
+                                        <a href="{{url_for('users.delete_facturation', id=facturation_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="modifier" class="center button is-danger	 is-small"><i class="fa fa-trash"></i></a> &nbsp;
+                                    </td> 
                                 </tr>
-                                <div id="modaledit{{facturation_.id}}" class="modal fade" role="dialog">
-                                    <div class="modal-dialog">
-                                    <div class="modal-content">
-                                   <div class="modal-header"><h4 class="modal-title">Update Information</h4></div>
-                                    <div class="modal-body">
-                                    <form action="{{url_for('users.update')}}" method="POST">
-                                     <div class="form-group">
-                                      <label>NOM</label>
-                                      <input type="hidden"  name="id" value="{{facturation_.id}}">
-                                      <input type="text" class="form-control" name="name" value="{{facturation_.NOM}}">
-                                     </div>
-                                     <div class="form-group">
-                                      <label>Email</label>
-                                      <input type="text" class="form-control" name="email" value="{{facturation_.EMAIL}}">
-                                     </div>
-                                     <div class="form-group">
-                                      <label>NUMERO</label>
-                                      <input type="text" class="form-control" name="phone" value="{{facturation_.NUMERO}}">
-                                     </div>
-                                     <div class="form-group">
-                                        <label>ADRESSE1</label>
-                                        <input type="text" class="form-control" name="ADRESSE1" value="{{facturation_.NUMERO}}">
-                                    </div>
-                                    
-
-                                     <div class="form-group">
-                                      <button class="btn btn-primary" type="submit">Update</button>
-                                     </div>
-                                    </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    </div>
-                                  </div>
-                                  </div>
-                                 </div> 
+                               
                             {%endfor%}
                         </tbody>
                     </table>

@@ -1,18 +1,23 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 from data_base_.Models import  db,Tarifs,Chiffrage,Mission,Client,Expert,Agenda,Facturation
-from data_base_.forms import (RegistrationForm , LoginForm ,tableform,Client_Form,Facturation_Form,Chiffrage_Form, Tarif_Form)
+from data_base_.forms import (RegistrationForm , LoginForm ,tableform,Client_Form,Facturation_Form,Chiffrage_Form, Tarif_Form,RequestResetForm,ResetPasswordForm)
 from data_base_ import bcrypt
-from data_base_.data  import Missions,expert_,insert_client
+from data_base_.data  import Missions,expert__,insert_client,mission_date
+from data_base_.utils import send_reset_email
 from sqlalchemy import or_, and_, desc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
+import os
+from data_base_ import create_app
+from os.path import join, dirname, realpath
 
 users =Blueprint('users',__name__)
+app= create_app()
 
 @users.route('/client')
 @login_required
 def client():
     if current_user.TYPE == "Admin":
-        client_=list(Client.query.all())
+        client_=list(Client.query.filter_by(Visibility=True).all())
         return render_template('manage/pages/client.html',Client=client_,legend="client")
 
     
@@ -28,10 +33,9 @@ def ajouter_client():
             form.Adresse1.data,form.Adresse2.data,form.CP.data,form.Ville.data,form.Pays.data,form.Numero_de_compte.data)
             db.session.add(user)
             db.session.commit()
-            db.session.commit()
             flash(f'Client créé avec succès','success')
             return redirect(url_for('users.client'))
-            
+        print("didn't validate on submit")    
         return render_template('manage/pages/ajouter_client.html',form=form,legend="client")
     else:
         return redirect(url_for('users.main'))
@@ -42,6 +46,16 @@ def show_client(id):
     if current_user.TYPE == "Admin":
         client = Client.query.filter_by(id=id).first_or_404()
         return render_template('manage/pages/show_client.html', client=client)
+
+@users.route('/delete/<int:id>/client', methods=['GET'])
+@login_required
+def delete_client(id):
+    if current_user.TYPE == "Admin":
+        client = Client.query.filter_by(id=id).first_or_404()
+        client.Visibility=False
+        db.session.commit()
+        flash(f'Les donnes du client ont été  suprimmer','success')
+        return redirect(url_for('users.client'))
 
 @users.route('/edit/<int:id>/client', methods=['GET'])
 @login_required
@@ -79,22 +93,64 @@ def update_client(id):
 @login_required
 def facturation():
     if current_user.TYPE == "Admin":
-        facturation_=list(Facturation.query.all())
+        facturation_=list(Facturation.query.filter_by(Visibility=True).all())
         return render_template('manage/pages/facturation.html',legend="facturation",Facturation=facturation_)
 
     return redirect(url_for('users.main'))
 
+@users.route('/delete/<int:id>/facturation', methods=['GET'])
+@login_required
+def delete_facturation(id):
+    if current_user.TYPE == "Admin":
+        facturation = Facturation.query.filter_by(id=id).first_or_404()
+        facturation.Visibility = False
+        db.session.commit()
+        flash(f'Les donnes de facturation ont été  suprimmer','success')
+        return redirect(url_for('users.facturation'))
+
+@users.route('/edit/<int:id>/facturation', methods=['GET'])
+@login_required
+def edit_facturation(id):
+    if current_user.TYPE == "Admin":
+        form = Facturation_Form()
+        facturation = Facturation.query.filter_by(id=id).first_or_404()
+        return render_template('manage/pages/edit_facturation.html', facturation=facturation,form=form)
+
+@users.route('/update/<int:id>/facturation', methods=['POST', 'PUT'])
+@login_required
+def update_facturation(id):
+    if current_user.TYPE == "Admin":
+        facturation = Facturation.query.filter_by(id=id).first_or_404()
+        facturation.Pays = request.form['Pays']
+        facturation.Destinataire=request.form['ID_Destinataire']
+        facturation.expéditeur=request.form['ID_expediteur']
+        facturation.Montant=request.form['montant']
+        facturation.Total=request.form['total']
+        facturation.Type=request.form['Type_']
+        facturation.Proprietaire=request.form['ID_proprietaire']
+        facturation.Locataire=request.form['ID_locataire']
+        facturation.Ville=request.form['ville']
+        facturation.Surface=request.form['surface']
+        facturation.Tarif=request.form['tarifs']
+        facturation.Appt_Pav=request.form['appt_pav']
+        db.session.commit()
+        flash(f'Les donnes de facturation a été modifiées','success')
+        return redirect(url_for('users.facturation'))
+
+    return redirect(url_for('users.edit_client', id=id))
 @users.route('/ajouter/facturation',methods=['GET','POST'])
 @login_required
 def ajouter_facturation():
     if current_user.TYPE == "Admin" :
         form=Facturation_Form()
         if form.validate_on_submit():
-            user=Facturation(form.Pays.data,form.ID_Destinataire.data,form.ID_expediteur,form.montant.data,form.TVA.data,form.total.data,form.Type_.data,form.ID_proprietaire.data,form.ID_locataire.data,form.ville.data,
+            user=Facturation(form.Pays.data,form.ID_Destinataire.data,form.ID_expediteur.data,form.montant.data,form.total.data,form.Type_.data,form.ID_proprietaire.data,form.ID_locataire.data,form.ville.data,
             form.surface.data,form.tarifs.data,form.appt_pav.data)
             db.session.add(user)
             db.session.commit()
             #db.session.commit()
+            return redirect(url_for('users.facturation'))
+
         return render_template('manage/pages/ajouter_facturation.html',form=form, legend="facturation")
     else:
         return redirect(url_for('users.main'))
@@ -103,17 +159,26 @@ def ajouter_facturation():
 @login_required
 def mission():
     if current_user.TYPE == "Admin":
-        mission_=list(Mission.query.all())
-        print(mission_)
+        mission_=list(Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).all())
         return render_template('manage/pages/mission.html',Mission=mission_,legend="mission")
 
     return redirect(url_for('users.main'))
+
+@users.route('/delete/<int:id>/mission', methods=['GET'])
+@login_required
+def delete_mission(id):
+    if current_user.TYPE == 'Admin':
+        mission = Mission.query.filter_by(id=id).first_or_404()
+        mission.Visibility=False
+        db.session.commit()
+        flash(f'Les donnes de mission ont été  suprimmer','success')
+        return redirect(url_for('users.mission'))
 
 @users.route('/expert')
 @login_required
 def expert():
     if current_user.TYPE == "Admin":
-        expert_=list(Expert.query.order_by(desc(Expert.id)).all()) 
+        expert_=list(Expert.query.filter_by(Visibility=True).order_by(desc(Expert.id)).all()) 
         return render_template('manage/pages/expert.html',Expert=expert_, legend="expert")
 
     return redirect(url_for('users.main'))
@@ -143,6 +208,16 @@ def edit_expert(id):
         expert = Expert.query.filter_by(id=id).first_or_404()
         return render_template('manage/pages/edit_expert.html', form=form, expert=expert)
 
+@users.route('/delete/<int:id>/expert', methods=['GET'])
+@login_required
+def delete_expert(id):
+    if current_user.TYPE == 'Admin':
+        expert = Expert.query.filter_by(id=id).first_or_404()
+        expert.Visibility=False
+        db.session.commit()
+        flash(f'Les donnes de l"expert ont été  suprimmer','success')
+        return redirect(url_for('users.expert'))
+
 @users.route('/update/<int:id>/expert', methods=['POST', 'PUT'])
 @login_required
 def update_expert(id):
@@ -169,7 +244,7 @@ def update_expert(id):
 @login_required
 def tarifs():
     if current_user.TYPE == "Admin":
-        tarifs=list(Tarifs.query.all())
+        tarifs=list(Tarifs.query.filter_by(visibility=True).all())
         return render_template('manage/pages/tarif.html',legend="tarifs",tarifs=tarifs)
 
     return redirect(url_for('users.main'))
@@ -181,13 +256,23 @@ def ajouter_tarif():
     if current_user.TYPE == 'Admin':
         form = Tarif_Form()
         if form.validate_on_submit():
-            tarif = Tarifs(service_offert=form.service.data, Type=form.type_de_tarif.data, Prix=form.prix.data)
+            tarif = Tarifs(form.ID_client.data,form.type_de_maison.data,form.remise.data,form.prix.data)
             db.session.add(tarif)
             db.session.commit()
             flash(f'Le tarif a été créé avec succès', 'success')
             return redirect(url_for('users.tarifs'))
         return render_template('manage/pages/ajouter_tarif.html',form=form, legend="expert")
     return redirect(url_for('users.main'))
+
+@users.route('/delete/<int:id>/tarif')
+@login_required
+def delete_tarif(id):
+    if current_user.TYPE == "Admin":
+        tarif = Tarifs.query.filter_by(id=id).first_or_404()
+        tarif.visibility = False
+        db.session.commit()
+        flash(f'Les donnes de Tarifs ont été  suprimmer','success')
+        return redirect(url_for('users.tarifs'))
 
 @users.route('/edit/<int:id>/tarif')
 @login_required
@@ -202,11 +287,13 @@ def edit_tarif(id):
 def update_tarif(id):
     if current_user.TYPE == 'Admin':
         tarif = Tarifs.query.filter_by(id=id).first_or_404()
-        tarif.Service_offert = request.form['service']
+        tarif.reference_client=request.form['ID_client']
+        tarif.remise = request.form['remise']
         tarif.Prix = request.form['prix']
-        tarif.Type = request.form['type_de_tarif']
+        tarif.type_maison = request.form['type_de_maison']
         db.session.commit()
         flash(f'Les donnes du tarif a été modifiées','success')
+        return redirect(url_for('users.tarifs'))
     return redirect(url_for('users.edit_tarif', id=id))
        
 
@@ -214,7 +301,7 @@ def update_tarif(id):
 @login_required
 def chiffrage():
     if current_user.TYPE == "Admin" or current_user.TYPE == "CONCESS":
-        chiffrage_=list(Chiffrage.query.all())
+        chiffrage_=list(Chiffrage.query.filter_by(visibility=True).all())
         return render_template('manage/pages/chiffrage.html',legend="chiffrage",Chiffrage=chiffrage_)
 
     return redirect(url_for('users.main'))
@@ -228,17 +315,48 @@ def ajouter_chiffrage():
             chiffrge=Chiffrage(mission=form.Mission.data,type_expert=form.Type_expert.data,pourcentage_gain=form.Pourcentage_gain.data)
             db.session.add(chiffrge)
             db.session.commit()
-            #chiffrge.Mission=form.Mission.data
-            #db.session.commit()
+            flash(f'Le chiffrage a été créé avec succès', 'success')
+            return redirect(url_for('users.chiffrage'))
         return render_template('manage/pages/ajouter_chiffrage.html',form=form, legend="chiffrage")
     else:
         return redirect(url_for('users.main'))
+
+@users.route('/delete/<int:id>/chiffrage')
+@login_required
+def delete_chiffrage(id):
+    if current_user.TYPE == "Admin" or  current_user.TYPE == "CONCESS":
+        chiffrage = Chiffrage.query.filter_by(id=id).first_or_404()
+        chiffrage.visibility=False
+        db.session.commit()
+        flash(f'Les donnes de chiffrage ont été  suprimmer','success')
+        return redirect(url_for('users.chiffrage'))
+
+@users.route('/edit/<int:id>/chiffrage')
+@login_required
+def edit_chiffrage(id):
+    if current_user.TYPE == "Admin" or  current_user.TYPE == "CONCESS":
+        form = Chiffrage_Form()
+        chiffrage = Chiffrage.query.filter_by(id=id).first_or_404()
+        return render_template('manage/pages/edit_chiffrage.html', chiffrage=chiffrage,form=form)
+
+@users.route('/update/<int:id>/chiffrage', methods=['POST', 'PUT'])
+@login_required
+def update_chiffrage(id):
+    if current_user.TYPE == 'Admin'  or  current_user.TYPE == "CONCESS":
+        chiffrage = Chiffrage.query.filter_by(id=id).first_or_404()
+        chiffrage.Mission = request.form['Mission']
+        chiffrage.Type_expert = request.form['Type_expert']
+        chiffrage.Pourcentage_gain = request.form['Pourcentage_gain']
+        db.session.commit()
+        flash(f'Les donnes du chiffrage a été modifiées','success')
+        return redirect(url_for('users.chiffrage'))
+    return redirect(url_for('users.edit_tarif', id=id))
 
 @users.route('/agenda')
 @login_required
 def agenda():
     if current_user.TYPE == "Audit":
-        agenda_=list(Agenda.query.all())
+        agenda_=list(Agenda.query.filter_by(Visibility=True).all())
         return render_template('manage/pages/agenda.html',legend="agenda",Agenda=agenda_)
 
     return redirect(url_for('users.main'))
@@ -272,47 +390,16 @@ def sign_up():
 @users.route('/login',methods=['GET','POST'])
 def login():
 
-    #expert=Expert('Mr.','Audit','Audit','test0001@gmail.com','1234567')
+    #expert=Expert('Mr.','Admin','Admin','test0001@gmail.com','1234567')
     #db.session.add(expert)
     #db.session.commit()
-    #expert=Expert.query.filter_by(NOM="DETOC XAVIER").first()
+    #expert=Expert.query.filter_by(NOM="Admin").first()
     #hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
     #expert.password = hashed_password
     #db.session.commit()
-     #db.drop_all()
+    #db.drop_all()
     #db.create_all()
-    #expert__('Interv')
-    #expert__('CONCESS')
-    #expert__('Manager_chiffrage')
-    #expert__('Agent_chiffrage')
-    ##expert__('Respon Cell Dev')
-    #expert__('agent Cell Dev')
-    #expert__('Agent CellTech')
-    #expert__('Respon Cell Tech')
-    #expert__('Suiveur Cell Tech')
-    #expert__('Respon Cell Planif')
-    #expert__('Suiveur Cell Planif')
-    #expert__('Agent saisie Cell Planif')
-    #insert_client('Bailleur')
-    #insert_client('Locataire')
-    #insert_client('Prop')
-    #Missions()
-    #loc = ("C:/Users/user/Downloads/Base histo missions EDL 2020-08.xlsx")
-    #wb_obj = openpyxl.load_workbook(loc)
-    #sheet=wb_obj.active
-
-    #mission_=list(Mission.query.all())
-    #for i in mission:
-    #print(mission_[0].id)
-    #for i in range(1,500):
-     #   for a in range(0,500):
-      #      mission_[a].DATE_REALISE_EDL =sheet["M"][i].value
-       #     mission_[a].Date_chiffrage_regle =sheet["AG"][i].value
-        #    mission_[a].DATE_FACTURE = sheet["AP"][i].value
-         #   mission_[a].DATE_FACT_REGLEE = sheet["AS"][i].value
-          #  db.session.commit()
-        #print(sheet["AS"][i].value)
-
+   
     if current_user.is_authenticated:
        return redirect(url_for('users.main'))
     form = LoginForm()
@@ -329,12 +416,35 @@ def login():
 
 @users.route('/forgot_password', methods=['GET','POST'])
 def forgot_password ():
-    form = LoginForm()
+    if current_user.is_authenticated:
+       return redirect(url_for('users.main'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        expert=Expert.query.filter_by(EMAIL=form.email.data).first()
+        if expert:
+            send_reset_email(expert)
+            flash('An email has been sent with instructions to reset your Password.','info')
+            return redirect(url_for('users.login'))
+        if expert is None:
+            flash('This email does not exist','warning')
+            return redirect(url_for('users.forgot_password'))
     return render_template('forgot_password.html', form=form)
 
-@users.route('/reset_password', methods=['GET','POST'])
-def reset_password ():
-    form = LoginForm()
+@users.route('/reset_password/<token>', methods=['GET','POST'])
+def reset_password (token):
+    if current_user.is_authenticated:
+       return redirect(url_for('users.main'))
+    expert = Expert.verify_reset_token(token)
+    if expert is None:
+        flash('That is an invalid or expired token','warning')
+        return redirect(url_for('users.forgot_password'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        expert.password = hashed_password
+        db.session.commit()
+        flash(f'your password has been updated! You are now able to login','success')
+        return redirect(url_for('users.login'))
     return render_template('reset_password.html', form=form)
 
 @users.route('/logout')
@@ -342,19 +452,7 @@ def logout():
     logout_user()
     return redirect(url_for('users.login'))
 
-@users.route('/update', methods = ['GET', 'POST'])
-def update():
-    if request.method == 'POST':
-        my_data = Client.query.get(request.form.get('id'))
-  
-        my_data.NOM = request.form['name']
-        my_data.EMAIL = request.form['email']
-        my_data.NUMERO = request.form['phone']
-  
-        db.session.commit()
-        flash("Employee Updated Successfully")
-        return redirect(url_for('users.client'))
-    return redirect(url_for('users.client'))
+
 
 @users.route('/ajoutez/agenda', methods = ['GET', 'POST'])
 def ajout_agenda(): 
@@ -370,58 +468,6 @@ def ajout_agenda():
     return render_template('manage/pages/ajouter_agenda.html', legend="agenda")
     #return redirect(url_for('users.client'))
 
-@users.route('/delete/<int:id>/<string:type1>', methods = ['GET', 'POST'])
-def delete(id,type1):
-    if type1 == 'client':
-        my_data = Client.query.get(id)
-        db.session.delete(my_data)
-        db.session.commit()
-        flash("Client Deleted Successfully")
-        return redirect(url_for('users.client'))
-
-    if type1 == 'expert':
-        my_data = Expert.query.get(id)
-        db.session.delete(my_data)
-        db.session.commit()
-        flash("Client Deleted Successfully")
-        return redirect(url_for('users.client'))
-
-    if type1 == 'mission':
-        my_data = Mission.query.get(id)
-        db.session.delete(my_data)
-        db.session.commit()
-        flash("Client Deleted Successfully")
-        return redirect(url_for('users.client'))
-
-    if type1 == 'tarifs':
-        my_data = Tarifs.query.get(id)
-        db.session.delete(my_data)
-        db.session.commit()
-        flash("Client Deleted Successfully")
-        return redirect(url_for('users.client'))
-
-    if type1 == 'chiffrage':
-        my_data = Chiffrage.query.get(id)
-        db.session.delete(my_data)
-        db.session.commit()
-        flash("Client Deleted Successfully")
-        return redirect(url_for('users.client'))
-
-    if type1 == 'agenda':
-        my_data = Agenda.query.get(id)
-        db.session.delete(my_data)
-        db.session.commit()
-        flash("Client Deleted Successfully")
-        return redirect(url_for('users.client'))
-
-    if type1 == 'facturation':
-        my_data = Facturation.query.get(id)
-        db.session.delete(my_data)
-        db.session.commit()
-        flash("Client Deleted Successfully")
-        return redirect(url_for('users.client'))
-    
-    return redirect(url_for('users.client'))
 
 @users.route('/',methods=['GET','POST'])
 @login_required
@@ -513,6 +559,54 @@ def search ():
 #@login_required
 #def counts ():
 #    chiffrage_=Chiffrage.query.count()
+
+@users.route("/uploader", methods=['GET','POST'])
+@login_required
+def uploader_():
+    if current_user.TYPE == 'Admin':
+      # get the uploaded file
+      if request.method == 'POST':
+        uploaded_file = request.files['file']
+        if uploaded_file.filename != '':
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
+            loc=str(file_path)
+            # set the file path
+            uploaded_file.save(file_path)
+            # save the file
+            expert__('Interv',loc)
+            expert__('CONCESS',loc)
+            expert__('Manager_chiffrage',loc)
+            expert__('Agent_chiffrage',loc)
+            expert__('Respon Cell Dev',loc)
+            expert__('agent Cell Dev',loc)
+            expert__('Agent CellTech',loc)
+            expert__('Respon Cell Tech',loc)
+            expert__('Suiveur Cell Tech',loc)
+            expert__('Respon Cell Planif',loc)
+            expert__('Suiveur Cell Planif',loc)
+            expert__('Agent saisie Cell Planif',loc)
+            insert_client('Bailleur',loc)
+            insert_client('Locataire',loc)
+            insert_client('Prop',loc)
+            Missions(loc)
+            mission_date(loc)
+            flash(f"Vous avez importer les donnees avec success",'success')
+            return redirect(url_for('users.up'))
+      return redirect(url_for('users.main'))
+    return redirect(url_for('users.login'))
+
+
+
+@users.route("/upload", methods=['GET','POST'])
+#@login_required
+def up():
+    db.create_all()
+    #expert=Expert('esxitepas','esxitepas','esxitepas','esxitepas','esxitepas')
+    ##client=Client('esxitepas','esxitepas','esxitepas','esxitepas','esxitepas','esxitepas','esxitepas','esxitepas','esxitepas','esxitepas','esxitepas','esxitepas','esxitepas','esxitepas')
+    #db.session.add(client)
+    #db.session.commit()
+    return render_template('manage/pages/upload.html')
+
 
 @users.app_errorhandler(404)
 def error_404(error):

@@ -13,7 +13,7 @@
         <div class="col-xl-6 col-lg-6 mx-auto">
             <div class="card shadow mb-4">
 	        <div class="card-header py-1 justify-content-between align-items-center d-flex">
-	            <h6 class="m-0 font-weight-bold">Ajouter un Facturation</h6>
+	            <h6 class="m-0 font-weight-bold">{{facturation.id}}</h6>
                 <a href="/facturation" class="button is-small is-black">Tous les factures</a>
 	        </div>
 	        <div class="card-body">
@@ -29,7 +29,7 @@
                             {% endfor %}
                             {% endif %}
                             {% endwith %}
-                            <form class="user" method="POST">
+                            <form class="user" method="POST" action="{{url_for('users.update_facturation', id=facturation.id)}}">
                                 {{ form.hidden_tag() }}
                                 <fieldset class="form-group">
                                 <div class="form-group row">
@@ -37,48 +37,30 @@
                                         {{form.Pays.label(class="form-control-label")}}
 
                                     {% if form.Pays.errors %}
-                                        {{ form.Pays(class="input is-small is-invalid") }}
+                                        {{ form.Pays(class="input is-small is-invalid",value=facturation.Pays) }}
                                         <div class="invalid-feedback">
                                             {% for error in form.Pays.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                         {% else %}
-                                            {{form.Pays(class="input is-small")}}
+                                            {{form.Pays(class="input is-small",value=facturation.Pays)}}
                                         {% endif %}
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    
-                                   {# <div class="col-sm-4">
-                                        {{form.Numero_de_compte.label(class="form-control-label")}}
-                                    
-                                        {% if form.Numero_de_compte.errors %}
-                                            {{ form.Numero_de_compte(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Numero_de_compte.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Numero_de_compte(class="form-control form-control-lg")}}
-                                            {% endif %}
-                                    </div>  #}
-
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-12 mb-3 mb-sm-0">
                                         {{form.ID_Destinataire.label(class="form-control-label")}}
                                     
                                         {% if form.ID_Destinataire.errors %}
-                                            {{ form.ID_Destinataire(class="input is-small is-invalid") }}
+                                            {{ form.ID_Destinataire(class="input is-small is-invalid",value=facturation.Destinataire) }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.ID_Destinataire.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                             {% else %}
-                                                {{form.ID_Destinataire(class="input is-small")}}
+                                                {{form.ID_Destinataire(class="input is-small",value=facturation.Destinataire)}}
                                             {% endif %}
                                     </div>
                                 </div>
@@ -87,64 +69,31 @@
                                         {{form.ID_expediteur.label(class="form-control-label")}}
                                     
                                         {% if form.ID_expediteur.errors %}
-                                            {{ form.ID_expediteur(class="input is-small is-invalid") }}
+                                            {{ form.ID_expediteur(class="input is-small is-invalid",value=facturation.expéditeur) }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.ID_expediteur.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                             {% else %}
-                                                {{form.ID_expediteur(class="input is-small")}}
+                                                {{form.ID_expediteur(class="input is-small",value=facturation.expéditeur)}}
                                             {% endif %}
                                     </div>
                                 </div>
-                               <div class="form-group row">
-                                     {#<div class="col-sm-4 mb-3 mb-sm-0">
-                                        {{form.contact.label(class="form-control-label")}}
-
-                                    {% if form.contact.errors %}
-                                        {{ form.contact(class="input is-small is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.contact.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                        {% else %}
-                                            {{form.contact(class="is-small input")}}
-                                        {% endif %}
-                                    </div>#}
-                                    
-                                    
-                                </div>
+ 
                                 <div class="form-group row">
                                     <div class="col-sm-12">
                                         {{form.montant.label(class="form-control-label")}}
 
                                     {% if form.montant.errors %}
-                                        {{ form.montant(class="input is-small is-invalid") }}
+                                        {{ form.montant(class="input is-small is-invalid",value=facturation.Montant) }}
                                         <div class="invalid-feedback">
                                             {% for error in form.montant.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                         {% else %}
-                                            {{form.montant(class="input is-small")}}
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        {{form.TVA.label(class="form-control-label")}}
-
-                                    {% if form.TVA.errors %}
-                                        {{ form.TVA(class="input is-small is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.TVA.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                        {% else %}
-                                            {{form.TVA(class="input is-small")}}
+                                            {{form.montant(class="input is-small",value=facturation.Montant)}}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -153,14 +102,14 @@
                                         {{form.total.label(class="form-control-label")}}
 
                                         {% if form.total.errors %}
-                                            {{ form.total(class="input is-small is-invalid") }}
+                                            {{ form.total(class="input is-small is-invalid",value=facturation.Total) }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.total.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                             {% else %}
-                                                {{form.total(class="input is-small")}}
+                                                {{form.total(class="input is-small",value=facturation.Total)}}
                                             {% endif %}
                                     </div>                                   
                                 </div>
@@ -169,14 +118,14 @@
                                         {{form.Type_.label(class="form-control-label")}}
 
                                         {% if form.Type_.errors %}
-                                            {{ form.Type_(class="input is-small is-invalid") }}
+                                            {{ form.Type_(class="input is-small is-invalid",value=facturation.Type) }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Type_.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                             {% else %}
-                                                {{form.Type_(class="input is-small")}}
+                                                {{form.Type_(class="input is-small",value=facturation.Type)}}
                                             {% endif %}
                                     </div>
                                 </div>
@@ -185,14 +134,14 @@
                                         {{form.ID_proprietaire.label(class="form-control-label")}}
 
                                         {% if form.ID_proprietaire.errors %}
-                                            {{ form.ID_proprietaire(class="input is-small is-invalid") }}
+                                            {{ form.ID_proprietaire(class="input is-small is-invalid",value=facturation.Proprietaire) }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.ID_proprietaire.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                             {% else %}
-                                                {{form.ID_proprietaire(class="input is-small")}}
+                                                {{form.ID_proprietaire(class="input is-small",value=facturation.Proprietaire)}}
                                             {% endif %}
                                     </div>
                                 </div>
@@ -201,14 +150,14 @@
                                             {{form.ID_locataire.label(class="form-control-label")}}
     
                                             {% if form.ID_locataire.errors %}
-                                                {{ form.ID_locataire(class="input is-small is-invalid") }}
+                                                {{ form.ID_locataire(class="input is-small is-invalid",value=facturation.Locataire) }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.ID_locataire.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                 {% else %}
-                                                    {{form.ID_locataire(class="input is-small")}}
+                                                    {{form.ID_locataire(class="input is-small",value=facturation.Locataire)}}
                                                 {% endif %}
                                         </div>
                                         
@@ -219,14 +168,14 @@
                                             {{form.ville.label(class="form-control-label")}}
     
                                             {% if form.ville.errors %}
-                                                {{ form.ville(class="input is-small is-invalid") }}
+                                                {{ form.ville(class="input is-small is-invalid",value=facturation.Ville) }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.ville.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                 {% else %}
-                                                    {{form.ville(class="input is-small")}}
+                                                    {{form.ville(class="input is-small",value=facturation.Ville)}}
                                                 {% endif %}
                                         </div>
                                     </div>
@@ -235,14 +184,14 @@
                                             {{form.surface.label(class="form-control-label")}}
     
                                             {% if form.surface.errors %}
-                                                {{ form.surface(class="input is-small is-invalid") }}
+                                                {{ form.surface(class="input is-small is-invalid",value=facturation.Surface) }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.surface.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                 {% else %}
-                                                    {{form.surface(class="input is-small")}}
+                                                    {{form.surface(class="input is-small",value=facturation.Surface)}}
                                                 {% endif %}
                                         </div> 
                                     </div>
@@ -251,14 +200,14 @@
                                             {{form.tarifs.label(class="form-control-label")}}
     
                                             {% if form.tarifs.errors %}
-                                                {{ form.tarifs(class="is-small input is-invalid") }}
+                                                {{ form.tarifs(class="is-small input is-invalid",value=facturation.Tarif) }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.tarifs.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                 {% else %}
-                                                    {{form.tarifs(class="input is-small")}}
+                                                    {{form.tarifs(class="input is-small",value=facturation.Tarif)}}
                                                 {% endif %}
                                         </div>                                        
                                     </div>  
@@ -267,14 +216,14 @@
                                             {{form.appt_pav.label(class="form-control-label")}}
     
                                             {% if form.appt_pav.errors %}
-                                                {{ form.appt_pav(class="is-small input is-invalid") }}
+                                                {{ form.appt_pav(class="is-small input is-invalid",value=facturation.Appt_Pav) }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.appt_pav.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                 {% else %}
-                                                    {{form.appt_pav(class="input is-small")}}
+                                                    {{form.appt_pav(class="input is-small",value=facturation.Appt_Pav)}}
                                                 {% endif %}
                                         </div>
                                     </div>

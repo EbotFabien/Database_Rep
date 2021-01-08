@@ -1,4 +1,7 @@
+from flask import current_app
 from data_base_ import  db,login_manager
+from itsdangerous import  TimedJSONWebSignatureSerializer as Serializer
+from datetime import datetime
 from sqlalchemy import ForeignKeyConstraint,ForeignKey,UniqueConstraint
 from flask_login import UserMixin
 import json
@@ -11,8 +14,8 @@ def load_user(user_id):
 class Client(db.Model):
     __tablename__ = 'Client'
 
-    id = db.Column(db.Integer)
-    Reference = db.Column(db.Integer,primary_key=True,autoincrement=True) 	
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    Reference = db.Column(db.String) 	
     TYPE = db.Column(db.String) 
     SOCIETE = db.Column(db.String) 	
     TITRE = db.Column(db.String) 	
@@ -25,12 +28,13 @@ class Client(db.Model):
     VILLE  = db.Column(db.String)
     Pays= db.Column(db.String)
     abonnement=db.Column(db.String)
-    Numero_de_compte  = db.Column(db.String) #unique
+    Numero_de_compte  = db.Column(db.String) #unique Also ask if it is unique
     Visibility =db.Column(db.Boolean,default=True)
   
 
 
-    def __init__(self,TYPE,societe,titre,nom,email,numero,adresse1,adresse2,cp,ville,pays,Numero_de_compte):
+    def __init__(self,Reference,TYPE,societe,titre,nom,email,numero,adresse1,adresse2,cp,ville,pays,abonnement,Numero_de_compte):
+        self.Reference=Reference
         self.TYPE=TYPE
         self.SOCIETE= societe
         self.TITRE = titre
@@ -42,6 +46,7 @@ class Client(db.Model):
         self.CP = cp
         self.VILLE = ville
         self.Pays = pays 
+        self.abonnement = abonnement
         self.Numero_de_compte = Numero_de_compte      
 
     def __repr__(self):
@@ -51,18 +56,18 @@ class Client(db.Model):
 class Facturation(db.Model):
     __tablename__ = 'Facturation'
 
-    id = db.Column(db.Integer)
-    Facture_no  = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    Date_    = db.Column(db.DateTime(), nullable=False)
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    Facture_no  = db.Column(db.Integer)
+    Date_    = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     Pays  = db.Column(db.String)
     Destinataire  = db.Column(db.Integer, db.ForeignKey('Client.id'))
     expéditeur  = db.Column(db.Integer, db.ForeignKey('Expert.id'))
     client_data_=db.relationship("Client", 
         primaryjoin=(Destinataire == Client.id),
         backref=db.backref('client_data_',  uselist=False),  uselist=False)
-
+#33##
     Montant  = db.Column(db.String)
-    TVA  = db.Column(db.String)
+   # TVA  = db.Column(db.String)
     Total  = db.Column(db.String)
     Type  = db.Column(db.String)
     Proprietaire  = db.Column(db.Integer, db.ForeignKey('Client.id'))
@@ -74,13 +79,11 @@ class Facturation(db.Model):
     Visibility =db.Column(db.Boolean,default=True)
     
 
-    def __init__(self,pays,des,exp,mont,tva,total,Type,prop,locat,ville,surface,tarif,appt_pav):
+    def __init__(self,pays,des,exp,mont,total,Type,prop,locat,ville,surface,tarif,appt_pav):
         self.Pays =pays
         self.Destinataire =des
-        #self.Numero_de_compte = compte
         self.expéditeur =exp
         self.Montant =mont
-        self.TVA = tva
         self.Total =total
         self.Type =Type
         self.Proprietaire =prop
@@ -103,8 +106,8 @@ class Expert(db.Model,UserMixin):
     TITRE  = db.Column(db.String)	
     NOM = db.Column(db.String)
     TYPE = db.Column(db.String)
-    EMAIL = db.Column(db.String)
-    NUMERO = db.Column(db.Integer)
+    EMAIL = db.Column(db.String)#unique
+    NUMERO = db.Column(db.String)
     password = db.Column(db.String(60))
     Visibility =db.Column(db.Boolean,default=True)
     
@@ -116,6 +119,18 @@ class Expert(db.Model,UserMixin):
         self.EMAIL=email
         self.NUMERO =numero
 
+    def get_reset_token(self,expire_sec=1800):
+        s = Serializer(current_app.config['SECRET_KEY'],expire_sec)
+        return s.dumps({'expert_id':self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            expert_id = s.loads(token) ['expert_id']
+        except:
+            return None
+        return Expert.query.get(expert_id)
 
     def __repr__(self):
         return '<Expert %r>' %self.id
@@ -214,12 +229,11 @@ class Mission(db.Model):
     __tablename__ = 'Mission'
 
     id = db.Column(db.Integer,primary_key=True)
-    Reference_BAILLEUR	 = db.Column(db.Integer, ForeignKey('Client.Reference', onupdate="CASCADE", ondelete="CASCADE"))   
+    Reference_BAILLEUR	 = db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
     Bailleur__data=db.relationship("Client", 
         primaryjoin=(Reference_BAILLEUR == Client.id),
         backref=db.backref('Bailleur__data',  uselist=False),  uselist=False)
     NRO_FACTURE	 = db.Column(db.String)
-    ABONNEMENT	 = db.Column(db.String)  
     ID_CONCESS	 = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     CONCESS__data=db.relationship("Expert", 
         primaryjoin=(ID_CONCESS == Expert.id),
@@ -232,7 +246,7 @@ class Mission(db.Model):
     INTERV__data=db.relationship("Expert", 
         primaryjoin=(ID_INTERV == Expert.id),
         backref=db.backref('INTERV__data',  uselist=False),  uselist=False)	
-    Reference_LOCATAIRE	 = db.Column(db.Integer, ForeignKey('Client.Reference', onupdate="CASCADE", ondelete="CASCADE"))   
+    Reference_LOCATAIRE	 = db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
     LOCATAIRE__data=db.relationship("Client", 
         primaryjoin=(Reference_BAILLEUR == Client.id),
         backref=db.backref('LOCATAIRE__data',  uselist=False),  uselist=False)
@@ -300,7 +314,10 @@ class Mission(db.Model):
         primaryjoin=(ID_Agent_CellTech == Expert.id),
         backref=db.backref('Agent_CellTech__data',  uselist=False),  uselist=False)
     POURCENTAGE_Agent_Cell_Tech = db.Column(db.String) 	
-    Nom_Respon_Cell_Tech = db.Column(db.String) #######	
+    ID_Respon_Cell_Tech = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) #######
+    Respon_Cell_Tech__data=db.relationship("Expert", 
+        primaryjoin=(ID_Respon_Cell_Tech == Expert.id),
+        backref=db.backref('Respon_Cell_Tech__data',  uselist=False),  uselist=False)	
     POURCENTAGE_Respon_Cell_Tech = db.Column(db.String) 	
     ID_Suiveur_Cell_Tech  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     Suiveur_Cell_Tech__data=db.relationship("Expert", 
@@ -312,9 +329,9 @@ class Mission(db.Model):
         primaryjoin=(ID_Respon_Cell_Planif == Expert.id),
         backref=db.backref('Respon_Cell_Planif__data',  uselist=False),  uselist=False)
     POURCENTAGE_Respon_Cell_Planif  = db.Column(db.String) 	
-    Nom_Suiveur_Cell_Planif  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    ID_Suiveur_Cell_Planif  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     Suiveur_Cell_Planif__data=db.relationship("Expert", 
-        primaryjoin=(ID_Respon_Cell_Planif == Expert.id),
+        primaryjoin=(ID_Suiveur_Cell_Planif == Expert.id),
         backref=db.backref('Suiveur_Cell_Planif__data',  uselist=False),  uselist=False)
     POURCENTAGE_Suiveur_Cell_Planif	 = db.Column(db.String) 
     ID_Agent_saisie_Cell_Planif  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"))
@@ -331,7 +348,7 @@ class Mission(db.Model):
     MONTANT_COM_REGLEE_AS,DATE_COM_REGLEE_AC,MONTANT_COM_REGLEE_AC,TYPE_LOGEMENT,NBRE_EDL_ABOONEMENT,MAIL_CONTACT_ENVOI_FACT,DATE_saisie_enregistrement,CODE_AMEXPERT,COMMENTAIRE_FACTURE,TYPE_PAIEMENT,
     N_REMISE_DE_CHEQUE,SAISIE_TRAITE_PAR,infos_TRAITEMENT,LOGEMENT_MEUBLE,CODE_FACTURATION,TYPE_DE_BIEN,surface_logement,ETAGE,POINTAGE,DATE_POINTAGE,DEVEL,DATE_EXTRACTION_COMPTABLE,
     POURCENTAGE_COM_AS_DU_CLIENT,ID_Respon_Cell_Dev,POURCENTAGE_Respon_Cell_Dev,ID_agent_Cell_Dev,POURCENTAGE_Agent_Cell_Dev,ID_Agent_CellTech,POURCENTAGE_Agent_Cell_Tech,
-    Nom_Respon_Cell_Tech,POURCENTAGE_Respon_Cell_Tech,ID_Suiveur_Cell_Tech,POURCENTAGE_Suiveur_Cell_Tech,ID_Respon_Cell_Planif ,POURCENTAGE_Respon_Cell_Planif,Nom_Suiveur_Cell_Planif,	
+    ID_Respon_Cell_Tech,POURCENTAGE_Respon_Cell_Tech,ID_Suiveur_Cell_Tech,POURCENTAGE_Suiveur_Cell_Tech,ID_Respon_Cell_Planif ,POURCENTAGE_Respon_Cell_Planif,ID_Suiveur_Cell_Planif,	
     POURCENTAGE_Suiveur_Cell_Planif,ID_Agent_saisie_Cell_Planif,POURCENTAGE_Agent_saisie_CEll_planif):
         self.Reference_BAILLEUR =Reference_BAILLEUR
         self.NRO_FACTURE=NRO_FACTURE
@@ -340,7 +357,7 @@ class Mission(db.Model):
         self.PRIX_HT_EDL = PRIX_HT_EDL
         self.TVA_EDL =TVA_EDL
         self.PRIX_TTC_EDL=PRIX_TTC_EDL
-        self.ID_INTERV=ID_INTERV
+        self.ID_INTERV=ID_INTERV 
         self.Reference_LOCATAIRE = Reference_LOCATAIRE
         self.CA_HT_AS = CA_HT_AS
         self.TVA_AS = TVA_AS
@@ -391,13 +408,13 @@ class Mission(db.Model):
         self.POURCENTAGE_Agent_Cell_Dev = POURCENTAGE_Agent_Cell_Dev
         self.ID_Agent_CellTech = ID_Agent_CellTech
         self.POURCENTAGE_Agent_Cell_Tech = POURCENTAGE_Agent_Cell_Tech
-        self.Nom_Respon_Cell_Tech = Nom_Respon_Cell_Tech
+        self.ID_Respon_Cell_Tech = ID_Respon_Cell_Tech
         self.POURCENTAGE_Respon_Cell_Tech = POURCENTAGE_Respon_Cell_Tech
         self.ID_Suiveur_Cell_Tech = ID_Suiveur_Cell_Tech
         self.POURCENTAGE_Suiveur_Cell_Tech = POURCENTAGE_Suiveur_Cell_Tech
         self.ID_Respon_Cell_Planif  = ID_Respon_Cell_Planif 
         self.POURCENTAGE_Respon_Cell_Planif = POURCENTAGE_Respon_Cell_Planif
-        self.Nom_Suiveur_Cell_Planif = Nom_Suiveur_Cell_Planif
+        self.ID_Suiveur_Cell_Planif = ID_Suiveur_Cell_Planif
         self.POURCENTAGE_Suiveur_Cell_Planif = POURCENTAGE_Suiveur_Cell_Planif
         self.ID_Agent_saisie_Cell_Planif = ID_Agent_saisie_Cell_Planif
         self.POURCENTAGE_Agent_saisie_CEll_planif = POURCENTAGE_Agent_saisie_CEll_planif
