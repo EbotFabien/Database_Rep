@@ -9,6 +9,7 @@ from flask_login import login_user,current_user,logout_user,login_required,Login
 import os
 from data_base_ import create_app
 from os.path import join, dirname, realpath
+from sqlalchemy import or_,and_
 
 users =Blueprint('users',__name__)
 app= create_app()
@@ -532,27 +533,50 @@ def search ():
     if current_user.TYPE == 'Admin':
         table = request.args.get('table')
         search = "%{}%".format(request.args.get('keyword'))
+        key=request.args.get('keyword')
         if table == 'client':
-            clients = Client.query.filter(Client.NOM.like(search) | Client.EMAIL.like(search) | Client.NUMERO.like(search)).all()
+            clients = Client.query.filter(and_(or_(Client.NOM.like(search),Client.EMAIL.like(search),Client.NUMERO.like(search),Client.CP.like(search),Client.SOCIETE.like(search),Client.ADRESSE1.like(search),Client.abonnement.like(search)),Client.Visibility==True)).all()
             if len(clients) > 1:
                 title = "Clients"
             else:
                 title = "Client"
             return render_template('manage/pages/search_results.html', clients=clients, title=title, table=table, search=request.args.get('keyword'))
         elif table == 'tarif':
-            tarifs = Tarifs.query.filter(Tarifs.Service_offert.like(search) | Tarifs.Prix.like(search) | Tarifs.Type.like(search)).all()
+            tarifs = Tarifs.query.filter(and_(or_(Tarifs.reference_client.like(search),Tarifs.type_maison.like(search),Tarifs.Prix.like(search),Tarifs.remise.like(search)),Tarifs.visibility==False)).all()
             if len(tarifs) > 1:
                 title = "Tarifs"
             else:
                 title = "Tarif"
             return render_template('manage/pages/search_results.html', tarifs=tarifs, title=title, table=table, search=request.args.get('keyword'))
         elif table == 'expert':
-            experts = Expert.query.filter(Expert.NOM.like(search) | Expert.EMAIL.like(search) | Expert.TYPE.like(search)).all()
+            experts = Expert.query.filter(and_(or_(Expert.NOM.like(search),Expert.EMAIL.like(search),Expert.TYPE.like(search),Expert.NUMERO.like(search)),Expert.Visibility==True)).all()
             if len(experts) > 1:
                 title = "Experts"
             else:
                 title = "Expert"
-            return render_template('manage/pages/search_results.html', experts=experts, title=title, table=table, search=request.args.get('keyword')) 
+            return render_template('manage/pages/search_results.html', experts=experts, title=title, table=table, search=request.args.get('keyword'))
+        elif table == 'mission':
+            try :
+                if isinstance(int(key),int) == True:
+                    missions= Mission.query.filter(and_(or_(Mission.DATE_REALISE_EDL.like(search),Mission.NRO_FACTURE.like(search),Mission.DATE_FACTURE.like(search),Mission.DATE_FACT_REGLEE.like(search),Mission.Reference_BAILLEUR==int(key),Mission.ID_CONCESS==int(key)),Mission.Visibility==True)).all()
+            except:    
+                missions = Mission.query.filter(and_(or_(Mission.DATE_REALISE_EDL.like(search),Mission.DATE_FACTURE.like(search),Mission.DATE_FACT_REGLEE.like(search)),Mission.Visibility==True)).all()
+            if len(missions) > 1:
+                title = "Missions"
+            else:
+                title = "Mission"
+            return render_template('manage/pages/search_results.html', missions=missions, title=title, table=table, search=request.args.get('keyword')) 
+        elif table == 'facturation':
+            try :
+                if isinstance(int(key),int) == True:
+                   facturation_ = Facturation.query.filter(and_(or_(Facturation.Facture_no==int(key),Facturation.Pays.like(search),Facturation.Destinataire==int(key),Facturation.expéditeur==int(key),Facturation.Type.like(search)),Facturation.Visibility == True)).all()
+            except:    
+                facturation_ = Facturation.query.filter(and_(or_(Facturation.Pays.like(search),Facturation.Type.like(search)),Facturation.Visibility == True)).all()
+            if len(facturation_) > 1:
+                title = "Facturations"  #this search needs to be checked when fixing the db
+            else:
+                title = "Facturation"
+            return render_template('manage/pages/search_results.html', Facturation__=facturation_, title=title, table=table, search=request.args.get('keyword')) 
 
 
 #@users.route('/search', methods=['GET'])
@@ -588,7 +612,7 @@ def uploader_():
             insert_client('Bailleur',loc)
             insert_client('Locataire',loc)
             insert_client('Prop',loc)
-            Missions(loc)
+            Missions(loc) #learn how to check a whole row for this tables
             mission_date(loc)
             flash(f"Vous avez importer les donnees avec success",'success')
             return redirect(url_for('users.up'))
