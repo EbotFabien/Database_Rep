@@ -3,7 +3,7 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField
 from wtforms.validators import DataRequired,length,Email,EqualTo,ValidationError
-from data_base_.Models import Expert ,Client
+from Database_project.project.data_base_.Models import Expert ,Client
 
 
 
@@ -17,6 +17,7 @@ class RegistrationForm(FlaskForm):
 
     email =StringField('E-mail',
                            validators=[DataRequired(),Email()])
+
     password =PasswordField('Mot de pass',
                                   validators=[length(min=8 ,max=20)])
     confirm_password =PasswordField('Confirmer le mot de pass',
@@ -25,24 +26,68 @@ class RegistrationForm(FlaskForm):
     Type_Expert=SelectField('Type d\'expert',
                              choices=[('Interv', 'Interv'), ('CONCESS', 'CONCESS'), ('agent Cell Dev', 'agent Cell Dev'),('Interv', 'Interv'),('Suiveur Cell Tech', 'Suiveur Cell Tech'),('Suiveur Cell Planif', 'Suiveur Cell Planif'),('Admin', 'Admin'),('Audit', 'Audit')])
 
-    Titre=SelectField('Titre',
+    Sexe=SelectField('Sexe',
                              choices=[('MME', 'MME'), ('M.', 'M.')])
 
     submit = SubmitField('enregistrer')
 
     modifier = SubmitField('modifier')
     
-    def validate_username(self,username):
-        user = Expert.query.filter_by(NOM=username.data).first()
+    def validate_username(self,username): 
+        user = Expert.query.filter_by(nom=username.data).first()
 
         if user:
             raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
 
     def validate_email(self,email):
-        email = Expert.query.filter_by(EMAIL=email.data).first()
+        email = Expert.query.filter_by(email=email.data).first()
 
         if email:
             raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
+
+
+class Expert_editForm(FlaskForm):
+    username =StringField("Identifiant",
+                                validators=[DataRequired(),length(min=4 ,max=20)])
+    
+    Numero =StringField('Tel',
+                                validators=[DataRequired(),length(min=4 ,max=20)])
+
+    email =StringField('E-mail',
+                           validators=[DataRequired(),Email()])
+
+    password =PasswordField('Mot de pass',
+                                  validators=[length(min=8 ,max=20)])
+    confirm_password =PasswordField('Confirmer le mot de pass',
+                                  validators=[EqualTo('password')])
+
+    Type_Expert=SelectField('Type d\'expert',
+                             choices=[('Interv', 'Interv'), ('CONCESS', 'CONCESS'), ('agent Cell Dev', 'agent Cell Dev'),('Interv', 'Interv'),('Suiveur Cell Tech', 'Suiveur Cell Tech'),('Suiveur Cell Planif', 'Suiveur Cell Planif'),('Admin', 'Admin'),('Audit', 'Audit')])
+
+    Sexe=SelectField('Sexe',
+                             choices=[('MME', 'MME'), ('M.', 'M.')])
+
+    siret =StringField('siret',
+                                  validators=[DataRequired()])
+
+    trigramme =StringField('trigramme',
+                                validators=[DataRequired()])
+
+   # code_tva =StringField('code_tva',
+    #                        validators=[DataRequired()])
+                        
+    #code_tva =StringField('code_tva',
+                        #    validators=[DataRequired()])
+
+    #actif_parti =StringField('actif_parti',
+                       # validators=[DataRequired()])
+
+    #ville =StringField('ville',
+                       # validators=[DataRequired()])
+    
+
+
+    modifier = SubmitField('modifier')
 
 class RequestResetForm(FlaskForm):
     email =StringField('Email',
@@ -155,7 +200,7 @@ class Client_Form(FlaskForm):
     Societe =StringField('Societe',
                            validators=[DataRequired()])
 
-    Titre=SelectField('Sexe',
+    Sexe=SelectField('Sexe',
                              choices=[('femelle', 'femelle'), ('male', 'male')])
 
     NOM =StringField('Noms',
@@ -167,10 +212,7 @@ class Client_Form(FlaskForm):
     Numero =StringField('Tel',
                            validators=[DataRequired()])
 
-    Adresse1=StringField('Adresse 1',
-                           validators=[DataRequired()])
-
-    Adresse2=StringField('Adresse 2',
+    Adresse=StringField('Adresse ',
                            validators=[DataRequired()])
 
     CP=StringField('Code Postal',
@@ -179,7 +221,7 @@ class Client_Form(FlaskForm):
     Ville=StringField('Ville',
                            validators=[DataRequired()])
     
-    Numero_de_compte=StringField("Numero de compte ",
+    Siret=StringField("Siret",
                            validators=[DataRequired()])
 
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
@@ -192,13 +234,21 @@ class Client_Form(FlaskForm):
 
 
     def validate_username(self,username):
-        user = Client.query.filter_by(NOM=username.data).first()
+        user = Client.query.filter_by(nom=username.data).first()
 
         if user:
             raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
 
     def validate_email(self,email):
-        email = Client.query.filter_by(EMAIL=email.data).first()
+        email = Client.query.filter_by(email=email.data).first()
 
         if email:
             raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
+
+
+
+class Suivi_Client(FlaskForm):
+
+    commentaire=StringField("commentaire",
+                        validators=[DataRequired()])
+    submit = SubmitField('enregistrer')

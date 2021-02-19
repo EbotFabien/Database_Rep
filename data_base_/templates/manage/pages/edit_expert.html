@@ -86,23 +86,23 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            {{ form.Titre.label(class="form-control-label") }}
+                                            {{ form.Sexe.label(class="form-control-label") }}
                                            
-                                            {% if form.Titre.errors %}
-                                             <select class="input is-small is-invalid" name="TITRE">
+                                            {% if form.Sexe.errors %}
+                                             <select class="input is-small is-invalid" name="Sexe">
                                                 <option value="M." {% if expert.TITRE == "M." %} selected {%endif%}>M</option>
                                                 <option value="MME" {% if expert.TITRE == "MME" %} selected {%endif%}>Mme</option>
                                             </select>
-                                                {# form.Titre(class="input is-small is-invalid", value=expert.TITRE) #}
+                                                {# form.Sexe(class="input is-small is-invalid", value=expert.Sexe) #}
                                                 <div class="invalid-feedback">
-                                                    {% for error in form.Titre.errors %}
+                                                    {% for error in form.Sexe.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                 {% else %}
-                                                <select class="is-small input" name="TITRE">
-                                                    <option value="M." {% if expert.TITRE == "M." %} selected {%endif%}>M</option>
-                                                    <option value="MME" {% if expert.TITRE == "MME" %} selected {%endif%}>Mme</option>
+                                                <select class="is-small input" name="Sexe">
+                                                    <option value="M." {% if expert.sexe == "M." %} selected {%endif%}>M</option>
+                                                    <option value="MME" {% if expert.sexe == "MME" %} selected {%endif%}>Mme</option>
                                                 </select>
                                                     {#form.Titre(class="input is-small", value=expert.TITRE)#}
                                                 {% endif %}
@@ -172,6 +172,40 @@
                                                 </div>
                                                 {% else %}
                                                     {{form.confirm_password(class="input is-small")}}
+                                                {% endif %}
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            {{form.siret.label(class="form-control-label")}}
+                                        
+                                            {% if form.siret.errors %}
+                                                {{ form.siret(class="input is-small is-invalid")}}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.siret.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                {% else %}
+                                                    {{form.siret(class="input is-small"), value=expert.siret}}
+                                                {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                         <div class="form-group">
+                                            {{form.trigramme.label(class="form-control-label")}}
+                                        
+                                            {% if form.trigramme.errors %}
+                                                {{ form.trigramme(class="input is-small is-invalid") }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.trigramme.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                {% else %}
+                                                    {{form.trigramme(class="input is-small"), value=expert.trigramme}}
                                                 {% endif %}
                                             </div>
                                     </div>

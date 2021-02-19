@@ -13,8 +13,18 @@
         <div class="col-xl-6 col-lg-6 mx-auto">
             <div class="card shadow mb-4">
 	        <div class="card-header py-1 d-flex justify-content-between align-items-center">
-	            <h6 class="m-0 font-weight-bold is-gray font-weight-light">Ajouter un client</h6>
-                <a href="/client" class="button is-black is-small pull-right">Tous les clients</a>
+                {% if legend == "client" %}
+                    <h6 class="m-0 font-weight-bold is-gray font-weight-light">Ajouter un client</h6>
+                    <a href="/client" class="button is-black is-small pull-right">Tous les clients</a>
+                {% endif %}
+                {% if legend == "negociateur" %}
+                    <h6 class="m-0 font-weight-bold is-gray font-weight-light">Ajouter un negociateur</h6>
+                    <a href="{{url_for('users.negotiateur', id=ID)}}" class="button is-black is-small pull-right">Tous les negociateurs</a>
+                {% endif %}
+                {% if legend == "prospect" %}
+                    <h6 class="m-0 font-weight-bold is-gray font-weight-light">Ajouter un prospect</h6>
+                    <a href="/prospect" class="button is-black is-small pull-right">Tous les prospect</a>
+                {% endif %}
 	        </div>
 	        <div class="card-body">
 	            <div class="row">
@@ -32,19 +42,20 @@
                             <form class="user" method="POST">
                                 {{ form.hidden_tag() }}
                                 <fieldset class="form-group">
+                        
                                     <div class="form-group row">
                                     <div class="col-sm-4 mb-3 mb-sm-0">
-                                        {{form.Numero_de_compte.label(class="form-control-label")}}
-                    
-                                        {% if form.Numero_de_compte.errors %}
-                                        {{form.Numero_de_compte(class="form-control is-invalid") }}
+                                        {{form.Siret.label(class="form-control-label")}}
+                                        
+                                        {% if form.Siret.errors %}
+                                        {{form.Siret(class="form-control is-invalid") }}
                                         <div class="invalid-feedback">
-                                            {% for error in form.Numero_de_compte.errors %}
+                                            {% for error in form.Siret.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                     {% else %}
-                                        {{form.Numero_de_compte(class="input is-small")}}
+                                        {{form.Siret(class="input is-small")}}
                                     {% endif %}
                                     </div> 
                                     <div class="col-sm-12 pb-1">
@@ -66,17 +77,17 @@
                                     </div>
 
                                      <div class="col-sm-12 pb-1">
-                                        {{form.Titre.label(class="form-control-label")}}
+                                        {{form.Sexe.label(class="form-control-label")}}
 
-                                        {% if form.Titre.errors %}
-                                            {{ form.Titre(class="input is-small is-invalid") }}
+                                        {% if form.Sexe.errors %}
+                                            {{ form.Sexe(class="input is-small is-invalid") }}
                                             <div class="invalid-feedback">
-                                                {% for error in form.Titre.errors %}
+                                                {% for error in form.Sexe.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                         {% else %}
-                                                {{form.Titre(class="input is-small")}}
+                                                {{form.Sexe(class="input is-small")}}
                                         {% endif %}
                                     </div>
                                    
@@ -188,33 +199,19 @@
                                         {% endif %}
                                     </div>
 
-                                    <div class="col-sm-12 pb-1">
-                                        {{form.Adresse1.label(class="form-control-label")}}
-                                    
-                                        {% if form.Adresse1.errors %}
-                                            {{ form.Adresse1(class="input is-small is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Adresse1.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                                {{form.Adresse1(class="input is-small")}}
-                                        {% endif %}
-                                    </div>
 
                                     <div class="col-sm-12 pb-1">
-                                         {{form.Adresse2.label(class="form-control-label")}}
+                                         {{form.Adresse.label(class="form-control-label")}}
                                     
-                                        {% if form.Adresse2.errors %}
-                                            {{ form.Adresse2(class="input is-small is-invalid") }}
+                                        {% if form.Adresse.errors %}
+                                            {{ form.Adresse(class="input is-small is-invalid") }}
                                             <div class="invalid-feedback">
-                                                {% for error in form.Adresse2.errors %}
+                                                {% for error in form.Adresse.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                         {% else %}
-                                                {{form.Adresse2(class="input is-small")}}
+                                                {{form.Adresse(class="input is-small")}}
                                         {% endif %}
                                     </div>
 

@@ -49,8 +49,8 @@
                                         <td> {{client_.NOM|truncate(15, True)}}</td>                               
                                         <td>{{client_.EMAIL}}</td>
                                         <td>{{client_.NUMERO}}</td>
-                                        <td>{{client_.ADRESSE1|truncate(15, True)}}</td>                                   
-                                        <td>{{client_.VILLE|truncate(12, True)}}</td>   
+                                        <!--td>{{client_.ADRESSE1|truncate(15, True)}}</td>                                   
+                                        <td>{{client_.VILLE|truncate(12, True)}}</td-->   
                                         <td>
                                             <a href="{{url_for('users.edit_client', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen"></i></a> <!-- &nbsp; -->
                                             <!-- <a href="/ajoutez/agenda/{{client_.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{client_.id}}">créer un agenda</a> -->

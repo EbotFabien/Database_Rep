@@ -1,16 +1,16 @@
-from data_base_ import create_app
+from Database_project.project.data_base_ import create_app
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from data_base_.Models import  Tarifs,Chiffrage,Mission,Client,Expert
-from data_base_ import bcrypt,db
+from Database_project.project.data_base_.Models import  Tarifs,Mission,Client,Expert
+from Database_project.project.data_base_ import bcrypt,db
 
 app= create_app()
 #app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-limiter = Limiter(
-    app,
-    key_func=get_remote_address,
-    default_limits=["20 per minute", "1 per second"],
-)
+#limiter = Limiter(
+ #   app,
+ #   key_func=get_remote_address,
+ #   default_limits=["20 per minute", "1 per second"],
+#)
 
 
 

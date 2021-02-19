@@ -86,17 +86,17 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            {{form.Titre.label(class="form-control-label")}}
+                                            {{form.Sexe.label(class="form-control-label")}}
         
-                                            {% if form.Titre.errors %}
-                                                {{ form.Titre(class="input is-small is-invalid") }}
+                                            {% if form.Sexe.errors %}
+                                                {{ form.Sexe(class="input is-small is-invalid") }}
                                                 <div class="invalid-feedback">
-                                                    {% for error in form.Titre.errors %}
+                                                    {% for error in form.Sexe.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                 {% else %}
-                                                    {{form.Titre(class="input is-small")}}
+                                                    {{form.Sexe(class="input is-small")}}
                                                 {% endif %}
                                             </div>
                                     </div>

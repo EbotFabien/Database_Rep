@@ -37,10 +37,9 @@
                             <!-- <th scope="col">NOM</th> -->
                             <th scope="col">Email</th>
                             <th scope="col">Tel</th>
-                            <th scope="col">Adresse 1</th>
                             <!-- <th scope="col">ADRESSE2</th> -->
                             <!-- <th scope="col">CP</th> -->
-                            <th scope="col">Ville</th>
+                            <!--th scope="col">Ville</th-->
                             <!-- <th scope="col">Zone_de_région_du_client</th> -->
                             <th>Modifier</th>
                             <th>Infos</th>
@@ -54,14 +53,14 @@
                                     <td>{{client_.Reference}}</td>
                                     <td>{{client_.TYPE}}</td>
                                     <!-- <td>{{client_.SOCIETE}}</td> -->
-                                    <td> {{client_.NOM | truncate(10, True)}}</td>
+                                    <td> {{client_.nom | truncate(10, True)}}</td>
                                     <!-- <td>{{client_.NOM}}</td> -->
-                                    <td>{{client_.EMAIL | truncate(10, True)}}</td>
-                                    <td>{{client_.NUMERO}}</td>
-                                    <td>{{client_.ADRESSE1|truncate(10, True)}}</td>
+                                    <td>{{client_.email | truncate(10, True)}}</td>
+                                    <td>{{client_.numero}}</td>
+                                    <!--td>{{client_.ADRESSE1|truncate(10, True)}}</td-->
                                     <!-- <td>{{client_.ADRESSE2}}</td> -->
                                     <!-- <td>{{client_.CP}}</td> -->
-                                    <td>{{client_.VILLE|truncate(5, True)}}</td>
+                                    <!--td>{{client_.VILLE|truncate(5, True)}}</td-->
                                     <!-- <td>{{client_.Zone_de_région_du_client}}</td> -->
                                     <td> <a href="{{url_for('users.edit_client', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
                                     <td style="">

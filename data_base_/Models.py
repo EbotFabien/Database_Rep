@@ -1,5 +1,5 @@
 from flask import current_app
-from data_base_ import  db,login_manager
+from Database_project.project.data_base_ import  db,login_manager
 from itsdangerous import  TimedJSONWebSignatureSerializer as Serializer
 from datetime import datetime
 from sqlalchemy import ForeignKeyConstraint,ForeignKey,UniqueConstraint
@@ -15,43 +15,263 @@ class Client(db.Model):
     __tablename__ = 'Client'
 
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    Reference = db.Column(db.String) 	
+    reference = db.Column(db.String) 	
     TYPE = db.Column(db.String) 
-    SOCIETE = db.Column(db.String) 	
-    TITRE = db.Column(db.String) 	
-    NOM = db.Column(db.String)
-    EMAIL = db.Column(db.String)
-    NUMERO = db.Column(db.String)
-    ADRESSE1 = db.Column(db.String) 	
-    ADRESSE2  = db.Column(db.String)	
-    CP 	 = db.Column(db.String)
-    VILLE  = db.Column(db.String)
-    Pays= db.Column(db.String)
-    abonnement=db.Column(db.String)
-    Numero_de_compte  = db.Column(db.String) #unique Also ask if it is unique
-    Visibility =db.Column(db.Boolean,default=True)
+    societe = db.Column(db.String) 	
+    sexe = db.Column(db.String) 	
+    nom = db.Column(db.String)
+    email = db.Column(db.String,unique=True)
+    numero = db.Column(db.String)
+    siret=db.Column(db.String)
+    date_creation =db.Column(db.DateTime(),default=datetime.utcnow)
+    visibility =db.Column(db.Boolean,default=True)
   
 
 
-    def __init__(self,Reference,TYPE,societe,titre,nom,email,numero,adresse1,adresse2,cp,ville,pays,abonnement,Numero_de_compte):
-        self.Reference=Reference
+    def __init__(self,TYPE,societe,sexe,nom,email,numero,siret):
         self.TYPE=TYPE
-        self.SOCIETE= societe
-        self.TITRE = titre
-        self.NOM = nom
-        self.EMAIL=email
-        self.NUMERO=numero
-        self.ADRESSE1 =adresse1
-        self.ADRESSE2 =adresse2
-        self.CP = cp
-        self.VILLE = ville
-        self.Pays = pays 
-        self.abonnement = abonnement
-        self.Numero_de_compte = Numero_de_compte      
+        self.societe= societe
+        self.sexe = sexe
+        self.nom = nom
+        self.email=email
+        self.numero=numero
+        self.siret=siret
+     
 
     def __repr__(self):
         return '<Client %r>' %self.id
 
+class Expert(db.Model,UserMixin):
+    __tablename__ = 'Expert'
+
+    id = db.Column(db.Integer,primary_key=True)
+    sexe  = db.Column(db.String)	
+    nom = db.Column(db.String)
+    trigramme=db.Column(db.String)
+    TYPE=db.Column(db.String)
+    date_entrée=db.Column(db.DateTime,default=datetime.utcnow)
+    siret=db.Column(db.String)
+    email = db.Column(db.String,unique=True)#unique
+    numero = db.Column(db.String)
+    code_tva=db.Column(db.String)
+    taux_tva=db.Column(db.String)
+    password = db.Column(db.String(60))
+    visibility =db.Column(db.Boolean,default=True)
+    
+    
+    def __init__(self,sexe,nom,TYPE,email,numero):
+        self.sexe =sexe
+        self.nom =nom
+        self.TYPE=TYPE
+        self.email=email
+        self.numero  =numero
+
+    def get_reset_token(self,expire_sec=1800):
+        s = Serializer(current_app.config['SECRET_KEY'],expire_sec)
+        return s.dumps({'expert_id':self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            expert_id = s.loads(token) ['expert_id']
+        except:
+            return None
+        return Expert.query.get(expert_id)
+
+    def __repr__(self):
+        return '<Expert %r>' %self.id
+        
+class Client_History(db.Model):
+    __tablename__ = 'Client_History'
+
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    client_id = db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   	
+    adresse  = db.Column(db.String)	
+    etat_client=db.Column(db.Boolean,default=True)
+    cp 	 = db.Column(db.String)
+    ville  = db.Column(db.String)
+    pays= db.Column(db.String)
+    abonnement=db.Column(db.String)
+    date =db.Column(db.DateTime(),default=datetime.utcnow)
+    visibility =db.Column(db.Boolean,default=True)
+
+
+
+
+        
+
+    def __repr__(self):
+        return '<Client_History %r>' %self.id
+
+class Client_negotiateur(db.Model):
+    __tablename__ = 'Client_negotiateur'
+
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    client_id = db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
+    client__nego=db.relationship("Client", 
+            primaryjoin=(client_id == Client.id),
+            backref=db.backref('client__nego',  uselist=False),  uselist=False)
+    reference = db.Column(db.String) 	
+    TYPE = db.Column(db.String) 
+    societe = db.Column(db.String) 	
+    sexe = db.Column(db.String) 	
+    nom = db.Column(db.String)
+    email = db.Column(db.String,unique=True)
+    numero = db.Column(db.String)
+    siret=db.Column(db.String)
+    date_creation =db.Column(db.DateTime(),default=datetime.utcnow)
+    visibility =db.Column(db.Boolean,default=True)
+
+
+    def __init__(self,client_id,TYPE,societe,sexe,nom,email,numero,siret):
+        self.client_id=client_id
+        self.TYPE=TYPE
+        self.societe= societe
+        self.sexe = sexe
+        self.nom = nom
+        self.email=email
+        self.numero=numero
+        self.siret=siret
+
+    def __repr__(self):
+        return '<Client_negotiateur %r>' %self.id
+
+class Negotiateur_History(db.Model):
+    __tablename__ = 'Negotiateur_History'
+
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    negotiateur_id = db.Column(db.Integer, ForeignKey('Client_negotiateur.id', onupdate="CASCADE", ondelete="CASCADE"))   	
+    adresse  = db.Column(db.String)	
+    etat_client=db.Column(db.Boolean,default=True)
+    cp 	 = db.Column(db.String)
+    ville  = db.Column(db.String)
+    pays= db.Column(db.String)
+    abonnement=db.Column(db.String)
+    date =db.Column(db.DateTime(),default=datetime.utcnow)
+    visibility =db.Column(db.Boolean,default=True)
+
+
+        
+
+    def __repr__(self):
+        return '<Negotiateur_History %r>' %self.id
+
+class suivi_client(db.Model):
+    __tablename__ = 'suivi_client'
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    client = db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
+    suivi__data=db.relationship("Client", 
+        primaryjoin=(client == Client.id),
+        backref=db.backref('suivi__data',  uselist=False),  uselist=False)
+    responsable=db.Column(db.Integer, db.ForeignKey('Expert.id'))
+    responsable__data=db.relationship("Expert", 
+        primaryjoin=(responsable == Expert.id),
+        backref=db.backref('responsable__data',  uselist=False),  uselist=False)
+    #CELL_AS_REFERANT_CLIENT = db.Column(db.Integer, db.ForeignKey('Expert.id'))
+    #CELL_PLANIF_REF_SUIVEUR= db.Column(db.Integer, db.ForeignKey('Expert.id'))
+    #CELL_DEV_REF_AGENT= db.Column(db.Integer, db.ForeignKey('Expert.id'))
+    #CELL_DEV_REF_RESPONSABLE= db.Column(db.Integer, db.ForeignKey('Expert.id'))
+    #CELL_PLANIF_REF_AGENT_SAISIE= db.Column(db.Integer, db.ForeignKey('Expert.id'))
+    #CELL_PLANIF_REF_RESPONSABLE= db.Column(db.Integer, db.ForeignKey('Expert.id'))
+    #CELL_TECH_REF_AGENT= db.Column(db.Integer, db.ForeignKey('Expert.id'))
+    #CELL_TECH_REF_RESPONSABLE= db.Column(db.Integer, db.ForeignKey('Expert.id'))
+    #CELL_TECH_REF_SUIVEUR= db.Column(db.Integer, db.ForeignKey('Expert.id'))
+    #COM_AS_SUR_CA_CLIENT = db.Column(db.String)
+    #COM_CELL_DEV_REF_AGENT = db.Column(db.String)
+    #COM_CELL_DEV_REF_RESPONSABLE = db.Column(db.String)
+    #COM_CELL_PLANIF_REF_AGENT_SAISIE = db.Column(db.String)
+    #COM_CELL_PLANIF_REF_RESPONSABLE = db.Column(db.String)
+    #COM_CELL_PLANIF_REF_SUIVEUR = db.Column(db.String)
+    #COM_CELL_TECH_REF_AGENT = db.Column(db.String)
+    #COM_CELL_TECH_REF_RESPONSABLE = db.Column(db.String)
+    #COM_CELL_TECH_REF_SUIVEUR = db.Column(db.String)
+    #Commercial = db.Column(db.String)
+    commentaire = db.Column(db.String)
+    date_creation=db.Column(db.DateTime(),default=datetime.utcnow)
+    date_modif=db.Column(db.DateTime())
+    visibility=visibility =db.Column(db.Boolean,default=True)
+
+    def __init__(self,client,responsable,commentaire):
+        self.client=client
+        self.responsable=responsable
+        self.commentaire= commentaire
+
+
+    def __repr__(self):
+        return '<suivi_client %r>' %self.id
+
+class prospect(db.Model):
+    __tablename__ = 'prospect'
+
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    reference = db.Column(db.String) 	
+    TYPE = db.Column(db.String) 
+    societe = db.Column(db.String) 	
+    genre = db.Column(db.String) 	
+    nom = db.Column(db.String)
+    email = db.Column(db.String)
+    numero = db.Column(db.String)
+    siret=db.Column(db.String)
+    date_creation =db.Column(db.DateTime,default=datetime.utcnow)
+    visibility =db.Column(db.Boolean,default=True)
+  
+
+
+    def __init__(self,TYPE,societe,genre,nom,email,numero):
+        self.TYPE=TYPE
+        self.societe= societe
+        self.genre = genre
+        self.nom = nom
+        self.email=email
+        self.numero=numero
+    
+
+    def __repr__(self):
+        return '<prospect %r>' %self.id
+
+
+class prospect_History(db.Model):
+    __tablename__ = 'prospect_History'
+
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    prospect = db.Column(db.Integer, ForeignKey('prospect.id', onupdate="CASCADE", ondelete="CASCADE"))   		
+    adresse  = db.Column(db.String)	
+    cp 	 = db.Column(db.String)
+    ville  = db.Column(db.String)
+    pays= db.Column(db.String)
+    etat_client=db.Column(db.String,default=True)
+    date =db.Column(db.DateTime(),default=datetime.utcnow)
+    visibility =db.Column(db.Boolean,default=True)
+
+
+    def __repr__(self):
+        return '<prospect_History %r>' %self.id
+
+class suivi_prospect(db.Model):
+    __tablename__ = 'suivi_prospect'
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    prospect_id = db.Column(db.Integer, ForeignKey('prospect.id', onupdate="CASCADE", ondelete="CASCADE"))   
+    responsable=db.Column(db.Integer, db.ForeignKey('Expert.id'))
+    suivi__data=db.relationship("prospect", 
+        primaryjoin=(prospect_id == prospect.id),
+        backref=db.backref('prospect__data',  uselist=False),  uselist=False)
+    responsable__data=db.relationship("Expert", 
+        primaryjoin=(responsable == Expert.id),
+        backref=db.backref('responsable___data',  uselist=False),  uselist=False)
+    commentaire = db.Column(db.String)
+    date_creation=db.Column(db.DateTime(),default=datetime.utcnow)
+    date_modif=db.Column(db.DateTime(),default=datetime.utcnow)
+    visibility=db.Column(db.Boolean,default=True)
+
+    def __init__(self,prospect,responsable,commentaire):
+        self.prospect_id=prospect
+        self.responsable=responsable
+        self.commentaire= commentaire
+
+
+    def __repr__(self):
+        return '<suivi_prospect %r>' %self.id
 
 class Facturation(db.Model):
     __tablename__ = 'Facturation'
@@ -65,9 +285,9 @@ class Facturation(db.Model):
     client_data_=db.relationship("Client", 
         primaryjoin=(Destinataire == Client.id),
         backref=db.backref('client_data_',  uselist=False),  uselist=False)
-#33##
+
     Montant  = db.Column(db.String)
-   # TVA  = db.Column(db.String)
+    TVA  = db.Column(db.String)
     Total  = db.Column(db.String)
     Type  = db.Column(db.String)
     Proprietaire  = db.Column(db.Integer, db.ForeignKey('Client.id'))
@@ -99,42 +319,33 @@ class Facturation(db.Model):
         return '<Facturation %r>' %self.id
 
 
-class Expert(db.Model,UserMixin):
-    __tablename__ = 'Expert'
+
+
+
+class Expert_History(db.Model):
+    __tablename__ = 'Expert_History'
 
     id = db.Column(db.Integer,primary_key=True)
-    TITRE  = db.Column(db.String)	
-    NOM = db.Column(db.String)
-    TYPE = db.Column(db.String)
-    EMAIL = db.Column(db.String)#unique
-    NUMERO = db.Column(db.String)
-    password = db.Column(db.String(60))
-    Visibility =db.Column(db.Boolean,default=True)
-    
-    
-    def __init__(self,titre,nom,Type,email,numero):
-        self.TITRE =titre
-        self.NOM =nom
-        self.TYPE=Type
-        self.EMAIL=email
-        self.NUMERO =numero
+    expert_id= db.Column(db.Integer, ForeignKey('Expert.id'))
+    actif_parti=db.Column(db.String)
+    type_certification=db.Column(db.String)
+    date_certification_initiale=db.Column(db.DateTime)
+    date_renouv_certification=db.Column(db.DateTime)
+    adresse = db.Column(db.String)
+    cp=db.Column(db.String)
+    login_backof=db.Column(db.String)
+    pwd_backof=db.Column(db.String) 
+    login_extranet=db.Column(db.String)
+    pwd_extranet=db.Column(db.String) 
+    pwd_gsuite=db.Column(db.String)
+    ville=db.Column(db.String)
+    observations_de_suivi=db.Column(db.String)
+    date=db.Column(db.DateTime(),default=datetime.utcnow)
+    visibility =db.Column(db.Boolean,default=True)
 
-    def get_reset_token(self,expire_sec=1800):
-        s = Serializer(current_app.config['SECRET_KEY'],expire_sec)
-        return s.dumps({'expert_id':self.id}).decode('utf-8')
-
-    @staticmethod
-    def verify_reset_token(token):
-        s = Serializer(current_app.config['SECRET_KEY'])
-        try:
-            expert_id = s.loads(token) ['expert_id']
-        except:
-            return None
-        return Expert.query.get(expert_id)
 
     def __repr__(self):
-        return '<Expert %r>' %self.id
-
+        return '<Expert_History %r>' %self.id
 
 class Agenda(db.Model):
     __tablename__ = 'Agenda'
@@ -182,34 +393,93 @@ class Agenda(db.Model):
     
  
 
-class Chiffrage(db.Model):
-    __tablename__ = 'Chiffrage'
 
-    id = db.Column(db.Integer,primary_key=True)
-    Mission  = db.Column(db.String) 
-    Type_expert  = db.Column(db.String)
-    Pourcentage_gain  = db.Column(db.String) 
-    visibility =db.Column(db.Boolean,default=True)
-    
-    
-    def __init__(self,mission,type_expert,pourcentage_gain):
-        self.Mission =mission
-        self.Type_expert=type_expert
-        self.Pourcentage_gain=pourcentage_gain
-
-
-    def __repr__(self):
-        return '<Chiffrage %r>' %self.id
 
 
 class Tarifs(db.Model):
     __tablename__ = 'Tarifs'
+    id = db.Column(db.Integer,primary_key=True)
+    maison_appartement=db.Column(db.String) 
+    type_maison  = db.Column(db.String) 
+    Prix_EDL = db.Column(db.String) 
+    Prix_Chiffrage =db.Column(db.String) 
+    #sur tarifs
+    visibility =db.Column(db.Boolean,default=True)
+
+    def __init__(self,maison_appartement, type_maison,Prix):
+        self.maison_appartement=maison_appartement
+        self.type_maison = type_maison
+        self.Prix = Prix
+
+    def __repr__(self):
+        return '<Tarifs %r>' %self.id
+
+class Tarifs_client(db.Model):
+    __tablename__ = 'Tarifs_client'
 
     id = db.Column(db.Integer,primary_key=True)
     reference_client= db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
+    maison_appartement=db.Column(db.String) 
     type_maison  = db.Column(db.String) 
-    Prix  = db.Column(db.String) 
-    remise  = db.Column(db.String)
+    Prix_EDL = db.Column(db.String) 
+    Prix_Chiffrage =db.Column(db.String)
+    code_tva=db.Column(db.String)
+    Cell_AS_referent_client=db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    referent__data=db.relationship("Expert", 
+        primaryjoin=(Cell_AS_referent_client == Expert.id),
+        backref=db.backref('referent__data',  uselist=False),  uselist=False)
+
+    Cell_AS_referent_client_taux_com  = db.Column(db.String)
+
+    Cell_devel_client =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    devel__data=db.relationship("Expert", 
+        primaryjoin=(Cell_devel_client == Expert.id),
+        backref=db.backref('devel__data',  uselist=False),  uselist=False)
+
+    Cell_devel_respon_client_taux_com = db.Column(db.String)
+
+    Cell_devel_agent_suivi_client =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    agent_suivi__data=db.relationship("Expert", 
+        primaryjoin=(Cell_devel_agent_suivi_client == Expert.id),
+        backref=db.backref('agent_suivi__data',  uselist=False),  uselist=False)
+
+    Cell_devel_agent_suivi_client_taux_com = db.Column(db.String)
+
+    Cell_tech_Ref_agent_suivi_client =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    tech_Ref_agent_suivi__data=db.relationship("Expert", 
+        primaryjoin=(Cell_tech_Ref_agent_suivi_client == Expert.id),
+        backref=db.backref('tech_Ref_agent_suivi__data',  uselist=False),  uselist=False)
+
+    Cell_tech_Ref_respon_suivi_client_taux_com = db.Column(db.String)
+
+    Cell_tech_Ref_suiveur_client =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    tech_Ref_suiveur__data=db.relationship("Expert", 
+        primaryjoin=(Cell_tech_Ref_suiveur_client == Expert.id),
+        backref=db.backref('tech_Ref_suiveur__data',  uselist=False),  uselist=False)
+
+    Cell_tech_Ref_suiveur_taux_com  = db.Column(db.String)
+
+    Cell_Planif_Ref_respon_client=db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    Planif_Ref_respon__data=db.relationship("Expert", 
+        primaryjoin=(Cell_AS_referent_client == Expert.id),
+        backref=db.backref('Cell_Planif_Ref_respon_client',  uselist=False),  uselist=False)
+    Cell_Planif_Ref_respon_taux_com = db.Column(db.String)
+
+    Cell_Planif_Ref_suiveur_client =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    Ref_suiveu__data=db.relationship("Expert", 
+        primaryjoin=(Cell_Planif_Ref_suiveur_client == Expert.id),
+        backref=db.backref('Ref_suiveu__data',  uselist=False),  uselist=False)
+
+    Cell_Planif_Ref_suiveur_taux_com = db.Column(db.String)
+
+    Cell_Planif_Ref_agent_client =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    Ref_agent__data=db.relationship("Expert", 
+        primaryjoin=(Cell_Planif_Ref_agent_client  == Expert.id),
+        backref=db.backref('Ref_agent__data',  uselist=False),  uselist=False)
+
+    Cell_Planif_Ref_agent_taux_com = db.Column(db.String)
+    commentaire_libre= db.Column(db.String)
+    date=db.Column(db.DateTime(), nullable=False)
     visibility =db.Column(db.Boolean,default=True)
     
     
@@ -221,7 +491,9 @@ class Tarifs(db.Model):
 
 
     def __repr__(self):
-        return '<Tarifs %r>' %self.id
+        return '<Tarifs_client %r>' %self.id
+
+
 
 
 

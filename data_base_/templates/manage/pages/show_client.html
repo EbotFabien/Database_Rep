@@ -12,23 +12,26 @@
 					<div class="row"> 
 						<div class="col-md-8">
 							<h6 class=""><strong>Type de Client:</strong> <strong><small>{{client.TYPE}}</small></strong></h6>
-							<p><strong>Nom: </strong> <small>{{client.NOM}}</small><br>  
-							<strong>Tel:</strong> <small>{{client.NUMERO}}</small> <strong>Email:</strong> <small>{{client.EMAIL}}</small> <br>
-					    	<strong>Adresse 1:</strong> <small>{{client.ADRESSE1}}</small> <br> 
-					    	<strong>Code Postal:</strong> {{client.CP}}
+							<p><strong>Nom: </strong> <small>{{client.nom}}</small><br>  
+							<strong>Tel:</strong> <small>{{client.numero}}</small> <strong>Email:</strong> <small>{{client.email}}</small> <br>
+					    	<strong>Adresse :</strong> <small>{{history.adresse}}</small> <br> 
+					    	<strong>Code Postal:</strong> {{history.cp}}
 					 		</p>
 						</div>
-						{# <div class="col-md-4">
-							<h6 class="text-muted">Payment</h6>
-							<span class="text-success">
-								<i class="fab fa-lg fa-cc-visa"></i>
-							    Visa  **** 4216  
-							</span>
-							<p>Subtotal: $356 <br>
-							 Shipping fee:  $56 <br> 
-							 <span class="b">Total:  $456 </span>
-							</p>
-						</div> #}
+						<div class="col-md-4">
+							{% if legend == "client" %}
+								<h6 class="text-muted"><a href="{{url_for('users.suivi_client_', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">Voir Suivi</a></h6>
+								<h6 class="text-muted"><a href="{{url_for('users.ajouter_suivic', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">Cree Suivi</a></h6>
+								<h6 class="text-muted"><a href="{{url_for('users.ajouter_negotiateur', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">Cree Negotiateur</a></h6>
+								<h6 class="text-muted"><a href="{{url_for('users.negotiateur', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">voir  Negotiateur</a></h6>
+							{% endif %}
+							{% if legend == "prospect" %}
+								<h6 class="text-muted"><a href="{{url_for('users.suivi_prospect_', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">Voir Suivi</a></h6>
+								<h6 class="text-muted"><a href="{{url_for('users.ajouter_suivip', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">Cree Suivi</a></h6> 
+							{% endif %}
+							
+
+						</div> 
 					</div> <!-- row.// -->
 				</div> <!-- card-body .// -->
 				</article>
