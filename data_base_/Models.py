@@ -20,7 +20,7 @@ class Client(db.Model):
     societe = db.Column(db.String) 	
     sexe = db.Column(db.String) 	
     nom = db.Column(db.String)
-    email = db.Column(db.String,unique=True)
+    email = db.Column(db.String)
     numero = db.Column(db.String)
     siret=db.Column(db.String)
     date_creation =db.Column(db.DateTime(),default=datetime.utcnow)
@@ -28,14 +28,14 @@ class Client(db.Model):
   
 
 
-    def __init__(self,TYPE,societe,sexe,nom,email,numero,siret):
-        self.TYPE=TYPE
-        self.societe= societe
-        self.sexe = sexe
-        self.nom = nom
-        self.email=email
-        self.numero=numero
-        self.siret=siret
+    #def __init__(self,TYPE,societe,sexe,nom,email,numero,siret):
+      #  self.TYPE=TYPE
+      #  self.societe= societe
+       # self.sexe = sexe
+       # self.nom = nom
+       # self.email=email
+       # self.numero=numero
+       # self.siret=siret
      
 
     def __repr__(self):
@@ -50,8 +50,8 @@ class Expert(db.Model,UserMixin):
     trigramme=db.Column(db.String)
     TYPE=db.Column(db.String)
     date_entrée=db.Column(db.DateTime,default=datetime.utcnow)
-    siret=db.Column(db.String)
-    email = db.Column(db.String,unique=True)#unique
+    siret=db.Column(db.String) 
+    email = db.Column(db.String)#unique
     numero = db.Column(db.String)
     code_tva=db.Column(db.String)
     taux_tva=db.Column(db.String)
@@ -59,12 +59,12 @@ class Expert(db.Model,UserMixin):
     visibility =db.Column(db.Boolean,default=True)
     
     
-    def __init__(self,sexe,nom,TYPE,email,numero):
-        self.sexe =sexe
-        self.nom =nom
-        self.TYPE=TYPE
-        self.email=email
-        self.numero  =numero
+ #   def __init__(self,sexe,nom,TYPE,email,numero):
+      #  self.sexe =sexe
+      #  self.nom =nom
+      #  self.TYPE=TYPE
+      #  self.email=email
+      #  self.numero  =numero
 
     def get_reset_token(self,expire_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'],expire_sec)
@@ -208,7 +208,7 @@ class prospect(db.Model):
     reference = db.Column(db.String) 	
     TYPE = db.Column(db.String) 
     societe = db.Column(db.String) 	
-    genre = db.Column(db.String) 	
+    sexe = db.Column(db.String) 	
     nom = db.Column(db.String)
     email = db.Column(db.String)
     numero = db.Column(db.String)

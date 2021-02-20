@@ -12,7 +12,7 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
 	        <div class="card-header py-1 justify-content-between d-flex" style="display: flex;justify-content: space-between;"> 
-	            <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i></h6>
+	            <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i>Prospects</h6>
                 <a href="{{url_for('users.ajouter_prospect')}}" title="ajouter un client" class="button is-black is-small pull-right"><span class="is-warning">ajouter un prospect</span></a>
 	        </div>
 	        <div class="card-body">
@@ -50,7 +50,7 @@
                             {%for client_ in Client %}
                                 <tr>
                                     <th scope="row">{{client_.id}}</th>
-                                    <td>{{client_.Reference}}</td>
+                                    <td>{{client_.reference}}</td>
                                     <td>{{client_.TYPE}}</td>
                                     <!-- <td>{{client_.SOCIETE}}</td> -->
                                     <td> {{client_.nom | truncate(10, True)}}</td>
@@ -62,7 +62,7 @@
                                     <!-- <td>{{client_.CP}}</td> -->
                                     <!--td>{{client_.VILLE|truncate(5, True)}}</td-->
                                     <!-- <td>{{client_.Zone_de_région_du_client}}</td> -->
-                                    <td> <a href="{{url_for('users.edit_client', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
+                                    <td> <a href="{{url_for('users.edit_prospect', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
                                     <td style="">
                                         <a href="{{url_for('users.show_prospect', id=client_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
                                         <!-- <a href="/ajoutez/agenda/{{client_.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{client_.id}}">créer un agenda</a> -->

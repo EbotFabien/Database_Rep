@@ -11,8 +11,10 @@
         <!-- Area Chart -->
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
-	        <div class="card-header py-1 justify-content-between d-flex" style="display: flex;justify-content: space-between;"> 
-	            <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i></h6>
+            <div class="card-header py-1 justify-content-between d-flex" style="display: flex;justify-content: space-between;"> 
+                {%for client_ in Client %}
+                    <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i> Negotiateurs du client  {{client_.client__nego.nom}}</h6>
+                {%endfor%}
                 <a href="{{url_for('users.ajouter_negotiateur', id=ID)}}" title="ajouter un client" class="button is-black is-small pull-right"><span class="is-warning">ajouter un Negotiateur</span></a>
 	        </div>
 	        <div class="card-body">

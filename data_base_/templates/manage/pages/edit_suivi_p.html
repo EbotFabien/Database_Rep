@@ -13,8 +13,8 @@
         <div class="col-xl-6 col-lg-6 mx-auto">
             <div class="card shadow mb-4">
 	        <div class="card-header py-1 d-flex justify-content-between align-items-center">
-	            <h6 class="m-0 font-weight-bold is-gray">Modifier suivi</h6>
-                 <a href="{{url_for('users.suivi_client_', id=suivi.client)}}" class="button is-black is-small pull-right"> les suivi du clients {{suivi.suivi__data.nom}}</a>
+	            <h6 class="m-0 font-weight-bold is-gray">Modifiers suivi</h6>
+                 <a href="{{url_for('users.suivi_prospect_', id=suivi.prospect_id)}}" class="button is-black is-small pull-right"> les suivi du prospects {{suivi.suivi__data.nom}}</a>
 	        </div>
 	        <div class="card-body">
 	            <div class="row">
@@ -29,7 +29,7 @@
                             {% endfor %}
                             {% endif %}
                             {% endwith %}
-                            <form method="POST" class="user"  action="{{url_for('users.update_suivi', id=suivi.id)}}">
+                            <form method="POST" class="user"  action="{{url_for('users.update_suivip', id=suivi.id)}}">
                                 {{ form.hidden_tag() }}
                                 <fieldset class="form-group">
                                 <!-- <legend class="mb4">Créer un Expert</legend> -->

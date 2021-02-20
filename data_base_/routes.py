@@ -16,12 +16,10 @@ app= create_app()
 @users.route('/client')
 @login_required
 def client():
-    db.create_all()
+    #db.create_all()
     if current_user.TYPE == "Admin":
         client_=list(Client.query.filter_by(visibility=True).all())
-        for client in client_:
-            print(client.nom)
-        return render_template('manage/pages/client.html',Client=client_,legend="client")
+        return render_template('manage/pages/client.html',cli_ent=client_,legend="client")
 
     
     return redirect(url_for('users.main'))
@@ -262,6 +260,15 @@ def expert():
 
     return redirect(url_for('users.main'))
 
+@users.route('/show/<int:id>/expert', methods=['GET'])
+@login_required 
+def show_expert(id):
+    if current_user.TYPE == "Admin":
+        expert = Expert.query.filter_by(id=id).first_or_404()
+        client_history=Expert_History.query.filter_by(expert_id=id).order_by(asc(Expert_History.date)).first_or_404()
+        return render_template('manage/pages/show_expert.html', expert=expert,history=client_history,legend="expert")
+
+
 @users.route('/ajouter/expert',methods=['GET','POST'])
 @login_required
 def ajouter_expert():
@@ -272,6 +279,8 @@ def ajouter_expert():
             user=Expert(sexe=form.Sexe.data,nom=form.username.data,numero=form.Numero.data,TYPE=form.Type_Expert.data, email=form.email.data)
             db.session.add(user)
             db.session.commit()
+            expert_check=Expert_History(expert_id=user.id)#check if tables are modified from table expert_history
+            db.session.add(expert_check)
             user.password=hashed_password
             db.session.commit()
             return redirect(url_for('users.expert'))
@@ -308,26 +317,42 @@ def update_expert(id):
     if current_user.TYPE == 'Admin':
         form = Expert_editForm()
         expert = Expert.query.filter_by(id=id).first_or_404()
-       # expert_check=Expert_History(expert_id=id)#check if tables are modified from table expert_history
-        #db.session.add(expert_check)
-        #db.session.commit()
-        #expert_history=Expert_History.query.filter_by(expert_id=id).order_by(asc(Expert_History.date)).first_or_404()
-        expert.TITRE = request.form['TITRE']
+        print(47)
+        if request.form['ville'] !=None: #or  request.form['type_certification'] !="None" or request.form['adresse'] !="None" or  request.form['cp'] !="None" or request.form['login_backof'] !="None" or request.form['pwd_backof'] !="None" or request.form['login_extranet'] !="None" or request.form['pwd_extranet'] !="None" or request.form['pwd_gsuite'] !="None" or request.form['observations_de_suivi'] !="None" :
+        
+            expert_check=Expert_History(expert_id=id)
+            db.session.add(expert_check)
+            db.session.commit()
+            expert_history=Expert_History.query.filter_by(expert_id=id).order_by(asc(Expert_History.date)).first_or_404()
+            expert_history.ville = request.form['ville']
+            
+            expert_history.type_certification =  request.form['type_certification']
+            
+            expert_history.cp = request.form['cp']
+            expert_history.actif_parti  = request.form['actif_parti']
+            
+            expert_history.login_backof = request.form['login_backof']
+            expert_history.pwd_backof = request.form['pwd_backof']
+            
+            expert_history.adresse = request.form['adresse']
+            expert_history.login_extranet = request.form['login_extranet']
+            expert_history.pwd_extranet = request.form['pwd_extranet']
+            
+            expert_history.pwd_gsuite = request.form['pwd_gsuite']
+            expert_history.observations_de_suivi = request.form['observations_de_suivi']
+            
+            db.session.commit()
+      
+        expert.sexe= request.form['Sexe']
         expert.nom = request.form['username']
-        expert.TYPE = request.form['TYPE']
-        expert.NUMERO = request.form['Numero']
-        expert.EMAIL = request.form['email']
+        expert.numero = request.form['Numero']
+        expert.email = request.form['email']
         expert.siret= request.form['siret']
         expert.trigramme=request.form['trigramme']
-        if "password" in request.args:
-            hashed_password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
-            expert.password = hashed_password
-        save = db.session.commit()
-        if save:
-            flash(f'Les information de l\'expert n\'a pas ete modifier', 'danger')
-        else:
-            flash(f'Les information de l\'expert a ete modifier', 'success')
-        return redirect(url_for('users.edit_expert', id=id))
+        db.session.commit()
+
+        flash(f'Les information de l\'expert a ete modifier', 'success')
+        return redirect(url_for('users.expert'))
     return redirect(url_for('users.main'))
 
 @users.route('/tarifs')
@@ -483,13 +508,20 @@ def login():
     #expert=Expert('Mr.','Admin','Admin','test0001@gmail.com','1234567')
     #db.session.add(expert)
     #db.session.commit()
-    #expert=Expert.query.filter_by(NOM="Admin").first()
+    #expert=Expert.query.filter_by(nom="Admin").first()
+    #expert.TYPE="Admin"
     #hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
     #expert.password = hashed_password
-    #db.session.commit()
+   # db.session.commit()
     #db.drop_all()
-    #db.create_all()
-   
+    db.create_all()
+    expert=Expert(sexe='Mr.',nom='Admin',numero=12345,TYPE='Admin', email='test0001@gmail.com' )
+    db.session.add(expert)
+    db.session.commit()
+    hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
+    expert.password=hashed_password
+    db.session.commit()
+
     if current_user.is_authenticated:
        return redirect(url_for('users.main'))
     form = LoginForm()
@@ -682,7 +714,7 @@ def edit_negotiateur(id):
         form = Client_Form()
         client = Client_negotiateur.query.filter_by(id=id).first_or_404()
         client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
-        return render_template('manage/pages/edit_client.html', client=client,history=client_history,form=form,legend="edit_negotiateur")
+        return render_template('manage/pages/edit_negotiateur.html', client=client,history=client_history,form=form,legend="edit_negotiateur")
 
 @users.route('/update/<int:id>/negotiateur', methods=['POST', 'PUT'])#fix pages for action on form
 @login_required
@@ -709,7 +741,7 @@ def update_negotiateur(id):
 
         db.session.commit()
         flash(f'Les donnes du negotiateur a été modifiées','success')
-        return redirect(url_for('users.negotiateur', id=id))
+        return redirect(url_for('users.negotiateur', id=client.client_id))
 
     return redirect(url_for('users.edit_negotiateur', id=id))
 
@@ -784,36 +816,38 @@ def show_prospect(id):
 def edit_prospect(id):
     if current_user.TYPE == "Admin":
         form = Client_Form()
-        client = prospect.filter_by(id=id).first_or_404()
-        client_history=prospect_History.query.filter_by(client_id=id).order_by(asc(prospect_History.date)).first_or_404()
-        return render_template('manage/pages/edit_client.html', client=client,history=prospect_History,form=form)
+        client = prospect.query.filter_by(id=id).first_or_404()
+        client_history=prospect_History.query.filter_by(prospect=id).order_by(asc(prospect_History.date)).first_or_404()
+        return render_template('manage/pages/edit_prospect.html', client=client,history=client_history,form=form)
 
 @users.route('/update/<int:id>/prospect', methods=['POST', 'PUT'])#fix pages for action on form
 @login_required
 def update_prospect(id):
     if current_user.TYPE == "Admin":
-        client = propsect.query.filter_by(id=id).first_or_404()
+        client = prospect.query.filter_by(id=id).first_or_404()
         if request.form['Ville'] or  request.form['Pays'] or request.form['CP'] or  request.form['Adresse'] :
-            client_check=propsect(negotiateur_id=id)
+            client_check=prospect_History(prospect=id)
             db.session.add(client_check)
             db.session.commit()
-            client_history=propsect_History.query.filter_by(propsect=id).order_by(asc(propsect_History.date)).first_or_404()
+            client_history=prospect_History.query.filter_by(prospect=id).order_by(asc(prospect_History.date)).first_or_404()
             client_history.ville = request.form['Ville']
             client_history.pays = request.form['Pays']
             client_history.cp = request.form['CP']
             client_history.adresse = request.form['Adresse']
             db.session.commit()
         client.email = request.form['email']
-        client.siret = request.form['Siret']
+        #client.siret = request.form['Siret']
         client.societe = request.form['Societe']
         client.numero = request.form['Numero']
         client.sexe = request.form['Sexe']
         client.TYPE = request.form['Type']
         client.nom = request.form['NOM']
+        
 
         db.session.commit()
         flash(f'Les donnes du negotiateur a été modifiées','success')
-    return redirect(url_for('users.edit_propect', id=id))
+        return redirect(url_for('users.prospect_'))
+    return redirect(url_for('users.edit_prospect', id=id))
 
 
 
@@ -861,7 +895,7 @@ def edit_suivip(id):
         form = Suivi_Client()
         suivi = suivi_prospect.query.filter_by(id=id).first_or_404()
         if current_user.id == suivi.responsable:
-            return render_template('manage/pages/edit_suivi.html', suivi=suivi,form=form)
+            return render_template('manage/pages/edit_suivi_p.html', suivi=suivi,form=form)
         else:
             flash(f'Vous ne pouvez pas modifier ce suivi','warning')
             return redirect(url_for('users.suivi_prospect_', id=id))
@@ -875,7 +909,7 @@ def update_suivip(id):
         suivi.commentaire = request.form['commentaire']
         db.session.commit()
         flash(f'Le suivi a été modifiées','success')
-        return redirect(url_for('users.suivi_client'))
+        return redirect(url_for('users.suivi_prospect_',id=suivi.prospect_id))
     return redirect(url_for('users.client'))
 
 
@@ -884,6 +918,7 @@ def update_suivip(id):
 @users.route("/upload", methods=['GET','POST'])
 #@login_required
 def up():
+    
     #db.create_all()
     #expert=Expert('M','Admin','Admin','test0001@gmail.com','1234567')
     #db.session.add(expert)
@@ -920,21 +955,21 @@ def uploader_():
             # save the file
             expert__('Interv',loc)
             expert__('CONCESS',loc)
-            expert__('Manager_chiffrage',loc)
-            expert__('Agent_chiffrage',loc)
-            expert__('Respon Cell Dev',loc)
-            expert__('agent Cell Dev',loc)
-            expert__('Agent CellTech',loc)
-            expert__('Respon Cell Tech',loc)
-            expert__('Suiveur Cell Tech',loc)
-            expert__('Respon Cell Planif',loc)
-            expert__('Suiveur Cell Planif',loc)
-            expert__('Agent saisie Cell Planif',loc)
+           #''' expert__('Manager_chiffrage',loc)
+           # expert__('Agent_chiffrage',loc)
+           # expert__('Respon Cell Dev',loc)
+           # expert__('agent Cell Dev',loc)
+           ## expert__('Agent CellTech',loc)
+           # expert__('Respon Cell Tech',loc)
+           ## expert__('Suiveur Cell Tech',loc)
+           # expert__('Respon Cell Planif',loc)
+           # expert__('Suiveur Cell Planif',loc)
+           # expert__('Agent saisie Cell Planif',loc)'''
             insert_client('Bailleur',loc)
             insert_client('Locataire',loc)
-            insert_client('Prop',loc)
-            Missions(loc) #learn how to check a whole row for this tables
-            mission_date(loc)
+           # insert_client('Prop',loc)
+          #  Missions(loc) #learn how to check a whole row for this tables
+           # mission_date(loc)
             flash(f"Vous avez importer les donnees avec success",'success')
             return redirect(url_for('users.up'))
       return redirect(url_for('users.main'))

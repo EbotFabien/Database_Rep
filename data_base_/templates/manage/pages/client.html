@@ -12,7 +12,7 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
 	        <div class="card-header py-1 justify-content-between d-flex" style="display: flex;justify-content: space-between;"> 
-	            <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i></h6>
+	            <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i>Clients</h6>
                 <a href="/ajouter/client" title="ajouter un client" class="button is-black is-small pull-right"><span class="is-warning">ajouter un client</span></a>
 	        </div>
 	        <div class="card-body">
@@ -47,10 +47,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                            {%for client_ in Client %}
+                            {%for client_ in cli_ent %}
                                 <tr>
                                     <th scope="row">{{client_.id}}</th>
-                                    <td>{{client_.Reference}}</td>
+                                    <td>{{client_.reference}}</td>
                                     <td>{{client_.TYPE}}</td>
                                     <!-- <td>{{client_.SOCIETE}}</td> -->
                                     <td> {{client_.nom | truncate(10, True)}}</td>

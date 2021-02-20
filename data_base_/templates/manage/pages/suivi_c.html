@@ -12,11 +12,12 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
 	        <div class="card-header py-1 justify-content-between d-flex" style="display: flex;justify-content: space-between;"> 
-                <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i></h6>
                 {% if legend == "prospect" %}
+                    <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i>Suivi de  {{Suivi[0].suivi__data.nom}}</h6>
                     <a href="{{url_for('users.ajouter_suivip', id=ID)}}" title="ajouter un client" class="button is-black is-small pull-right"><span class="is-warning">ajouter un suivi prospect</span></a>
                 {% endif %}
                 {% if legend == "client" %}
+                    <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i>Suivi du Client  {{Suivi[0].suivi__data.nom}}</h6>
                     <a href="{{url_for('users.ajouter_suivic', id=ID)}}" title="ajouter un client" class="button is-black is-small pull-right"><span class="is-warning">ajouter un suivi client</span></a>
                 {% endif %}
                 

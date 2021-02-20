@@ -1,15 +1,16 @@
 from Database_project.project.data_base_ import db
-from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert
+from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History
 import xlrd
 import openpyxl
 
 def insert_client(A,loc):
     
+
     wb = xlrd.open_workbook(loc)
     sheet = wb.sheet_by_index(0)
     
     sheet.cell_value(0, 0)
-    for i in range(0,50):
+    for i in range(0,400):
         name=sheet.row_values(i+1)
         
         if A == 'Bailleur':
@@ -17,10 +18,15 @@ def insert_client(A,loc):
             if name[3] == '' or name[3] == 'XX':
                 print('no data here')
             else:
-                cli=Client.query.filter_by(NOM=str(name[3].lower())).first()#arrange sort by reference
+                cli=Client.query.filter_by(nom=str(name[3].lower())).first()#arrange sort by reference
                 if cli is None:
-                    client=Client(str(name[0]),'BAILLEUR',name[1].lower(),name[2].lower(),name[3].lower(),'','',name[4].lower(),name[5].lower(),name[6],name[7].lower(),'',name[9],'')
+                    client=Client(TYPE=A,societe=name[1].lower(),sexe=name[2].lower(),nom=name[3].lower(),email='test@gmail.com',numero='6777650822',siret='22222222222')
                     db.session.add(client)
+                    db.session.commit()   
+                    client.reference=str(name[0])
+                    db.session.commit()
+                    history=Client_History(client_id=client.id,adresse=name[4],cp=name[6],ville=name[7],pays='Britain')
+                    db.session.add(history)
                     db.session.commit()
                 else:
                     print('already exist')
@@ -41,10 +47,15 @@ def insert_client(A,loc):
             if name[20] == '' or name[20] == 'XX':
                 print('no data here')
             else:
-                cli1=Client.query.filter_by(Reference=str(name[18])).first()    
-                if cli1 is None:
-                    client=Client(str(name[18]),A,'',name[19].lower(),name[20].lower(),'','',name[21].lower(),name[22],name[23],name[24],'','','')
+                pros1=prospect.query.filter_by(reference=str(name[18])).first()    
+                if pros1 is None:
+                    client=prospect(A,'Amexpert',name[19].lower(),name[20].lower(),'test@gmail.com','675337250')
                     db.session.add(client)
+                    db.session.commit()
+                    client.reference=str(name[18])
+                    db.session.commit()
+                    user_his=prospect_History(prospect=client.id,adresse=name[21],cp=name[23],ville=name[24],pays='Britain')
+                    db.session.add(user_his)
                     db.session.commit()
 
                 else:
@@ -53,20 +64,25 @@ def insert_client(A,loc):
 
 def expert__(A,loc):
 
+    #wb_obj = openpyxl.load_workbook(loc)
+    #print(wb_obj)
     wb = xlrd.open_workbook(loc)
     sheet = wb.sheet_by_index(0)
 
     sheet.cell_value(0, 0)
-    for i in range(0,50):
+    for i in range(0,400):
         name=sheet.row_values(i+1)
         if A == 'Interv':
             if name[17] == '' or name[17] == 'XX':
                 print('no data here')
             else:
-                cli=Expert.query.filter_by(NOM=str(name[17].lower())).first()
+                cli=Expert.query.filter_by(nom=str(name[17].lower())).first()
                 if cli is None:
-                    expert=Expert(name[16],name[17].lower(),A,'','')
+                    expert=Expert(sexe=name[16],nom=name[17],numero='222000000',TYPE=A, email='test@gmail.com')    
                     db.session.add(expert)
+                    db.session.commit()
+                    history=Expert_History(expert_id=expert.id)
+                    db.session.add(history)
                     db.session.commit()
                 else:
                     print('already exist')
@@ -75,10 +91,13 @@ def expert__(A,loc):
             if name[11] == '' or name[11] == 'XX':
                 print('no data here')
             else:
-                cli=Expert.query.filter_by(NOM=str(name[11].lower())).first()
+                cli=Expert.query.filter_by(nom=str(name[11].lower())).first()
                 if cli is None:
-                    expert=Expert(name[10],name[11].lower(),A,'','')
+                    expert=Expert(sexe=name[10],nom=name[11],numero='222000000',TYPE=A, email='test@gmail.com')      
                     db.session.add(expert)
+                    db.session.commit()
+                    history=Expert_History(expert_id=expert.id)
+                    db.session.add(history)
                     db.session.commit()
                 else:
                     print('already exist')
