@@ -1,6 +1,6 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect
-from Database_project.project.data_base_.forms import (RegistrationForm , LoginForm ,tableform,Client_Form,Facturation_Form,Chiffrage_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm)
+from Database_project.project.data_base_.forms import (RegistrationForm , LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda)
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.data  import Missions,expert__,insert_client,mission_date
 from Database_project.project.data_base_.utils import send_reset_email
@@ -232,6 +232,7 @@ def ajouter_facturation():
     else:
         return redirect(url_for('users.main'))
 
+
 @users.route('/mission')
 @login_required
 def mission():
@@ -240,6 +241,135 @@ def mission():
         return render_template('manage/pages/mission.html',Mission=mission_,legend="mission")
 
     return redirect(url_for('users.main'))
+
+
+@users.route('/show/<int:id>/mission', methods=['GET'])
+@login_required
+def show_mission(id):
+    if current_user.TYPE == "Admin":
+        mission = Mission.query.filter_by(id=id).first_or_404()
+        return render_template('manage/pages/show_mission.html', mission=mission,legend="show_mission")
+
+
+
+@users.route('/ajouter/mission',methods=['GET','POST'])
+@login_required
+def ajouter_mission():
+    if current_user.TYPE == 'Admin':
+        form=Mission_add()
+        if form.validate_on_submit():
+            check=Client.query.filter_by(reference=form.Reference_client.data).first_or_404()
+            ID_=Expert.query.filter_by(id=int(form.ID_Concessionaire.data)).first_or_404()
+            if check and ID_.id:
+                mission=Mission(check.id,0,ID_.id,0,0,
+                0,0,0,0,0,0,
+                0,0,0,0,0,0,0,
+                0,0,0,0,0,0,
+                0,0,0,0,0,0,
+                0,0,0,0,0,0,
+                0,0,0,0,0,0,
+                0,0,
+                0,0,0,0,0,0,
+                0,0,0,0,0,0,
+                0,0,0,0,0,0,
+                0,0,0,
+                0,0,0)
+
+                db.session.add(mission)
+                db.session.commit()
+                return redirect(url_for('users.mission'))
+            else:
+                flash(f"Le client ou expert n'existe pas dans cette base",'danger')
+                return redirect(url_for('users.add_mission'))
+        return render_template('manage/pages/add_mission.html',form=form, legend="mission")
+
+@users.route('/edit/<int:id>/mission', methods=['GET'])
+@login_required
+def edit_mission(id):
+    if current_user.TYPE == 'Admin':
+        form = Mission_editForm()
+        expert = Mission.query.filter_by(id=id).first_or_404()
+        return render_template('manage/pages/edit_mission.html', form=form,history=expert_history,expert=expert)
+
+@users.route('/update/<int:id>/mission', methods=['POST', 'PUT'])
+@login_required
+def update_mission(id):
+    if current_user.TYPE == 'Admin':
+        form = Mission_editForm()
+        mission = Mission.query.filter_by(id=id).first_or_404()
+ 
+        mission.NRO_FACTURE = request.form['NRO_FACTURE']
+        mission.DATE_REALISE_EDL = request.form['DATE_REALISE_EDL']
+        mission.PRIX_HT_EDL = request.form['PRIX_HT_EDL']
+        mission.TVA_EDL = request.form['TVA_EDL']
+        mission.PRIX_TTC_EDL = request.form['PRIX_TTC_EDL']
+        mission.ID_INTERV = request.form['ID_INTERV']
+        mission.Reference_LOCATAIRE = request.form['Reference_LOCATAIRE']
+        mission.CA_HT_AS = request.form['CA_HT_AS']
+        mission.TVA_AS = request.form['TVA_AS']
+        mission.CA_TTC_AS = request.form['CA_TTC_AS']
+        mission.CA_HT_AC = request.form['CA_HT_AC']
+        mission.CA_TTC_AC = request.form['CA_TTC_AC']
+        mission.CA_HT_TRUST = request.form['CA_HT_TRUST']
+        mission.TVA_TRUST = request.form['TVA_TRUST']
+        mission.Date_chiffrage_regle = request.form['Date_chiffrage_regle']
+        mission.Prix_ht_chiffrage = request.form['Prix_ht_chiffrage']
+        mission.POURCENTAGE_suiveur_chiffrage = request.form['POURCENTAGE_suiveur_chiffrage']
+        mission.POURCENTAGE_AS_chiffrage = request.form['POURCENTAGE_AS_chiffrage']
+        mission.POURCENTAGE_manager_chiffrage = request.form['POURCENTAGE_manager_chiffrage']
+        mission.ID_manager_chiffrage = request.form['ID_manager_chiffrage']
+        mission.POURCENTAGE_agent_chiffrage = request.form['POURCENTAGE_agent_chiffrage']
+        mission.ID_agent_chiffrage = request.form['ID_agent_chiffrage']
+        mission.TYPE_EDL = request.form['TYPE_EDL']
+        mission.DATE_FACTURE = request.form['DATE_FACTURE']
+        mission.NOMPROPRIO  = request.form['NOMPROPRIO']
+        mission.DATE_FACT_REGLEE = request.form['DATE_FACT_REGLEE']
+        mission.DATE_COM_REGLEE_AS = request.form['DATE_COM_REGLEE_AS']
+        mission.MONTANT_COM_REGLEE_AS = request.form['MONTANT_COM_REGLEE_AS ']
+        mission.DATE_COM_REGLEE_AC  = request.form['DATE_COM_REGLEE_AC']
+        mission.MONTANT_COM_REGLEE_AC = request.form['MONTANT_COM_REGLEE_AC']
+        mission.TYPE_LOGEMENT = request.form['TYPE_LOGEMENT']
+        mission.NBRE_EDL_ABOONEMENT = request.form['NBRE_EDL_ABOONEMENT']
+        mission.MAIL_CONTACT_ENVOI_FACT = request.form['MAIL_CONTACT_ENVOI_FACT']
+        mission.DATE_saisie_enregistrement = request.form['DATE_saisie_enregistrement']
+        mission.CODE_AMEXPERT = request.form['CODE_AMEXPERT']
+        mission.COMMENTAIRE_FACTURE = request.form['COMMENTAIRE_FACTURE']
+        mission.TYPE_PAIEMENT = request.form['TYPE_PAIEMENT']
+        mission.N_REMISE_DE_CHEQUE = request.form['N_REMISE_DE_CHEQUE']
+        mission.SAISIE_TRAITE_PAR = request.form['SAISIE_TRAITE_PAR']
+        mission.infos_et_TRAITEMENT = request.form['infos_et_TRAITEMENT']
+        mission.LOGEMENT_MEUBLE = request.form['LOGEMENT_MEUBLE']
+        mission.CODE_FACTURATION = request.form['CODE_FACTURATION']
+        mission.TYPE_DE_BIEN = request.form['TYPE_DE_BIEN']
+        mission.surface_logement1  = request.form['surface_logement1']
+        mission.ETAGE = request.form['ETAGE']
+        mission.POINTAGE = request.form['POINTAGE']
+        mission.DATE_POINTAGE = request.form['DATE_POINTAGE']
+        mission.DEVEL = request.form['DEVEL']
+        mission.DATE_EXTRACTION_COMPTABLE  = request.form['DATE_EXTRACTION_COMPTABLE']
+        mission.POURCENTAGE_COM_AS_DU_CLIENT = request.form['POURCENTAGE_COM_AS_DU_CLIENT']
+        mission.ID_Respon_Cell_Dev = request.form['ID_Respon_Cell_Dev']
+        mission.POURCENTAGE_Respon_Cell_Dev = request.form['POURCENTAGE_Respon_Cell_Dev']
+        mission.ID_agent_Cell_Dev = request.form['ID_agent_Cell_Dev']
+        mission.POURCENTAGE_Agent_Cell_Dev = request.form['POURCENTAGE_Agent_Cell_Dev']
+        mission.ID_Agent_CellTech = request.form['ID_Agent_CellTech']
+        mission.POURCENTAGE_Agent_Cell_Tech = request.form['POURCENTAGE_Agent_Cell_Tech']
+        mission.ID_Respon_Cell_Tech  = request.form['ID_Respon_Cell_Tech']
+        mission.POURCENTAGE_Respon_Cell_Tech = request.form['POURCENTAGE_Respon_Cell_Tech']
+        mission.ID_Suiveur_Cell_Tech = request.form['ID_Suiveur_Cell_Tech']
+        mission.POURCENTAGE_Suiveur_Cell_Tech = request.form['POURCENTAGE_Suiveur_Cell_Tech']
+        mission.ID_Respon_Cell_Planif = request.form['ID_Respon_Cell_Planif']
+        mission.POURCENTAGE_Respon_Cell_Planif = request.form['POURCENTAGE_Respon_Cell_Planif']
+        mission.ID_Suiveur_Cell_Planif = request.form['ID_Suiveur_Cell_Planif']
+        mission.POURCENTAGE_Suiveur_Cell_Planif	 = request.form['POURCENTAGE_Suiveur_Cell_Planif']
+        mission.ID_Agent_saisie_Cell_Planif = request.form['ID_Agent_saisie_Cell_Planif']
+        mission.POURCENTAGE_Agent_saisie_CEll_planif = request.form['POURCENTAGE_Agent_saisie_CEll_planif'] 
+
+        db.session.commit()
+        
+        flash(f"Les information de l\'expert a ete modifier", "success")
+        return redirect(url_for('users.mission'))
+    return redirect(url_for('users.main'))   
 
 @users.route('/delete/<int:id>/mission', methods=['GET'])
 @login_required
@@ -250,6 +380,7 @@ def delete_mission(id):
         db.session.commit()
         flash(f'Les donnes de mission ont été  suprimmer','success')
         return redirect(url_for('users.mission'))
+
 
 @users.route('/expert')
 @login_required
@@ -287,6 +418,8 @@ def ajouter_expert():
         return render_template('manage/pages/ajouter_expert.html',form=form, legend="expert")
     else:
         return redirect(url_for('users.main'))
+
+
 
 @users.route('/edit/<int:id>/expert', methods=['GET'])
 @login_required
@@ -355,29 +488,43 @@ def update_expert(id):
         return redirect(url_for('users.expert'))
     return redirect(url_for('users.main'))
 
-@users.route('/tarifs')
+@users.route('/client/<int:id>/tarifs')
 @login_required
-def tarifs():
+def tarifs(id):
     if current_user.TYPE == "Admin":
-        tarifs=list(Tarifs.query.filter_by(visibility=True).all())
+        tarifs=list(Tarifs.query.filter(and_(Tarifs.reference_client==id,Tarifs.visibility==True)).all())
         return render_template('manage/pages/tarif.html',legend="tarifs",tarifs=tarifs)
 
     return redirect(url_for('users.main'))
 
+@users.route('/show/<int:id>/tarifs', methods=['GET'])
+@login_required 
+def show_tarif(id):
+    if current_user.TYPE == "Admin":
+        tarif_ = Tarifs.query.filter_by(id=id).first_or_404()
+        return render_template('manage/pages/show_tarifs.html', tarif=tarif_,legend="tarif")
 
-@users.route('/ajouter/tarifs/', methods=['GET','POST'])
+
+
+@users.route('/client/<int:id>/ajouter/tarifs/', methods=['GET','POST'])
 @login_required
-def ajouter_tarif():
+def ajouter_tarif(id):
     if current_user.TYPE == 'Admin':
         form = Tarif_Form()
+        client = Client.query.filter_by(id=id).first_or_404()
         if form.validate_on_submit():
-            tarif = Tarifs(form.ID_client.data,form.type_de_maison.data,form.remise.data,form.prix.data)
+            tarif = Tarifs(reference_client=client.id,maison_appartement=form.maison_appartement.data,type_maison=form.type_maison.data,Prix_EDL=form.Prix_EDL.data,Prix_Chiffrage=form.Prix_Chiffrage.data,code_tva=form.code_tva.data,Cell_AS_referent_client=form.ID_Cell_AS_referent_client.data,
+            Cell_AS_referent_client_taux_com=form.Cell_AS_referent_client_taux_com.data,Cell_devel_client=form.ID_Cell_devel_client.data,Cell_devel_respon_client_taux_com=form.Cell_devel_respon_client_taux_com.data,Cell_devel_agent_suivi_client=form.ID_Cell_devel_agent_suivi_client.data,Cell_devel_agent_suivi_client_taux_com=form.Cell_devel_agent_suivi_client_taux_com.data,
+            Cell_tech_Ref_agent_suivi_client=form.ID_Cell_tech_Ref_agent_suivi_client.data,Cell_tech_Ref_respon_suivi_client_taux_com=form.Cell_tech_Ref_respon_suivi_client_taux_com.data,Cell_tech_Ref_suiveur_client=form.ID_Cell_tech_Ref_suiveur_client.data,Cell_tech_Ref_suiveur_taux_com=form.Cell_tech_Ref_suiveur_taux_com.data,Cell_Planif_Ref_respon_client=form.ID_Cell_Planif_Ref_respon_client.data,
+            Cell_Planif_Ref_respon_taux_com=form.Cell_Planif_Ref_respon_taux_com.data,Cell_Planif_Ref_suiveur_client=form.ID_Cell_Planif_Ref_suiveur_client.data,Cell_Planif_Ref_suiveur_taux_com=form.Cell_Planif_Ref_suiveur_taux_com.data,Cell_Planif_Ref_agent_client=form.ID_Cell_Planif_Ref_agent_client.data,Cell_Planif_Ref_agent_taux_com=form.Cell_Planif_Ref_agent_taux_com.data,
+            commentaire_libre=form.commentaire_libre.data)
             db.session.add(tarif)
             db.session.commit()
             flash(f'Le tarif a été créé avec succès', 'success')
             return redirect(url_for('users.tarifs'))
         return render_template('manage/pages/ajouter_tarif.html',form=form, legend="expert")
     return redirect(url_for('users.main'))
+
 
 @users.route('/delete/<int:id>/tarif')
 @login_required
@@ -412,78 +559,123 @@ def update_tarif(id):
     return redirect(url_for('users.edit_tarif', id=id))
        
 
-@users.route('/chiffrage')
-@login_required
-def chiffrage():
-    if current_user.TYPE == "Admin" or current_user.TYPE == "CONCESS":
-        chiffrage_=list(Chiffrage.query.filter_by(visibility=True).all())
-        return render_template('manage/pages/chiffrage.html',legend="chiffrage",Chiffrage=chiffrage_)
 
-    return redirect(url_for('users.main'))
 
-@users.route('/ajoutez/chiffrage',methods=['GET','POST'])
-@login_required
-def ajouter_chiffrage():
-    if current_user.TYPE == "Admin" or  current_user.TYPE == "CONCESS":
-        form=Chiffrage_Form()
-        if form.validate_on_submit():
-            chiffrge=Chiffrage(mission=form.Mission.data,type_expert=form.Type_expert.data,pourcentage_gain=form.Pourcentage_gain.data)
-            db.session.add(chiffrge)
-            db.session.commit()
-            flash(f'Le chiffrage a été créé avec succès', 'success')
-            return redirect(url_for('users.chiffrage'))
-        return render_template('manage/pages/ajouter_chiffrage.html',form=form, legend="chiffrage")
-    else:
-        return redirect(url_for('users.main'))
 
-@users.route('/delete/<int:id>/chiffrage')
-@login_required
-def delete_chiffrage(id):
-    if current_user.TYPE == "Admin" or  current_user.TYPE == "CONCESS":
-        chiffrage = Chiffrage.query.filter_by(id=id).first_or_404()
-        chiffrage.visibility=False
-        db.session.commit()
-        flash(f'Les donnes de chiffrage ont été  suprimmer','success')
-        return redirect(url_for('users.chiffrage'))
 
-@users.route('/edit/<int:id>/chiffrage')
-@login_required
-def edit_chiffrage(id):
-    if current_user.TYPE == "Admin" or  current_user.TYPE == "CONCESS":
-        form = Chiffrage_Form()
-        chiffrage = Chiffrage.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/edit_chiffrage.html', chiffrage=chiffrage,form=form)
 
-@users.route('/update/<int:id>/chiffrage', methods=['POST', 'PUT'])
-@login_required
-def update_chiffrage(id):
-    if current_user.TYPE == 'Admin'  or  current_user.TYPE == "CONCESS":
-        chiffrage = Chiffrage.query.filter_by(id=id).first_or_404()
-        chiffrage.Mission = request.form['Mission']
-        chiffrage.Type_expert = request.form['Type_expert']
-        chiffrage.Pourcentage_gain = request.form['Pourcentage_gain']
-        db.session.commit()
-        flash(f'Les donnes du chiffrage a été modifiées','success')
-        return redirect(url_for('users.chiffrage'))
-    return redirect(url_for('users.edit_tarif', id=id))
 
-@users.route('/agenda')
+@users.route('/client/<int:id>/agenda')
 @login_required
-def agenda():
+def agenda(id):
     if current_user.TYPE == "Audit":
-        agenda_=list(Agenda.query.filter_by(Visibility=True).all())
-        return render_template('manage/pages/agenda.html',legend="agenda",Agenda=agenda_)
+        #agenda_=list(Agenda.query.filter(_and(Agenda.client_id==id,Agenda.visibility=True)).all())
+        return render_template('manage/pages/agenda.html',legend="agenda",Agenda=agenda_) #correct
 
     return redirect(url_for('users.main'))
 
-#@users.route('/ajoutez/agenda')
-#@login_required
-#def ajouter_agenda ():
-   # if current_user.TYPE == "Admin" or  current_user.TYPE == "CONCESS" or current_user.TYPE == "Audit":
-        # agenda_=list(Agenda.query.all())
-       # return render_template('manage/pages/ajouter_agenda.html', legend="agenda")
+@users.route('/show/<int:id>/agenda', methods=['GET'])
+@login_required 
+def show_agenda(id):
+    if current_user.TYPE == "Admin":
+        tarif_ = Agenda.query.filter_by(id=id).first_or_404()
+        return render_template('manage/pages/show_agenda.html', tarif=tarif_,legend="agenda")
 
-    #return redirect(url_for('users.main'))
+
+@users.route('/ajoutez/<int:id>/agenda')
+@login_required
+def ajouter_agenda (id):
+    if current_user.TYPE == "Admin"  or current_user.TYPE == "Audit":
+        form = Agenda_form()
+        if form.validate_on_submit():#fix data
+            agenda=Agenda(client_id=id,Organisateur=current_user.id,
+            Titre_du_Rdv=form.Titre_du_Rdv.data,Adresse1_Rdv=form.Adresse1_Rdv.data,
+            Adresse2_Rdv=form.Adresse2_Rdv.data,Code_postal_Rdv=form.Code_postal_Rdv.data,
+            Ville_du_Rdv=form.Ville_du_Rdv.data,Date_Rdv=form.Date_Rdv.data,Heure_début_Rdv=form.Heure_début_Rdv.data,
+            Heure_fin_Rdv=form.Heure_fin_Rdv.data,Date_Rdv_annulé=form.Date_Rdv_annulé.data,
+            Informations_réservées_service_planification=form.Informations_réservées_service_planification.data,
+            Informations_générales=form.Informations_générales.data,Informations_de_suivi_de_Rdv=form.Informations_de_suivi_de_Rdv.data,
+            Chemin_de_fichier_joint=form.Chemin_de_fichier_joint.data)
+            
+            db.session.add(agenda)
+            db.session.commit()
+            flash(f'Agenda du client a ete ajouter','success')
+            return redirect(url_for('users.ajouter_agenda',id=id))
+        return render_template('manage/pages/ajouter_agenda.html', legend="agenda")
+
+    return redirect(url_for('users.main'))
+
+@users.route('/edit/<int:id>/agenda')
+@login_required
+def edit_agenda(id):
+    if current_user.TYPE == "Admin"  or current_user.TYPE == "Audit":
+        form = Agenda_form()
+        tarif = Tarifs.query.filter_by(id=id).first_or_404()
+        return render_template('manage/pages/edit_agenda.html', tarif=tarif,form=form)
+
+@users.route('/update/<int:id>/agenda', methods=['POST', 'PUT'])
+@login_required
+def update_agenda(id):
+    if current_user.TYPE == "Admin"  or current_user.TYPE == "Audit":
+        agenda = Agenda.query.filter_by(id=id).first_or_404()
+        agenda.Titre_du_Rdv=request.form['Titre_du_Rdv']
+        agenda.Adresse1_Rdv=request.form['Adresse1_Rdv']
+        agenda.Adresse2_Rdv=request.form['Adresse2_Rdv']
+        agenda.Code_postal_Rdv=request.form['Code_postal_Rdv']
+        agenda.Ville_du_Rdv=request.form['Ville_du_Rdv']
+        agenda.Date_Rdv=request.form['Date_Rdv']
+        agenda.Heure_début_Rdv=request.form['Heure_début_Rdv']
+        agenda.Heure_fin_Rdv=request.form['Heure_fin_Rdv']
+        agenda.Date_Rdv_annulé =request.form['Date_Rdv_annulé']
+        agenda.Informations_réservées_service_planification=request.form['Informations_réservées_service_planification']
+        agenda.Informations_générales =request.form['Informations_générales']
+        agenda.Informations_de_suivi_de_Rdv=request.form['Informations_de_suivi_de_Rdv']
+        agenda.Chemin_de_fichier_joint=request.form['Chemin_de_fichier_joint']
+        
+        db.session.commit()
+        flash(f'Les donnes du tarif a été modifiées','success')
+        return redirect(url_for('users.agenda'))
+    return redirect(url_for('users.edit_agenda', id=id))
+
+
+@users.route('/invite/<int:id>/agenda')
+@login_required
+def invite_agenda(id):
+    if current_user.TYPE == "Admin"  or current_user.TYPE == "Audit":
+        form = Invitation_Agenda()
+        if form.validate_on_submit():
+
+            agenda = Agenda_expert(agenda_taken=id ,Participant_invité=form.Expert_invite.data)
+            db.session.add(user)
+            db.session.commit()
+            flash(f"L'invitation a été envoyes","success")# you need to send a mail
+            return redirect(url_for('users.agenda'))
+
+        return render_template('manage/pages/edit_agenda.html', tarif=tarif,form=form)
+
+
+@users.route('/delete/<int:id>/agenda', methods=['GET'])
+@login_required
+def delete_agenda(id):
+    if current_user.TYPE == "Admin":
+        agenda = Agenda.query.filter_by(id=id).first_or_404()
+        participants=list(Agenda_expert.query.filter_by(agenda_taken=id).all())
+        agenda.visibility=False
+        db.session.commit()
+        for i in participants:
+            i.visibility=False
+            db.session.commit()
+        flash(f"Les donnes de l'agenda ont été  suprimmer",'success')
+        return redirect(url_for('users.negotiateur', id=id))
+
+
+
+
+
+
+
+
+
 
 @users.route('/sign_up',methods=['GET','POST'])
 def sign_up():
@@ -512,9 +704,9 @@ def login():
     #expert.TYPE="Admin"
     #hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
     #expert.password = hashed_password
-   # db.session.commit()
+    #db.session.commit()
     #db.drop_all()
-    db.create_all()
+    #db.create_all()
     expert=Expert(sexe='Mr.',nom='Admin',numero=12345,TYPE='Admin', email='test0001@gmail.com' )
     db.session.add(expert)
     db.session.commit()
@@ -582,11 +774,11 @@ def ajout_agenda():
         print('ok1')
         client = Client.query.get(request.form.get('id'))
         #expert_audit=Expert.query.filter(and_(Expert.NOM == str(current_user.NOM), Expert.TYPE =='audit_planner')).first() #type='audit_planner'
-        agen=Agenda(client.id,int(request.form['Audit_planner']),int(request.form['Agent_referent']),
-        request.form['Lieu'],request.form['Date'])
-        db.session.add(agen)
-        db.session.commit()
-        return redirect(url_for('users.agenda'))
+     #   agen=Agenda(client.id,int(request.form['Audit_planner']),int(request.form['Agent_referent'])
+     #   request.form['Lieu'],request.form['Date'])
+     #   db.session.add(agen)
+     #   db.session.commit()
+      #  return redirect(url_for('users.agenda'))
     return render_template('manage/pages/ajouter_agenda.html', legend="agenda")
     #return redirect(url_for('users.client'))
 
@@ -980,17 +1172,17 @@ def uploader_():
 
 
 
-#@users.app_errorhandler(404)
-#def error_404(error):
- #   return render_template('errors/404.html'),404
+@users.app_errorhandler(404)
+def error_404(error):
+    return render_template('errors/404.html'),404
 
-#@users.app_errorhandler(403)
-#def error_403(error):
- #   return render_template('errors/403.html'),403
+@users.app_errorhandler(403)
+def error_403(error):
+    return render_template('errors/403.html'),403
  
-#@users.app_errorhandler(500)
-#def error_500(error):
- #   return render_template('errors/500.html'),500
+@users.app_errorhandler(500)
+def error_500(error):
+    return render_template('errors/500.html'),500
 
 
 

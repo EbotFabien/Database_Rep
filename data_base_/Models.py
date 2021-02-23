@@ -168,25 +168,7 @@ class suivi_client(db.Model):
     responsable__data=db.relationship("Expert", 
         primaryjoin=(responsable == Expert.id),
         backref=db.backref('responsable__data',  uselist=False),  uselist=False)
-    #CELL_AS_REFERANT_CLIENT = db.Column(db.Integer, db.ForeignKey('Expert.id'))
-    #CELL_PLANIF_REF_SUIVEUR= db.Column(db.Integer, db.ForeignKey('Expert.id'))
-    #CELL_DEV_REF_AGENT= db.Column(db.Integer, db.ForeignKey('Expert.id'))
-    #CELL_DEV_REF_RESPONSABLE= db.Column(db.Integer, db.ForeignKey('Expert.id'))
-    #CELL_PLANIF_REF_AGENT_SAISIE= db.Column(db.Integer, db.ForeignKey('Expert.id'))
-    #CELL_PLANIF_REF_RESPONSABLE= db.Column(db.Integer, db.ForeignKey('Expert.id'))
-    #CELL_TECH_REF_AGENT= db.Column(db.Integer, db.ForeignKey('Expert.id'))
-    #CELL_TECH_REF_RESPONSABLE= db.Column(db.Integer, db.ForeignKey('Expert.id'))
-    #CELL_TECH_REF_SUIVEUR= db.Column(db.Integer, db.ForeignKey('Expert.id'))
-    #COM_AS_SUR_CA_CLIENT = db.Column(db.String)
-    #COM_CELL_DEV_REF_AGENT = db.Column(db.String)
-    #COM_CELL_DEV_REF_RESPONSABLE = db.Column(db.String)
-    #COM_CELL_PLANIF_REF_AGENT_SAISIE = db.Column(db.String)
-    #COM_CELL_PLANIF_REF_RESPONSABLE = db.Column(db.String)
-    #COM_CELL_PLANIF_REF_SUIVEUR = db.Column(db.String)
-    #COM_CELL_TECH_REF_AGENT = db.Column(db.String)
-    #COM_CELL_TECH_REF_RESPONSABLE = db.Column(db.String)
-    #COM_CELL_TECH_REF_SUIVEUR = db.Column(db.String)
-    #Commercial = db.Column(db.String)
+    
     commentaire = db.Column(db.String)
     date_creation=db.Column(db.DateTime(),default=datetime.utcnow)
     date_modif=db.Column(db.DateTime())
@@ -351,78 +333,59 @@ class Agenda(db.Model):
     __tablename__ = 'Agenda'
 
     id = db.Column(db.Integer,primary_key=True)
-    clien_t  = db.Column(db.Integer, ForeignKey('Client.id'))
-    audit_planner  = db.Column(db.Integer, ForeignKey('Expert.id'))
-    Agent_referent_du_client  = db.Column(db.Integer, ForeignKey('Expert.id'))
-
-    client__data=db.relationship("Client", 
-        primaryjoin=(clien_t == Client.id),
-        backref=db.backref('client__data',  uselist=False),  uselist=False)
-
-    Agent_data_=db.relationship("Expert", 
-    primaryjoin=(Agent_referent_du_client == Expert.id),
-    backref=db.backref('Agent_data_',  uselist=False),  uselist=False)
-
-    audit_planner_data=db.relationship("Expert", 
-    primaryjoin=(audit_planner == Expert.id),
-    backref=db.backref('audit_planner_data',  uselist=False),  uselist=False)
-
-
-    Validation_par_agent  = db.Column(db.Boolean,default=False)
-    Lieu  = db.Column(db.String)
-    Date_  = db.Column(db.DateTime(), nullable=False)
-    Rapport  = db.Column(db.String)
-    Status  = db.Column(db.Boolean,default=False)
-  
-    
-    def __init__(self,client,audit_planner,agent,lieu,date):
-        self.clien_t =client
-        self.audit_planner =audit_planner
-        self.Agent_referent_du_client = agent
-       # self.Validation_par_agent = validation
-        self.Lieu =lieu
-        self.Date_ =date
-       # self.Status = confirmation
-
+    Ref_agenda_date=db.Column(db.DateTime(),default=datetime.utcnow)
+    client_id=db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    Organisateur = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"))  
+    Titre_du_Rdv =db.Column(db.String)
+    Adresse1_Rdv =db.Column(db.String)
+    Adresse2_Rdv =db.Column(db.String)
+    Code_postal_Rdv =db.Column(db.String)
+    Ville_du_Rdv =db.Column(db.String)
+    Date_Rdv =db.Column(db.String)
+    Heure_début_Rdv =db.Column(db.String)
+    Heure_fin_Rdv =db.Column(db.String)
+    Date_Rdv_annulé =db.Column(db.String)
+    Informations_réservées_service_planification =db.Column(db.String)
+    Informations_générales =db.Column(db.String)
+    Informations_de_suivi_de_Rdv =db.Column(db.String)
+    Chemin_de_fichier_joint =db.Column(db.String)
+    visibility =db.Column(db.Boolean,default=True)
 
     def __repr__(self):
         return '<Agenda %r>' %self.id
 
     
 
-    
+class Agenda_expert(db.Model):
+    __tablename__ = 'Agenda_expert'
+
+
+    id = db.Column(db.Integer,primary_key=True)
+
+    agenda_taken=db.Column(db.Integer, ForeignKey('Agenda.id', onupdate="CASCADE", ondelete="CASCADE")) 
+
+    Participant_invité =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"))  
+
+    validation = db.Column(db.Boolean,default=False)
  
+    visibility =db.Column(db.Boolean,default=True)
 
-
+    def __repr__(self):
+        return '<Agenda_expert %r>' %self.id
 
 
 class Tarifs(db.Model):
     __tablename__ = 'Tarifs'
+
     id = db.Column(db.Integer,primary_key=True)
+    reference_client= db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
+    data_client=db.relationship("Client", 
+        primaryjoin=(reference_client == Client.id),
+        backref=db.backref('data_client',  uselist=False),  uselist=False)
     maison_appartement=db.Column(db.String) 
     type_maison  = db.Column(db.String) 
     Prix_EDL = db.Column(db.String) 
     Prix_Chiffrage =db.Column(db.String) 
-    #sur tarifs
-    visibility =db.Column(db.Boolean,default=True)
-
-    def __init__(self,maison_appartement, type_maison,Prix):
-        self.maison_appartement=maison_appartement
-        self.type_maison = type_maison
-        self.Prix = Prix
-
-    def __repr__(self):
-        return '<Tarifs %r>' %self.id
-
-class Tarifs_client(db.Model):
-    __tablename__ = 'Tarifs_client'
-
-    id = db.Column(db.Integer,primary_key=True)
-    reference_client= db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
-    maison_appartement=db.Column(db.String) 
-    type_maison  = db.Column(db.String) 
-    Prix_EDL = db.Column(db.String) 
-    Prix_Chiffrage =db.Column(db.String)
     code_tva=db.Column(db.String)
     Cell_AS_referent_client=db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     referent__data=db.relationship("Expert", 
@@ -479,19 +442,14 @@ class Tarifs_client(db.Model):
 
     Cell_Planif_Ref_agent_taux_com = db.Column(db.String)
     commentaire_libre= db.Column(db.String)
-    date=db.Column(db.DateTime(), nullable=False)
+    date=db.Column(db.DateTime(),default=datetime.utcnow)
     visibility =db.Column(db.Boolean,default=True)
     
     
-    def __init__(self,reference_client, type_maison,remise,Prix):
-        self.reference_client=reference_client
-        self.type_maison = type_maison
-        self.remise =remise
-        self.Prix = Prix
 
 
     def __repr__(self):
-        return '<Tarifs_client %r>' %self.id
+        return '<Tarifs %r>' %self.id
 
 
 
@@ -501,7 +459,7 @@ class Mission(db.Model):
     __tablename__ = 'Mission'
 
     id = db.Column(db.Integer,primary_key=True)
-    Reference_BAILLEUR	 = db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
+    Reference_BAILLEUR	= db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
     Bailleur__data=db.relationship("Client", 
         primaryjoin=(Reference_BAILLEUR == Client.id),
         backref=db.backref('Bailleur__data',  uselist=False),  uselist=False)
@@ -513,12 +471,12 @@ class Mission(db.Model):
     DATE_REALISE_EDL = db.Column(db.String) 	
     PRIX_HT_EDL	 = db.Column(db.String) 
     TVA_EDL	 = db.Column(db.String) 
-    PRIX_TTC_EDL	 = db.Column(db.String) 
+    PRIX_TTC_EDL= db.Column(db.String) 
     ID_INTERV = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     INTERV__data=db.relationship("Expert", 
         primaryjoin=(ID_INTERV == Expert.id),
         backref=db.backref('INTERV__data',  uselist=False),  uselist=False)	
-    Reference_LOCATAIRE	 = db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
+    Reference_LOCATAIRE	 = db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True)   
     LOCATAIRE__data=db.relationship("Client", 
         primaryjoin=(Reference_BAILLEUR == Client.id),
         backref=db.backref('LOCATAIRE__data',  uselist=False),  uselist=False)
@@ -534,12 +492,12 @@ class Mission(db.Model):
     POURCENTAGE_suiveur_chiffrage	 = db.Column(db.String) 
     POURCENTAGE_AS_chiffrage = db.Column(db.String) 	
     POURCENTAGE_manager_chiffrage  = db.Column(db.String) 	
-    ID_manager_chiffrage  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    ID_manager_chiffrage  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     manager_chiffrage__data=db.relationship("Expert", 
         primaryjoin=(ID_manager_chiffrage == Expert.id),
         backref=db.backref('manager_chiffrage__data',  uselist=False),  uselist=False)	
     POURCENTAGE_agent_chiffrage = db.Column(db.String) 	
-    ID_agent_chiffrage  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 	
+    ID_agent_chiffrage  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 	
     agent_chiffrage__data=db.relationship("Expert", 
         primaryjoin=(ID_agent_chiffrage == Expert.id),
         backref=db.backref('agent_chiffrage__data',  uselist=False),  uselist=False)
@@ -571,46 +529,47 @@ class Mission(db.Model):
     DEVEL = db.Column(db.String) 	
     DATE_EXTRACTION_COMPTABLE = db.Column(db.String) 	
     POURCENTAGE_COM_AS_DU_CLIENT = db.Column(db.String) 	
-    ID_Respon_Cell_Dev	 = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    ID_Respon_Cell_Dev	 = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     Respon_Cell_Dev__data=db.relationship("Expert", 
         primaryjoin=(ID_Respon_Cell_Dev == Expert.id),
         backref=db.backref('Respon_Cell_Dev__data',  uselist=False),  uselist=False)
     POURCENTAGE_Respon_Cell_Dev = db.Column(db.String) 	
-    ID_agent_Cell_Dev = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 	
+    ID_agent_Cell_Dev = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 	
     agent_Cell_Dev__data=db.relationship("Expert", 
         primaryjoin=(ID_agent_Cell_Dev == Expert.id),
         backref=db.backref('agent_Cell_Dev__data',  uselist=False),  uselist=False)
     POURCENTAGE_Agent_Cell_Dev = db.Column(db.String) 	
-    ID_Agent_CellTech = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"))  	
+    ID_Agent_CellTech = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True)  	
     Agent_CellTech__data=db.relationship("Expert", 
         primaryjoin=(ID_Agent_CellTech == Expert.id),
         backref=db.backref('Agent_CellTech__data',  uselist=False),  uselist=False)
     POURCENTAGE_Agent_Cell_Tech = db.Column(db.String) 	
-    ID_Respon_Cell_Tech = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) #######
+    ID_Respon_Cell_Tech = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) #######
     Respon_Cell_Tech__data=db.relationship("Expert", 
         primaryjoin=(ID_Respon_Cell_Tech == Expert.id),
         backref=db.backref('Respon_Cell_Tech__data',  uselist=False),  uselist=False)	
     POURCENTAGE_Respon_Cell_Tech = db.Column(db.String) 	
-    ID_Suiveur_Cell_Tech  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    ID_Suiveur_Cell_Tech  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     Suiveur_Cell_Tech__data=db.relationship("Expert", 
         primaryjoin=(ID_Suiveur_Cell_Tech == Expert.id),
         backref=db.backref('Suiveur_Cell_Tech__data',  uselist=False),  uselist=False)
     POURCENTAGE_Suiveur_Cell_Tech	 = db.Column(db.String) 
-    ID_Respon_Cell_Planif = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    ID_Respon_Cell_Planif = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     Respon_Cell_Planif__data=db.relationship("Expert", 
         primaryjoin=(ID_Respon_Cell_Planif == Expert.id),
         backref=db.backref('Respon_Cell_Planif__data',  uselist=False),  uselist=False)
     POURCENTAGE_Respon_Cell_Planif  = db.Column(db.String) 	
-    ID_Suiveur_Cell_Planif  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    ID_Suiveur_Cell_Planif  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     Suiveur_Cell_Planif__data=db.relationship("Expert", 
         primaryjoin=(ID_Suiveur_Cell_Planif == Expert.id),
         backref=db.backref('Suiveur_Cell_Planif__data',  uselist=False),  uselist=False)
     POURCENTAGE_Suiveur_Cell_Planif	 = db.Column(db.String) 
-    ID_Agent_saisie_Cell_Planif  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"))
+    ID_Agent_saisie_Cell_Planif  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True)
     Agent_saisie_Cell_Planif__data=db.relationship("Expert", 
         primaryjoin=(ID_Agent_saisie_Cell_Planif == Expert.id),
         backref=db.backref('Agent_saisie_Cell_Planif__data',  uselist=False),  uselist=False)  	
     POURCENTAGE_Agent_saisie_CEll_planif  = db.Column(db.String) 
+    date =db.Column(db.DateTime(),default=datetime.utcnow)
     Visibility =db.Column(db.Boolean,default=True)
     
 
@@ -694,3 +653,37 @@ class Mission(db.Model):
 
     def __repr__(self):
         return '<Mission %r>' %self.id
+
+
+
+
+
+#class facturation_client(db.Model):
+ #   __tablename__ = 'facturation_client'
+
+  #  id = db.Column(db.Integer,primary_key=True)
+   # n_facture = db.Column(db.String) 
+    #ref_mission = db.Column(db.Integer, ForeignKey('Mission.id', onupdate="CASCADE", ondelete="CASCADE"))   
+    #Mission__data=db.relationship("Mission", 
+     #   primaryjoin=(ref_mission == Mission.id),
+      #  backref=db.backref('Mission__data',  uselist=False),  uselist=False)
+    #Montant_HT = db.Column(db.String)
+    #Montant_TTC = db.Column(db.String)
+    #TTC = db.Column(db.String)
+    #Date_de_creation=db.Column(db.String)
+    #Date_reglement_client=db.Column(db.String)
+    #Statut=db.Column(db.String) #(payé ou en attente) differentes types de satus
+    #Observations suivi paiement=db.Column(db.String)
+    #Date_première_relance=db.Column(db.String) # date cree plus 15 jr
+    #Date_seconde_relance=db.Column(db.String) # date cree plus seconde relance plus 15 jr
+    #Date_mise_en_demeure=db.Column(db.String) # date seconde plus 15jr
+    #Email_de_relance=db.Column(db.String)
+
+
+    #def __repr__(self):
+     #   return '<facturation_client %r>' %self.id
+
+
+
+#class expert_constat(db.Model):
+  #  __tablename__ = 'expert_constat'

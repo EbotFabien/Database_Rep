@@ -134,25 +134,53 @@ class tableform(FlaskForm):
 
         submit = SubmitField('Recherchez')
 
-class Chiffrage_Form(FlaskForm):
-    Mission =StringField(" Mission",
-                                validators=[DataRequired()])
-    
-    Type_expert =SelectField('Type_Expert',
-                             choices=[('Interv', 'Interv'), ('CONCESS', 'CONCESS'), ('agent Cell Dev', 'agent Cell Dev'),('Interv', 'Interv'),('Suiveur Cell Tech', 'Suiveur Cell Tech'),('Suiveur Cell Planif', 'Suiveur Cell Planif'),('Admin', 'Admin'),('Audit', 'Audit')])
 
-
-    Pourcentage_gain =StringField('Pourcentage_gain',
-                           validators=[DataRequired()])
-
-    submit = SubmitField('enregistrer')
 
 class Tarif_Form(FlaskForm):
-  ID_client=StringField('client',
-                        validators=[DataRequired()])
-  type_de_maison = SelectField('Type', choices=[('F1', 'F1'), ('F2', 'F2'),('F3', 'F3'),('F4', 'F4'),('F5', 'F5')])
-  prix = StringField('Prix', validators=[DataRequired()])
-  remise = StringField('Remise', validators=[DataRequired()])
+
+  type_maison = SelectField('Type', choices=[('F1', 'F1'), ('F2', 'F2'),('F3', 'F3'),('F4', 'F4'),('F5', 'F5')])
+
+  maison_appartement=SelectField('M/A', choices=[('Maison', 'Maison'), ('Appartement', 'Appartement')])
+
+  Prix_EDL= StringField('Prix_EDL', validators=[DataRequired()])
+
+  Prix_Chiffrage= StringField('Prix_Chiffrage', validators=[DataRequired()])
+
+  code_tva= StringField('code_tva', validators=[DataRequired()])
+
+  ID_Cell_AS_referent_client= StringField('ID_Cell_AS_referent_client', validators=[DataRequired()])
+
+  Cell_AS_referent_client_taux_com=StringField('Cell_AS_referent_client_taux_com', validators=[DataRequired()])
+
+  ID_Cell_devel_client = StringField('ID_Cell_devel_client', validators=[DataRequired()])
+
+  Cell_devel_respon_client_taux_com = StringField('Cell_devel_respon_client_taux_com', validators=[DataRequired()])
+
+  ID_Cell_devel_agent_suivi_client = StringField('ID_Cell_devel_agent_suivi_client', validators=[DataRequired()])
+
+  Cell_devel_agent_suivi_client_taux_com = StringField('Cell_devel_agent_suivi_client_taux_com', validators=[DataRequired()])
+
+  ID_Cell_tech_Ref_agent_suivi_client = StringField('ID_Cell_tech_Ref_agent_suivi_client', validators=[DataRequired()])
+
+  Cell_tech_Ref_respon_suivi_client_taux_com = StringField('Cell_tech_Ref_respon_suivi_client_taux_com', validators=[DataRequired()])
+
+  ID_Cell_tech_Ref_suiveur_client = StringField('ID_Cell_tech_Ref_suiveur_client', validators=[DataRequired()])
+
+  Cell_tech_Ref_suiveur_taux_com = StringField('Cell_tech_Ref_suiveur_taux_com', validators=[DataRequired()])
+
+  ID_Cell_Planif_Ref_respon_client = StringField('ID_Cell_Planif_Ref_respon_client', validators=[DataRequired()])
+
+  Cell_Planif_Ref_respon_taux_com = StringField('Cell_Planif_Ref_respon_taux_com', validators=[DataRequired()])
+
+  ID_Cell_Planif_Ref_suiveur_client = StringField('ID_Cell_Planif_Ref_suiveur_client', validators=[DataRequired()])
+
+  Cell_Planif_Ref_suiveur_taux_com = StringField('Cell_Planif_Ref_suiveur_taux_com', validators=[DataRequired()])
+
+  ID_Cell_Planif_Ref_agent_client = StringField('ID_Cell_Planif_Ref_agent_client', validators=[DataRequired()])
+
+  Cell_Planif_Ref_agent_taux_com  =  StringField('Cell_Planif_Ref_suiveur_taux_com', validators=[DataRequired()])
+
+  commentaire_libre = StringField('commentaire_libre', validators=[DataRequired()])
   
 
   submit = SubmitField('enregistrer')
@@ -261,4 +289,204 @@ class Suivi_Client(FlaskForm):
 
     commentaire=StringField("commentaire",
                         validators=[DataRequired()])
+    submit = SubmitField('enregistrer')
+
+
+class Mission_add(FlaskForm):
+
+    Reference_client=StringField("Reference_client",
+                        validators=[DataRequired()])
+
+    ID_Concessionaire=StringField("ID_Concessionaire",
+                        validators=[DataRequired()])
+   
+    submit = SubmitField('enregistrer')
+
+
+class Mission_editForm(FlaskForm):
+
+    NRO_FACTURE=StringField("NRO_FACTURE",
+                        validators=[DataRequired()])
+    DATE_REALISE_EDL=StringField("DATE_REALISE_EDL",
+                        validators=[DataRequired()])
+    PRIX_HT_EDL=StringField("PRIX_HT_EDL",
+                        validators=[DataRequired()])
+    TVA_EDL=StringField("TVA_EDL",
+                        validators=[DataRequired()])
+    PRIX_TTC_EDL=StringField("PRIX_TTC_EDL",
+                        validators=[DataRequired()])
+    ID_INTERV=StringField("ID_INTERV",
+                        validators=[DataRequired()])
+    Reference_LOCATAIRE=StringField("Reference_LOCATAIRE",
+                        validators=[DataRequired()])
+    CA_HT_AS=StringField("CA_HT_AS",
+                        validators=[DataRequired()])
+    TVA_AS=StringField("TVA_AS",
+                        validators=[DataRequired()])
+    CA_TTC_AS=StringField("CA_TTC_AS",
+                        validators=[DataRequired()])
+    CA_HT_AC=StringField("CA_HT_AC",
+                        validators=[DataRequired()])
+    CA_TTC_AC=StringField("CA_TTC_AC",
+                        validators=[DataRequired()])
+    CA_HT_TRUST=StringField("CA_HT_TRUST",
+                        validators=[DataRequired()])	
+    TVA_TRUST=StringField("TVA_TRUST",
+                        validators=[DataRequired()])
+    Date_chiffrage_regle=StringField("Date_chiffrage_regle",
+                        validators=[DataRequired()])
+    Prix_ht_chiffrage=StringField("Prix_ht_chiffrage",
+                        validators=[DataRequired()])
+    POURCENTAGE_suiveur_chiffrage=StringField("POURCENTAGE_suiveur_chiffrage",
+                        validators=[DataRequired()])
+    POURCENTAGE_AS_chiffrage=StringField("POURCENTAGE_AS_chiffrage",
+                        validators=[DataRequired()])
+    POURCENTAGE_manager_chiffrage=StringField("POURCENTAGE_manager_chiffrage",
+                        validators=[DataRequired()])
+    ID_manager_chiffrage =StringField("ID_manager_chiffrage",
+                        validators=[DataRequired()])
+    POURCENTAGE_agent_chiffrage =StringField("POURCENTAGE_agent_chiffrage",
+                        validators=[DataRequired()])
+    ID_agent_chiffrage =StringField("ID_agent_chiffrage",
+                        validators=[DataRequired()])
+    TYPE_EDL =StringField("TYPE_EDL",
+                        validators=[DataRequired()])  	
+    DATE_FACTURE =StringField("DATE_FACTURE",
+                        validators=[DataRequired()])  	
+    NOMPROPRIO =StringField("NOMPROPRIO",
+                        validators=[DataRequired()])  	
+    DATE_FACT_REGLEE =StringField("DATE_FACT_REGLEE",
+                        validators=[DataRequired()])  	
+    DATE_COM_REGLEE_AS =StringField("DATE_COM_REGLEE_AS",
+                        validators=[DataRequired()])  	
+    MONTANT_COM_REGLEE_AS =StringField("MONTANT_COM_REGLEE_AS",
+                        validators=[DataRequired()])   	
+    DATE_COM_REGLEE_AC =StringField("DATE_COM_REGLEE_AC",
+                        validators=[DataRequired()])  	
+    MONTANT_COM_REGLEE_AC = StringField("MONTANT_COM_REGLEE_AC",
+                        validators=[DataRequired()]) 	
+    TYPE_LOGEMENT =  StringField("TYPE_LOGEMENT",
+                        validators=[DataRequired()])	
+    NBRE_EDL_ABOONEMENT =  StringField("NBRE_EDL_ABOONEMENT",
+                        validators=[DataRequired()])	
+    MAIL_CONTACT_ENVOI_FACT = StringField("MAIL_CONTACT_ENVOI_FACT",
+                        validators=[DataRequired()]) 	
+    DATE_saisie_enregistrement =  StringField("DATE_saisie_enregistrement",
+                        validators=[DataRequired()])
+    CODE_AMEXPERT =  StringField("CODE_AMEXPERT",
+                        validators=[DataRequired()])	
+    COMMENTAIRE_FACTURE = StringField("COMMENTAIRE_FACTURE",
+                        validators=[DataRequired()]) 	
+    TYPE_PAIEMENT = StringField("TYPE_PAIEMENT",
+                        validators=[DataRequired()]) 	
+    N_REMISE_DE_CHEQUE = StringField("N_REMISE_DE_CHEQUE",
+                        validators=[DataRequired()]) 	
+    SAISIE_TRAITE_PAR =  StringField("SAISIE_TRAITE_PAR",
+                        validators=[DataRequired()])	
+    infos_et_TRAITEMENT =  StringField("infos_et_TRAITEMENT",
+                        validators=[DataRequired()])	
+    LOGEMENT_MEUBLE = StringField("LOGEMENT_MEUBLE",
+                        validators=[DataRequired()]) 	
+    CODE_FACTURATION =StringField("CODE_FACTURATION",
+                        validators=[DataRequired()])  	
+    TYPE_DE_BIEN = StringField("TYPE_DE_BIEN",
+                        validators=[DataRequired()]) 	
+    surface_logement1 = StringField("surface_logement1",
+                        validators=[DataRequired()]) 	
+    ETAGE = StringField("ETAGE",
+                        validators=[DataRequired()]) 	
+    POINTAGE = StringField("POINTAGE",
+                        validators=[DataRequired()]) 	
+    DATE_POINTAGE = StringField("DATE_POINTAGE",
+                        validators=[DataRequired()]) 	
+    DEVEL = StringField("DEVEL",
+                        validators=[DataRequired()]) 	
+    DATE_EXTRACTION_COMPTABLE = StringField("DATE_EXTRACTION_COMPTABLE",
+                        validators=[DataRequired()]) 	
+    POURCENTAGE_COM_AS_DU_CLIENT = StringField("POURCENTAGE_COM_AS_DU_CLIENT",
+                        validators=[DataRequired()])
+    ID_Respon_Cell_Dev	 = StringField("ID_Respon_Cell_Dev",
+                        validators=[DataRequired()])
+    POURCENTAGE_Respon_Cell_Dev =  StringField("POURCENTAGE_Respon_Cell_Dev",
+                        validators=[DataRequired()])	
+    ID_agent_Cell_Dev = StringField("ID_agent_Cell_Dev",
+                        validators=[DataRequired()])
+    POURCENTAGE_Agent_Cell_Dev =  StringField("POURCENTAGE_Agent_Cell_Dev",
+                        validators=[DataRequired()])	
+    ID_Agent_CellTech =  StringField("ID_Agent_CellTech",
+                        validators=[DataRequired()])	
+    POURCENTAGE_Agent_Cell_Tech =  StringField("POURCENTAGE_Agent_Cell_Tech",
+                        validators=[DataRequired()])	
+    ID_Respon_Cell_Tech = StringField("ID_Respon_Cell_Tech",
+                        validators=[DataRequired()])
+    POURCENTAGE_Respon_Cell_Tech =  StringField("POURCENTAGE_Respon_Cell_Tech",
+                        validators=[DataRequired()])	
+    ID_Suiveur_Cell_Tech  =  StringField("ID_Suiveur_Cell_Tech",
+                        validators=[DataRequired()])
+    POURCENTAGE_Suiveur_Cell_Tech	=  StringField("POURCENTAGE_Suiveur_Cell_Tech",
+                        validators=[DataRequired()])
+    ID_Respon_Cell_Planif = StringField("ID_Respon_Cell_Planif",
+                        validators=[DataRequired()])
+    POURCENTAGE_Respon_Cell_Planif  =  StringField("POURCENTAGE_Respon_Cell_Planif",
+                        validators=[DataRequired()])	
+    ID_Suiveur_Cell_Planif  = StringField("ID_Suiveur_Cell_Planif",
+                        validators=[DataRequired()])
+    POURCENTAGE_Suiveur_Cell_Planif	 =  StringField("POURCENTAGE_Suiveur_Cell_Planif",
+                        validators=[DataRequired()])
+    ID_Agent_saisie_Cell_Planif  = StringField("ID_Agent_saisie_Cell_Planif",
+                        validators=[DataRequired()])
+    POURCENTAGE_Agent_saisie_CEll_planif  =  StringField("POURCENTAGE_Agent_saisie_CEll_planif",
+                            validators=[DataRequired()])
+
+
+
+class Agenda_form(FlaskForm):
+
+    Titre_du_Rdv=StringField("Titre_du_Rdv",
+                        validators=[DataRequired()])
+
+    Adresse1_Rdv=StringField("Titre_du_Rdv",
+                        validators=[DataRequired()])
+
+    Adresse2_Rdv=StringField("Titre_du_Rdv",
+                        validators=[DataRequired()])
+
+    Code_postal_Rdv=StringField("Code_postal_Rdv",
+                        validators=[DataRequired()])
+    
+    Ville_du_Rdv=StringField("Code_postal_Rdv",
+                    validators=[DataRequired()])
+    
+    Date_Rdv=StringField("Code_postal_Rdv",
+                    validators=[DataRequired()])
+
+    Heure_début_Rdv=StringField("Code_postal_Rdv",
+                    validators=[DataRequired()])
+    
+    Heure_fin_Rdv=StringField("Code_postal_Rdv",
+                    validators=[DataRequired()])
+
+    Date_Rdv_annulé=StringField("Code_postal_Rdv",
+                    validators=[DataRequired()])
+
+    Informations_réservées_service_planification=StringField("Code_postal_Rdv",
+                                                 validators=[DataRequired()])
+
+    Informations_générales=StringField("Code_postal_Rdv",
+                             validators=[DataRequired()])
+
+    Informations_de_suivi_de_Rdv=StringField("Code_postal_Rdv",
+                                    validators=[DataRequired()])
+
+    Chemin_de_fichier_joint = StringField("Code_postal_Rdv",
+                                    validators=[DataRequired()])
+    
+    submit = SubmitField('enregistrer')
+
+
+class Invitation_Agenda(FlaskForm):
+
+    Expert_invite=StringField("Expert_invite",
+                        validators=[DataRequired()])
+
     submit = SubmitField('enregistrer')

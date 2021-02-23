@@ -1,7 +1,6 @@
 from Database_project.project.data_base_ import create_app
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from Database_project.project.data_base_.Models import  Tarifs,Mission,Client,Expert
 from Database_project.project.data_base_ import bcrypt,db
 
 app= create_app()

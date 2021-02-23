@@ -1,0 +1,47 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+	<div class="container-fluid">
+ 	    <!-- Content Row -->
+ 	    <div class="row">
+			<main class="col-md-12">
+				<article class="card">
+				<header class="card-header">
+					<strong class="d-inline-block mr-3">Donnees</strong>
+				</header>
+				<div class="card-body">
+					<div class="row"> 
+						<div class="col-md-8">
+							<h6 class=""><strong>reference_client</strong> <strong><small>{{tarif.data_client.nom}}</small></strong></h6> 
+							<p><strong>maison_appartement:</strong> <small>{{tarif.maison_appartement}}</small><br>  
+							<strong>type_maison:</strong> <small>{{tarif.type_maison}}</small> <strong>Cell_AS_referent_client:</strong> <small>{{tarif.referent__data.nom}}</small> <br> 
+					    	<strong>Prix_EDL:</strong> <small>{{tarif.Prix_EDL}}</small> <strong>Prix_Chiffrage:</strong> <small>{{tarif.Prix_Chiffrage}}</small> <br> 
+                            <strong>code_tva:</strong> {{tarif.code_tva}}<br> 
+					 		</p>
+						</div>
+						<div class="col-md-4">
+							<h6 class=""><strong>Cell_AS_referent_client_taux_com:</strong> <strong><small>{{tarif.Cell_AS_referent_client_taux_com}}</small></strong></h6>
+							<p><strong>Cell_devel_client: </strong> <small>{{tarif.devel__data.nom}}</small><br>  
+							<strong>Cell_devel_respon_client_taux_com:</strong> <small>{{tarif.Cell_devel_respon_client_taux_com}}</small> <br>
+					    	<strong>Cell_devel_agent_suivi_client:</strong> <small>{{tarif.agent_suivi__data.nom}}</small> <br> 
+                            <strong>Cell_devel_agent_suivi_client_taux_com:</strong> {{tarif.Cell_devel_agent_suivi_client_taux_com}} <br> 
+                            <strong>Cell_tech_Ref_agent_suivi_client:</strong> {{tarif.tech_Ref_agent_suivi__data.nom}} <br> 
+                            <strong>Cell_tech_Ref_respon_suivi_client_taux_com:</strong> {{tarif.Cell_tech_Ref_respon_suivi_client_taux_com}} <br> 
+                            <strong>Cell_Planif_Ref_respon_client:</strong> {{tarif.Planif_Ref_respon__data.nom}} <br> 
+                            <strong>Cell_Planif_Ref_respon_taux_com:</strong> {{tarif.Cell_Planif_Ref_respon_taux_com}} <br> 
+                            <strong>Cell_Planif_Ref_suiveur_client:</strong> {{tarif.Ref_suiveu__data.nom}} <br> 
+                            <strong>Cell_Planif_Ref_suiveur_taux_com:</strong> {{tarif.Cell_Planif_Ref_suiveur_taux_com}} <br>
+                            <strong>Cell_Planif_Ref_agent_client:</strong> {{tarif.Ref_agent__data.nom}} <br> 
+                            <strong>Cell_Planif_Ref_agent_taux_com:</strong> {{tarif.Cell_Planif_Ref_agent_taux_com}} <br> 
+                            <strong>commentaire_libre:</strong> {{tarif.commentaire_libre}} <br> 
+					 		</p>
+						</div> 
+					</div> <!-- row.// -->
+				</div> <!-- card-body .// -->
+				</article>
+			
+				 <!-- order-group.// --> 
+			</main>
+		</div>
+	</div>
+    <!-- /.container-fluid -->
+{%endblock%}
