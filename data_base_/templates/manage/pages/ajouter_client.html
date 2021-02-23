@@ -4,22 +4,33 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Client</h1>
+        <h1 class="h3 mb-0 text-gray-800">Ajouter un {{legend}}</h1>
+        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left"></i></h3>
     </div>
     <!-- Content Row -->
 
     <div class="row">
         <!-- Area Chart -->
-        <div class="col-xl-12 col-lg-12">
+        <div class="col-xl-6 col-lg-6 mx-auto">
             <div class="card shadow mb-4">
-	        <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold">Ajouter un Client</h6>
-                <a href="/" class="btn btn-primary btn-sm pull-right"><i class="fa fa-window-close"></i></a>
+	        <div class="card-header py-1 d-flex justify-content-between align-items-center">
+                {% if legend == "client" %}
+                    <h6 class="m-0 font-weight-bold is-gray font-weight-light">Ajouter un client</h6>
+                    <a href="/client" class="button is-black is-small pull-right">Tous les clients</a>
+                {% endif %}
+                {% if legend == "negociateur" %}
+                    <h6 class="m-0 font-weight-bold is-gray font-weight-light">Ajouter un negociateur</h6>
+                    <a href="{{url_for('users.negotiateur', id=ID)}}" class="button is-black is-small pull-right">Tous les negociateurs</a>
+                {% endif %}
+                {% if legend == "prospect" %}
+                    <h6 class="m-0 font-weight-bold is-gray font-weight-light">Ajouter un prospect</h6>
+                    <a href="/prospect" class="button is-black is-small pull-right">Tous les prospect</a>
+                {% endif %}
 	        </div>
 	        <div class="card-body">
 	            <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <div class="p-5">
+                    <div class="col-lg-11 mx-auto">
+                        <div class="">
                             {% with messages = get_flashed_messages(with_categories=true)%}
                             {% if messages %}
                             {%for category,message in messages%}
@@ -32,51 +43,52 @@
                             <form class="user" method="POST">
                                 {{ form.hidden_tag() }}
                                 <fieldset class="form-group">
+                        
                                     <div class="form-group row">
-                                    {# <div class="col-sm-4 mb-3 mb-sm-0">
-                                        {{form.Numero_de_compte.label(class="form-control-label")}}
-                    
-                                        {% if form.Numero_de_compte.errors %}
-                                        {{form.Numero_de_compte(class="form-control is-invalid") }}
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{form.Siret.label(class="form-control-label")}}
+                                        
+                                        {% if form.Siret.errors %}
+                                        {{form.Siret(class="form-control is-invalid") }}
                                         <div class="invalid-feedback">
-                                            {% for error in form.Numero_de_compte.errors %}
+                                            {% for error in form.Siret.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                     {% else %}
-                                        {{form.Numero_de_compte(class="form-control form-control-lg")}}
+                                        {{form.Siret(class="input is-small")}}
                                     {% endif %}
-                                    </div> #}
+                                    </div> 
                                     <div class="col-sm-12 pb-1">
                                        
                                         {{form.NOM.label(class="form-control-label")}}
                                        
                                        
                                         {% if form.NOM.errors %}
-                                            {{ form.NOM(class="form-control form-control-lg is-invalid") }}
+                                            {{ form.NOM(class="input is-small is-invalid") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.NOM.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                             {% else %}
-                                                {{form.NOM(class="form-control form-control-lg")}}
+                                                {{form.NOM(class="input is-small")}}
                                             {% endif %}
                                        
                                     </div>
 
                                      <div class="col-sm-12 pb-1">
-                                        {{form.Titre.label(class="form-control-label")}}
+                                        {{form.Sexe.label(class="form-control-label")}}
 
-                                        {% if form.Titre.errors %}
-                                            {{ form.Titre(class="form-control form-control-lg is-invalid") }}
+                                        {% if form.Sexe.errors %}
+                                            {{ form.Sexe(class="input is-small is-invalid") }}
                                             <div class="invalid-feedback">
-                                                {% for error in form.Titre.errors %}
+                                                {% for error in form.Sexe.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                         {% else %}
-                                                {{form.Titre(class="form-control form-control-lg")}}
+                                                {{form.Sexe(class="input is-small")}}
                                         {% endif %}
                                     </div>
                                    
@@ -84,14 +96,14 @@
                                     {{form.Type.label(class="form-control-label")}}
  
                                     {% if form.Type.errors %}
-                                        {{ form.Type(class="form-control form-control-lg is-invalid") }}
+                                        {{ form.Type(class="input is-small is-invalid") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.Type.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                         {% else %}
-                                            {{form.Type(class="form-control form-control-lg")}}
+                                            {{form.Type(class="input is-small")}}
                                         {% endif %}
                                     </div>
 
@@ -100,14 +112,14 @@
                                                                        
 
                                         {% if form.Societe.errors %}
-                                            {{ form.Societe(class="form-control form-control-lg is-invalid") }}
+                                            {{ form.Societe(class="input is-small is-invalid") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Societe.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                             {% else %}
-                                                {{form.Societe(class="form-control form-control-lg")}}
+                                                {{form.Societe(class="input is-small")}}
                                             {% endif %}
                                     </div>
 
@@ -115,14 +127,14 @@
                                          {{form.email.label(class="form-control-label")}}
                                     
                                         {% if form.email.errors %}
-                                            {{ form.email(class="form-control form-control-lg is-invalid") }}
+                                            {{ form.email(class="input is-small is-invalid") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.email.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                         {% else %}
-                                                {{form.email(class="form-control form-control-lg")}}
+                                                {{form.email(class="input is-small")}}
                                         {% endif %}
                                     </div>
 
@@ -130,14 +142,14 @@
                                         {{form.Numero.label(class="form-control-label")}}
 
                                         {% if form.Numero.errors %}
-                                            {{ form.Numero(class="form-control form-control-lg is-invalid") }}
+                                            {{ form.Numero(class="input is-small is-invalid") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Numero.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                         {% else %}
-                                                {{form.Numero(class="form-control form-control-lg")}}
+                                                {{form.Numero(class="input is-small")}}
                                         {% endif %}
                                     </div>
 
@@ -147,14 +159,14 @@
                                         {{form.Pays.label(class="form-control-label")}}
 
                                         {% if form.Pays.errors %}
-                                            {{ form.Pays(class="form-control form-control-lg is-invalid") }}
+                                            {{ form.Pays(class="input is-small is-invalid") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Pays.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                         {% else %}
-                                                {{form.Pays(class="form-control form-control-lg")}}
+                                                {{form.Pays(class="input is-small")}}
                                         {% endif %}
                                     </div>
 
@@ -162,14 +174,14 @@
                                         {{form.Ville.label(class="form-control-label")}}
 
                                         {% if form.Ville.errors %}
-                                            {{ form.Ville(class="form-control form-control-lg is-invalid") }}
+                                            {{ form.Ville(class="input is-small is-invalid") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Ville.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                         {% else %}
-                                                {{form.Ville(class="form-control form-control-lg")}}
+                                                {{form.Ville(class="input is-small")}}
                                         {% endif %}
                                     </div>
 
@@ -177,51 +189,37 @@
                                          {{form.CP.label(class="form-control-label")}}
 
                                         {% if form.CP.errors %}
-                                            {{ form.CP(class="form-control form-control-lg is-invalid") }}
+                                            {{ form.CP(class="input is-small is-invalid") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.CP.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                         {% else %}
-                                                {{form.CP(class="form-control form-control-lg")}}
+                                                {{form.CP(class="input is-small")}}
                                         {% endif %}
                                     </div>
 
+
                                     <div class="col-sm-12 pb-1">
-                                        {{form.Adresse1.label(class="form-control-label")}}
+                                         {{form.Adresse.label(class="form-control-label")}}
                                     
-                                        {% if form.Adresse1.errors %}
-                                            {{ form.Adresse1(class="form-control form-control-lg is-invalid") }}
+                                        {% if form.Adresse.errors %}
+                                            {{ form.Adresse(class="input is-small is-invalid") }}
                                             <div class="invalid-feedback">
-                                                {% for error in form.Adresse1.errors %}
+                                                {% for error in form.Adresse.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                         {% else %}
-                                                {{form.Adresse1(class="form-control form-control-lg")}}
-                                        {% endif %}
-                                    </div>
-
-                                    <div class="col-sm-12 pb-1">
-                                         {{form.Adresse2.label(class="form-control-label")}}
-                                    
-                                        {% if form.Adresse2.errors %}
-                                            {{ form.Adresse2(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Adresse2.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                                {{form.Adresse2(class="form-control form-control-lg")}}
+                                                {{form.Adresse(class="input is-small")}}
                                         {% endif %}
                                     </div>
 
                                     
                                     <div class="col-sm-12 mt-4">
                                         <div class="form-group">
-                                            {{form.submit(class="btn btn-success btn-block")}}   
+                                            {{form.submit(class="button is-success is-small is-fullwidth")}}   
                                         </div>
                                     </div>
                                     </div>                         

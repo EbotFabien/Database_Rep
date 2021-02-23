@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
     {% if legend == "login" %}
-    <div class="auth">
-        <img src="{{url_for('static', filename='images/logo/logo.png')}}" style="height: 100px;
-    position: absolute;left: 50%;transform: translate(-50%); top:10px; z-index: 888;">
+    <div class="auth card">
+        <img src="{{url_for('static', filename='images/logo/logo.png')}}" style="height: 90px;
+    position: absolute;left: 50%;transform: translate(-50%); top:5px; z-index: 888;">
         <div class="row outer-box" style="width: fit-content;">
             <!-- <div class="col-md-2"></div> -->
             <div class="login-box">
@@ -20,44 +20,47 @@
                     <form method="POST">
                         {{ form.hidden_tag() }}
                         <fieldset class="form-group">
-                        <legend class="mb-4"><span style="z-index: 999">Connexion</span></legend>
-                        <div class="form-group">
+                        <legend class="mb-4"><span style="z-index: 999"></span></legend>
+                        <div class="form-group mt-2">
                             {{form.username.label(class="form-control-label")}}
                     
                             {% if form.username.errors %}
-                            {{form.username(class="form-control is-invalid") }}
+                            {{form.username(class="form-control is-invalid is-small") }}
                             <div class="invalid-feedback">
                                 {% for error in form.username.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
-                        {% else %}
-                            {{form.username(class="form-control form-control-lg")}}
-                        {% endif %}
-                        
-                    </div>
+                            {% else %}
+                                {{form.username(class="input is-small")}}
+                            {% endif %}                        
+                        </div>
                     
-                    <div class="form-group">
+                    <div class="form-group mt-2 mb-2">
                         {{form.password.label(class="form-control-label")}}
                     
                         {% if form.password.errors %}
-                            {{ form.password(class="form-control is-invalid") }}
+                            {{ form.password(class="form-control is-invalid is-small") }}
                             <div class="invalid-feedback">
                                 {% for error in form.password.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                             {% else %}
-                                {{form.password(class="form-control form-control-lg")}}
+                                {{form.password(class="input is-small")}}
                             {% endif %}
+                    </div>
+                    <div class="form-check mt-2">
+                        {{form.remember(class="form-check-input")}}
+                        {{form.remember.label(class="form-check-label")}}
                     </div>
                     <!-- <div class="form-group">
                             <small class="text-muted ml-2">
                                     <a href="" class="motDePassOublie">Mot de passe oublié?</a>
                             </small>   
                     </div> -->
-                    <div class="form-group">
-                         {{form.submit(class="btn btn-submit")}} 
+                    <div class="form-group mt-3">
+                         {{form.submit(class="button is-success is-fullwidth is-small")}} 
                     </div>
                     <div class="form-group">
                         {{form.recaptcha}}
@@ -69,17 +72,14 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                    <!-- <div class="form-check">
-                        {{form.remember(class="form-check-input")}}
-                        {{form.remember.label(class="form-check-label")}}
-                    </div> -->
+                    
                     </fieldset>
                     
                     </form>
                     </div>
                     <div class="">
                         <small class="text-muted bold">
-                            <p class="text-center">Envie de nous rejoindre ? <a class="ml-2 text-underlined" href="{{ url_for('users.sign_up')}}">Créer un compte</a></p>
+                            <p class="text-center mb-2">Mot de pass oublie? <a class="ml-2 text-underlined" href="{{ url_for('users.forgot_password')}}">Récupérer</a></p>
                         </small>
                     </div>
             </div>

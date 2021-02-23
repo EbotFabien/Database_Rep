@@ -1,0 +1,47 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+	<div class="container-fluid">
+ 	    <!-- Content Row -->
+ 	    <div class="row">
+			<main class="col-md-12">
+				<article class="card">
+				<header class="card-header">
+					<strong class="d-inline-block mr-3">Données </strong>
+				</header>
+				<div class="card-body">
+					<div class="row"> 
+						<div class="col-md-8">
+							<h6 class=""><strong>Type d'expert:</strong> <strong><small>{{expert.TYPE}}</small></strong></h6>
+							<p><strong>Nom: </strong> <small>{{expert.nom}}</small><br>  
+							<strong>date_entrée:</strong> <small>{{expert.date_entrée}}</small> <strong>siret:</strong> <small>{{expert.siret}}</small> <br>
+					    	<strong>Tel: </strong> <small>{{expert.numero}}</small> <strong>Email:</strong> <small>{{expert.email}}</small> <br> 
+                            <strong>trigramme:</strong> {{expert.trigramme}}<br> 
+                            <strong>SEXE:</strong> {{expert.sexe}}<br> 
+                            
+					 		</p>
+						</div>
+						<div class="col-md-4">
+							<h6 class=""><strong>actif/parti:</strong> <strong><small>{{history.actif_parti}}</small></strong></h6>
+							<p><strong>type_certification: </strong> <small>{{history.type_certification}}</small><br>  
+							<strong>ville:</strong> <small>{{history.ville}}</small> <br>
+					    	<strong>Adresse :</strong> <small>{{history.adresse}}</small> <br> 
+                            <strong>Code Postal:</strong> {{history.cp}} <br> 
+                            <strong>login_backof:</strong> {{history.login_backof}} <br> 
+                            <strong>pwd_backof:</strong> {{history.pwd_backof}} <br> 
+                            <strong>pwd_backof:</strong> {{history.pwd_backof}} <br> 
+                            <strong>pwd_extranet:</strong> {{history.pwd_extranet}} <br> 
+                            <strong>pwd_gsuite:</strong> {{history.pwd_gsuite}} <br> 
+                            <strong>observations_de_suivi:</strong> {{history.observations_de_suivi}} <br>
+                            <strong>date_historique:</strong> {{history.date}} <br> 
+					 		</p>
+						</div> 
+					</div> <!-- row.// -->
+				</div> <!-- card-body .// -->
+				</article>
+			
+				 <!-- order-group.// --> 
+			</main>
+		</div>
+	</div>
+    <!-- /.container-fluid -->
+{%endblock%}

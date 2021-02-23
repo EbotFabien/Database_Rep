@@ -3,13 +3,13 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField
 from wtforms.validators import DataRequired,length,Email,EqualTo,ValidationError
-from data_base_.Models import Expert ,Client
+from Database_Rep.data_base_.Models import Expert ,Client
 
 
 
 
 class RegistrationForm(FlaskForm):
-    username =StringField("Nom d'utilisateur",
+    username =StringField("Identifiant",
                                 validators=[DataRequired(),length(min=4 ,max=20)])
     
     Numero =StringField('Tel',
@@ -17,6 +17,7 @@ class RegistrationForm(FlaskForm):
 
     email =StringField('E-mail',
                            validators=[DataRequired(),Email()])
+
     password =PasswordField('Mot de pass',
                                   validators=[length(min=8 ,max=20)])
     confirm_password =PasswordField('Confirmer le mot de pass',
@@ -25,27 +26,100 @@ class RegistrationForm(FlaskForm):
     Type_Expert=SelectField('Type d\'expert',
                              choices=[('Interv', 'Interv'), ('CONCESS', 'CONCESS'), ('agent Cell Dev', 'agent Cell Dev'),('Interv', 'Interv'),('Suiveur Cell Tech', 'Suiveur Cell Tech'),('Suiveur Cell Planif', 'Suiveur Cell Planif'),('Admin', 'Admin'),('Audit', 'Audit')])
 
-    Titre=SelectField('Titre',
+    Sexe=SelectField('Sexe',
                              choices=[('MME', 'MME'), ('M.', 'M.')])
 
     submit = SubmitField('enregistrer')
 
     modifier = SubmitField('modifier')
     
-    def validate_username(self,username):
-        user = Expert.query.filter_by(NOM=username.data).first()
+    def validate_username(self,username): 
+        user = Expert.query.filter_by(nom=username.data).first()
 
         if user:
             raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
 
     def validate_email(self,email):
-        email = Expert.query.filter_by(EMAIL=email.data).first()
+        email = Expert.query.filter_by(email=email.data).first()
 
         if email:
             raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
 
+
+class Expert_editForm(FlaskForm):
+    username =StringField("Identifiant",
+                                validators=[DataRequired(),length(min=4 ,max=20)])
+    
+    Numero =StringField('Tel',
+                                validators=[DataRequired(),length(min=4 ,max=20)])
+
+    email =StringField('E-mail',
+                           validators=[DataRequired(),Email()])
+
+
+    Sexe=SelectField('Sexe',
+                             choices=[('MME', 'MME'), ('M.', 'M.')])
+
+    siret =StringField('siret',
+                                  validators=[DataRequired()])
+
+    trigramme =StringField('trigramme',
+                                validators=[DataRequired()])
+
+    code_tva =StringField('code_tva',
+                            validators=[DataRequired()])
+                        
+    taux_tva =StringField('taux_tva',
+                            validators=[DataRequired()])
+
+    actif_parti =SelectField('actif_parti',
+                            choices=[('Actif'), ('Parti')])
+
+    ville =StringField('ville',
+                        validators=[DataRequired()])
+    
+    type_certification=StringField('type_certification',
+                        validators=[DataRequired()])
+    adresse=StringField('adresse',
+                        validators=[DataRequired()])
+    cp=StringField('cp',
+                        validators=[DataRequired()])
+    login_backof=StringField('login_backof',
+                        validators=[DataRequired()])
+    pwd_backof=StringField('pwd_backof',
+                        validators=[DataRequired()]) #endeavour to hash all passwords
+    login_extranet=StringField('login_extranet',
+                        validators=[DataRequired()])
+    pwd_extranet=StringField('pwd_extranet',
+                        validators=[DataRequired()])
+    pwd_gsuite=StringField('pwd_gsuite',
+                        validators=[DataRequired()])
+    observations_de_suivi=StringField('observations_de_suivi',
+                        validators=[DataRequired()])
+
+    modifier = SubmitField('modifier')
+
+class RequestResetForm(FlaskForm):
+    email =StringField('Email',
+                           validators=[DataRequired(),Email()])
+    submit = SubmitField('Request Password Reset')
+
+    recaptcha = RecaptchaField(validators=[Recaptcha(message="Le reCAPTCHA n'a pas été saisi correctement. Revenez en arrière et essayez à nouveau.")])
+
+    def validate_username(self,username):
+        user = Expert.query.filter_by(EMAIL=email.data).first()## add visibility
+
+        if user is None:
+            raise ValidationError('There is no account with this email.You must register first.')
+
+class ResetPasswordForm(FlaskForm):
+    password =PasswordField('Password',
+                                  validators=[DataRequired(),length(min=8 ,max=20)])
+    confirm_password =PasswordField('ConfirmPassword',
+                                  validators=[DataRequired(),EqualTo('password')])
+    submit = SubmitField('Reset password')
 class LoginForm(FlaskForm):
-    username =StringField("Nom d'utilisateur",
+    username =StringField("Identifiant",
                                      validators=[DataRequired(),length(min=4 ,max=20, message='Le champ est obligatoire')])
 
     password =PasswordField('Mot de passe',
@@ -74,9 +148,12 @@ class Chiffrage_Form(FlaskForm):
     submit = SubmitField('enregistrer')
 
 class Tarif_Form(FlaskForm):
-  service = StringField('Nom du service offert', validators=[DataRequired()])
-  type_de_tarif = SelectField('Type', choices=[('basic', 'basic'), ('premium', 'premium')])
+  ID_client=StringField('client',
+                        validators=[DataRequired()])
+  type_de_maison = SelectField('Type', choices=[('F1', 'F1'), ('F2', 'F2'),('F3', 'F3'),('F4', 'F4'),('F5', 'F5')])
   prix = StringField('Prix', validators=[DataRequired()])
+  remise = StringField('Remise', validators=[DataRequired()])
+  
 
   submit = SubmitField('enregistrer')
 
@@ -84,9 +161,6 @@ class Tarif_Form(FlaskForm):
 
 class Facturation_Form(FlaskForm):
     
-    Date =StringField('Date',
-                                validators=[DataRequired()])
-
     Pays =StringField('Pays',
                            validators=[DataRequired()])
 
@@ -99,8 +173,6 @@ class Facturation_Form(FlaskForm):
     montant=StringField('montant',
                            validators=[DataRequired()])
 
-    TVA=StringField('Pourcentage_gain',
-                           validators=[DataRequired()])
     
     total=StringField('total',
                            validators=[DataRequired()])
@@ -138,7 +210,7 @@ class Client_Form(FlaskForm):
     Societe =StringField('Societe',
                            validators=[DataRequired()])
 
-    Titre=SelectField('Sexe',
+    Sexe=SelectField('Sexe',
                              choices=[('femelle', 'femelle'), ('male', 'male')])
 
     NOM =StringField('Noms',
@@ -150,10 +222,7 @@ class Client_Form(FlaskForm):
     Numero =StringField('Tel',
                            validators=[DataRequired()])
 
-    Adresse1=StringField('Adresse 1',
-                           validators=[DataRequired()])
-
-    Adresse2=StringField('Adresse 2',
+    Adresse=StringField('Adresse ',
                            validators=[DataRequired()])
 
     CP=StringField('Code Postal',
@@ -162,7 +231,7 @@ class Client_Form(FlaskForm):
     Ville=StringField('Ville',
                            validators=[DataRequired()])
     
-    Numero_de_compte=StringField("Numero de compte ",
+    Siret=StringField("Siret",
                            validators=[DataRequired()])
 
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
@@ -175,13 +244,21 @@ class Client_Form(FlaskForm):
 
 
     def validate_username(self,username):
-        user = Client.query.filter_by(NOM=username.data).first()
+        user = Client.query.filter_by(nom=username.data).first()
 
         if user:
             raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
 
     def validate_email(self,email):
-        email = Client.query.filter_by(EMAIL=email.data).first()
+        email = Client.query.filter_by(email=email.data).first()
 
         if email:
             raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
+
+
+
+class Suivi_Client(FlaskForm):
+
+    commentaire=StringField("commentaire",
+                        validators=[DataRequired()])
+    submit = SubmitField('enregistrer')

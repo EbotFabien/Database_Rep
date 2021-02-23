@@ -3,7 +3,8 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800"><strong>CLIENTS</strong></h1>
+        <h1 class="h3 mb-0 text-gray-800">Client</h1>
+        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left"></i></h3>
     </div>
     <!-- Content Row -->
 
@@ -11,16 +12,16 @@
         <!-- Area Chart -->
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
-	        <div class="card-header py-3" style="display: flex;justify-content: space-between;">
-	            <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i></h6>
-                <a href="/ajouter/client" title="ajouter un client" class="btn btn-primary btn-sm pull-right">ajouter un client</a>
+	        <div class="card-header py-1 justify-content-between d-flex" style="display: flex;justify-content: space-between;"> 
+	            <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i>Clients</h6>
+                <a href="/ajouter/client" title="ajouter un client" class="button is-black is-small pull-right"><span class="is-warning">ajouter un client</span></a>
 	        </div>
 	        <div class="card-body">
 	            <div class="table-responsive">
                       {% with messages = get_flashed_messages(with_categories=true)%}
                             {% if messages %}
                             {%for category,message in messages%}
-                            <div class="alert alert-{{category}}">
+                            <div class="alert alert-{{category}} is-small">
                                 {{message}}
                             </div>
                             {% endfor %}
@@ -37,75 +38,38 @@
                             <!-- <th scope="col">NOM</th> -->
                             <th scope="col">Email</th>
                             <th scope="col">Tel</th>
-                            <th scope="col">Adresse 1</th>
                             <!-- <th scope="col">ADRESSE2</th> -->
                             <!-- <th scope="col">CP</th> -->
-                            <th scope="col">Ville</th>
+                            <!--th scope="col">Ville</th-->
                             <!-- <th scope="col">Zone_de_région_du_client</th> -->
-                            <th>Modifier</th>
-                            <th>Infos</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                            {%for client_ in Client %}
+                            {%for client_ in cli_ent %}
                                 <tr>
                                     <th scope="row">{{client_.id}}</th>
-                                    <td>{{client_.Reference}}</td>
+                                    <td>{{client_.reference}}</td>
                                     <td>{{client_.TYPE}}</td>
                                     <!-- <td>{{client_.SOCIETE}}</td> -->
-                                    <td> {{client_.NOM | truncate(10, True)}}</td>
+                                    <td> {{client_.nom | truncate(10, True)}}</td>
                                     <!-- <td>{{client_.NOM}}</td> -->
-                                    <td>{{client_.EMAIL | truncate(10, True)}}</td>
-                                    <td>{{client_.NUMERO}}</td>
-                                    <td>{{client_.ADRESSE1|truncate(10, True)}}</td>
+                                    <td>{{client_.email | truncate(10, True)}}</td>
+                                    <td>{{client_.numero}}</td>
+                                    <!--td>{{client_.ADRESSE1|truncate(10, True)}}</td-->
                                     <!-- <td>{{client_.ADRESSE2}}</td> -->
                                     <!-- <td>{{client_.CP}}</td> -->
-                                    <td>{{client_.VILLE|truncate(5, True)}}</td>
+                                    <!--td>{{client_.VILLE|truncate(5, True)}}</td-->
                                     <!-- <td>{{client_.Zone_de_région_du_client}}</td> -->
-                                    <td> <a href="{{url_for('users.edit_client', id=client_.id)}}" title="modifier" class="p-1 btn-sm btn btn-secondary btn-mx-auto"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
+                                    <td> <a href="{{url_for('users.edit_client', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
                                     <td style="">
-                                        <a href="{{url_for('users.show_client', id=client_.id)}}" title="voir tout les details" class="btn btn-info p-1 btn-sm btn-mx-auto" style="text-align: center"><i class="fa fa-eye"></i></a>
+                                        <a href="{{url_for('users.show_client', id=client_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
                                         <!-- <a href="/ajoutez/agenda/{{client_.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{client_.id}}">créer un agenda</a> -->
-                                    </td>     
-                                </tr>
-                            <div id="modaledit{{client_.id}}" class="modal fade" role="dialog">
-                                <div class="modal-dialog">
-                                <div class="modal-content">
-                            <div class="modal-header"><h4 class="modal-title">créer un agenda</h4></div>
-                                <div class="modal-body">
-                                <form action="{{url_for('users.ajout_agenda')}}" method="POST">
-                                <div class="form-group">
-                                <label>Nom Client:</label>
-                                <input type="hidden"  name="id" value="{{client_.id}}">
-                                <input type="text" class="form-control" name="name" value="{{client_.NOM}}">
-                                </div>
-                                <div class="form-group">
-                                <label>id Audit_planner:</label>
-                                <input type="text" class="form-control" name="Audit_planner" value="">
-                                </div>
-                                <div class="form-group">
-                                <label>id Agent_referent</label>
-                                <input type="text" class="form-control" name="Agent_referent" value="">
-                                </div>
-                                <div class="form-group">
-                                    <label>Lieu</label>
-                                    <input type="text" class="form-control" name="Lieu" value="">
-                                </div>
-                                <div class="form-group">
-                                    <label>Date</label>
-                                    <input type="text" class="form-control" name="Date" value="">
-                                </div>
-                                <div class="form-group">
-                                <button class="btn btn-primary" type="submit">Update</button>
-                                </div>
-                                </form>
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                            </div>
-                            </div>      
+                                    </td>   
+                                     <td> <a href="{{url_for('users.delete_client', id=client_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="voir tout les details" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>   
+                                </tr>    
                             {%endfor%}
                         </tbody>
                     </table>

@@ -4,22 +4,23 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Tarif</h1>
+        <h1 class="h3 mb-0 text-gray-800">Modifier le Tarif</h1>
+        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left"></i></h3>
     </div>
     <!-- Content Row -->
 
     <div class="row">
         <!-- Area Chart -->
-        <div class="col-xl-12 col-lg-12">
+        <div class="col-xl-6 col-lg-6 mx-auto">
             <div class="card shadow mb-4">
-	        <div class="card-header py-3">
-	            <h6 class="m-0 font-weight-bold d-inline">Modifier le tarif <small>{{tarif.Type}}</small></h6>
-                <a href="/tarifs" class="btn btn-primary btn-sm pull-right">Tous les tarif <!--<i class="fa fa-euro"></i>--></a>
+	        <div class="card-header py-1 justify-content-between d-flex align-items-center">
+	            <h6 class="m-0 font-weight-bold d-inline"><small>{{tarif.id}}</small></h6>
+                <a href="/tarifs" class="button is-small is-black">Tous les tarif <!--<i class="fa fa-euro"></i>--></a>
 	        </div>
 	        <div class="card-body">
 	            <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <div class="p-5">
+                    <div class="col-lg-12 mx-auto">
+                        <div class="">
                             {% with messages = get_flashed_messages(with_categories=true)%}
                             {% if messages %}
                             {%for category,message in messages%}
@@ -34,50 +35,64 @@
                                 <fieldset class="form-group">
                                 <div class="form-group row">
                                     <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.service.label(class="form-control-label")}}
+                                        {{form.ID_client.label(class="form-control-label")}}
                     
-                                        {% if form.service.errors %}
-                                        {{form.service(class="form-control is-invalid", value=tarif.Service_offert) }}
+                                        {% if form.ID_client.errors %}
+                                        {{form.ID_client(class="input is-small is-invalid", value=tarif.reference_client) }}
                                         <div class="invalid-feedback">
-                                            {% for error in form.service.errors %}
+                                            {% for error in form.ID_client.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                     {% else %}
-                                        {{form.service(class="form-control form-control-lg", value=tarif.Service_offert)}}
+                                        {{form.ID_client(class="input is-small", value=tarif.reference_client)}}
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.remise.label(class="form-control-label")}}
+                    
+                                        {% if form.remise.errors %}
+                                        {{form.remise(class="input is-small is-invalid", value=tarif.remise) }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.remise.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.remise(class="input is-small", value=tarif.remise)}}
                                     {% endif %}
                                     </div>
                                     <div class="col-sm-12">
-                                        {{form.type_de_tarif.label(class="form-control-label")}}
+                                        {{form.type_de_maison.label(class="form-control-label")}}
 
-                                    {% if form.type_de_tarif.errors %}
-                                        {{ form.type_de_tarif(class="form-control form-control-lg is-invalid", value=tarif.Type)}}
+                                    {% if form.type_de_maison.errors %}
+                                        {{ form.type_de_maison(class="input is-small is-invalid", value=tarif.type_maison)}}
                                         <div class="invalid-feedback">
-                                            {% for error in form.type_de_tarif.errors %}
+                                            {% for error in form.type_de_maison.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                         {% else %}
-                                            {{form.type_de_tarif(class="form-control form-control-lg", value=tarif.Type)}}
+                                            {{form.type_de_maison(class="input is-small", value=tarif.type_maison)}}
                                         {% endif %}
                                     </div>
                                     <div class="col-sm-12">
                                         {{form.prix.label(class="form-control-label")}}
 
                                     {% if form.prix.errors %}
-                                        {{ form.prix(class="form-control form-control-lg is-invalid", value=tarif.Prix)}}
+                                        {{ form.prix(class="input is-small is-invalid", value=tarif.Prix)}}
                                         <div class="invalid-feedback">
                                             {% for error in form.prix.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                         {% else %}
-                                            {{form.prix(class="form-control form-control-lg", value=tarif.Prix)}}
+                                            {{form.prix(class="input is-small", value=tarif.Prix)}}
                                         {% endif %}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    {{form.modifier(class="btn btn-success btn-block")}}   
+                                    {{form.modifier(class="button is-small is-fullwidth is-success")}}   
                                 </div>
                                 </fieldset>
                             </form>

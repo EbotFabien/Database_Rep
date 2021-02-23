@@ -7,3 +7,7 @@
 	font-weight: 400;
 	font-size: 13px;
 }
+
+h3 > i {
+	cursor: pointer;
+}

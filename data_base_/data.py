@@ -1,15 +1,16 @@
-from data_base_ import db
-from data_base_.Models import Tarifs,Chiffrage,Mission,Client,Expert
+from Database_Rep.data_base_ import db
+from Database_Rep.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History
 import xlrd
+import openpyxl
 
-def insert_client(A):
-    loc = ("C:/Users/user/Downloads/Base histo missions EDL 2020-08.xlsx")
+def insert_client(A,loc):
     
+
     wb = xlrd.open_workbook(loc)
     sheet = wb.sheet_by_index(0)
     
     sheet.cell_value(0, 0)
-    for i in range(0,50):
+    for i in range(0,400):
         name=sheet.row_values(i+1)
         
         if A == 'Bailleur':
@@ -17,12 +18,15 @@ def insert_client(A):
             if name[3] == '' or name[3] == 'XX':
                 print('no data here')
             else:
-                cli=Client.query.filter_by(NOM=str(name[3])).first()
+                cli=Client.query.filter_by(nom=str(name[3].lower())).first()#arrange sort by reference
                 if cli is None:
-                    client=Client('BAILLEUR',name[1],name[2],name[3],'TEST@gmail.com','1234567',name[4],name[5],name[6],name[7],'','')
+                    client=Client(TYPE=A,societe=name[1].lower(),sexe=name[2].lower(),nom=name[3].lower(),email='test@gmail.com',numero='6777650822',siret='22222222222')
                     db.session.add(client)
+                    db.session.commit()   
+                    client.reference=str(name[0])
                     db.session.commit()
-                    client.Reference = int(name[0])
+                    history=Client_History(client_id=client.id,adresse=name[4],cp=name[6],ville=name[7],pays='Britain')
+                    db.session.add(history)
                     db.session.commit()
                 else:
                     print('already exist')
@@ -31,9 +35,9 @@ def insert_client(A):
             if name[43] == '' or name[43] == 'XX':
                 print('no data here')
             else:
-                cli=Client.query.filter_by(NOM=str(name[43])).first()
+                cli=Client.query.filter_by(NOM=str(name[43].lower())).first()
                 if cli is None:
-                    cli2=Client('BAILLEUR','',name[42],name[43],'TEST@gmail.com','1234567','','','','','','')
+                    cli2=Client('',A,'',name[42].lower(),name[43].lower(),'','','','','','','','','')
                     db.session.add(cli2)
                     db.session.commit()
                 else:
@@ -43,35 +47,42 @@ def insert_client(A):
             if name[20] == '' or name[20] == 'XX':
                 print('no data here')
             else:
-                cli1=Client.query.filter_by(Reference=int(name[18])).first()    
-                if cli1 is None:
-                    client=Client('LOCATAIRE','',name[19],name[20],'TEST@gmail.com','1234567',name[21],name[22],name[23],name[24],'','G12348966')
+                pros1=prospect.query.filter_by(reference=str(name[18])).first()    
+                if pros1 is None:
+                    client=prospect(A,'Amexpert',name[19].lower(),name[20].lower(),'test@gmail.com','675337250')
                     db.session.add(client)
                     db.session.commit()
-                    client.Reference = int(name[18])
+                    client.reference=str(name[18])
+                    db.session.commit()
+                    user_his=prospect_History(prospect=client.id,adresse=name[21],cp=name[23],ville=name[24],pays='Britain')
+                    db.session.add(user_his)
                     db.session.commit()
 
                 else:
                     print('already exist')
 
 
-def expert_(A):
-    loc = ("C:/Users/user/Downloads/Base histo missions EDL 2020-08.xlsx")
+def expert__(A,loc):
 
+    #wb_obj = openpyxl.load_workbook(loc)
+    #print(wb_obj)
     wb = xlrd.open_workbook(loc)
     sheet = wb.sheet_by_index(0)
 
     sheet.cell_value(0, 0)
-    for i in range(0,50):
+    for i in range(0,400):
         name=sheet.row_values(i+1)
         if A == 'Interv':
             if name[17] == '' or name[17] == 'XX':
                 print('no data here')
             else:
-                cli=Expert.query.filter_by(NOM=str(name[17])).first()
+                cli=Expert.query.filter_by(nom=str(name[17].lower())).first()
                 if cli is None:
-                    expert=Expert(name[16],name[17],A,'test0001@gmail.com','1234567')
+                    expert=Expert(sexe=name[16],nom=name[17],numero='222000000',TYPE=A, email='test@gmail.com')    
                     db.session.add(expert)
+                    db.session.commit()
+                    history=Expert_History(expert_id=expert.id)
+                    db.session.add(history)
                     db.session.commit()
                 else:
                     print('already exist')
@@ -80,10 +91,13 @@ def expert_(A):
             if name[11] == '' or name[11] == 'XX':
                 print('no data here')
             else:
-                cli=Expert.query.filter_by(NOM=str(name[11])).first()
+                cli=Expert.query.filter_by(nom=str(name[11].lower())).first()
                 if cli is None:
-                    expert=Expert(name[10],name[11],A,'test0001@gmail.com','1234567')
+                    expert=Expert(sexe=name[10],nom=name[11],numero='222000000',TYPE=A, email='test@gmail.com')      
                     db.session.add(expert)
+                    db.session.commit()
+                    history=Expert_History(expert_id=expert.id)
+                    db.session.add(history)
                     db.session.commit()
                 else:
                     print('already exist')
@@ -92,9 +106,9 @@ def expert_(A):
             if name[37] == '' or name[37] == 'XX':
                 print('no data here')
             else:
-                cli=Expert.query.filter_by(NOM=str(name[37])).first()
+                cli=Expert.query.filter_by(NOM=str(name[37].lower())).first()
                 if cli is None:
-                    expert=Expert('',name[37],A,'test0001@gmail.com','1234567')
+                    expert=Expert('',name[37].lower(),A,'','')
                     db.session.add(expert)
                     db.session.commit()
                 else:
@@ -104,9 +118,9 @@ def expert_(A):
             if name[39] == '' or name[39] == 'XX':
                 print('no data here')
             else:
-                cli=Expert.query.filter_by(NOM=str(name[39])).first()
+                cli=Expert.query.filter_by(NOM=str(name[39].lower())).first()
                 if cli is None:
-                    expert=Expert('',name[39],A,'test0001@gmail.com','1234567')
+                    expert=Expert('',name[39].lower(),A,'','')
                     db.session.add(expert)
                     db.session.commit()
                 else:
@@ -116,9 +130,9 @@ def expert_(A):
             if name[69] == '' or name[69] == 'XX':
                 print('no data here')
             else:
-                cli=Expert.query.filter_by(NOM=str(name[69])).first()
+                cli=Expert.query.filter_by(NOM=str(name[69].lower()).lower()).first()
                 if cli is None:
-                    expert=Expert('',name[69],A,'test0001@gmail.com','1234567')
+                    expert=Expert('',name[69].lower(),A,'','')
                     db.session.add(expert)
                     db.session.commit()
                 else:
@@ -130,9 +144,9 @@ def expert_(A):
             if name[71] == '' or name[71] == 'XX':
                 print('no data here')
             else:
-                cli=Expert.query.filter_by(NOM=str(name[71])).first()
+                cli=Expert.query.filter_by(NOM=str(name[71].lower())).first()
                 if cli is None:
-                    expert=Expert('',name[71],A,'test0001@gmail.com','1234567')
+                    expert=Expert('',name[71].lower(),A,'','')
                     db.session.add(expert)
                     db.session.commit()
                 else:
@@ -142,9 +156,9 @@ def expert_(A):
             if name[73] == '' or name[73] == 'XX':
                 print('no data here')
             else:
-                cli=Expert.query.filter_by(NOM=str(name[73])).first()
+                cli=Expert.query.filter_by(NOM=str(name[73].lower())).first()
                 if cli is None:
-                    expert=Expert('',name[73],A,'test0001@gmail.com','1234567')
+                    expert=Expert('',name[73].lower(),A,'','')
                     db.session.add(expert)
                     db.session.commit()
                 else:
@@ -154,9 +168,9 @@ def expert_(A):
             if name[75] == '' or name[75] == 'XX':
                 print('no data here')
             else:
-                cli=Expert.query.filter_by(NOM=str(name[75])).first()
+                cli=Expert.query.filter_by(NOM=str(name[75].lower())).first()
                 if cli is None:
-                    expert=Expert('',name[75],A,'test0001@gmail.com','1234567')
+                    expert=Expert('',name[75].lower(),A,'','')
                     db.session.add(expert)
                     db.session.commit()
                 else:
@@ -166,9 +180,9 @@ def expert_(A):
             if name[77] == '' or name[77] == 'XX':
                 print('no data here')
             else:
-                cli=Expert.query.filter_by(NOM=str(name[77])).first()
+                cli=Expert.query.filter_by(NOM=str(name[77].lower())).first()
                 if cli is None:
-                    expert=Expert('',name[77],A,'test0001@gmail.com','1234567')
+                    expert=Expert('',name[77].lower(),A,'','')
                     db.session.add(expert)
                     db.session.commit()
                 else:
@@ -178,9 +192,9 @@ def expert_(A):
             if name[79] == '' or name[79] == 'XX':
                 print('no data here')
             else:
-                cli=Expert.query.filter_by(NOM=str(name[79])).first()
+                cli=Expert.query.filter_by(NOM=str(name[79].lower())).first()
                 if cli is None:
-                    expert=Expert('',name[79],A,'test0001@gmail.com','1234567')
+                    expert=Expert('',name[79].lower(),A,'','')
                     db.session.add(expert)
                     db.session.commit()
                 else:
@@ -190,9 +204,9 @@ def expert_(A):
             if name[81] == '' or name[81] == 'XX':
                 print('no data here')
             else:
-                cli=Expert.query.filter_by(NOM=str(name[81])).first()
+                cli=Expert.query.filter_by(NOM=str(name[81].lower())).first()
                 if cli is None:
-                    expert=Expert('',name[81],A,'test0001@gmail.com','1234567')
+                    expert=Expert('',name[81].lower(),A,'','')
                     db.session.add(expert)
                     db.session.commit()
                 else:
@@ -202,9 +216,9 @@ def expert_(A):
             if name[83] == '' or name[83] == 'XX':
                 print('no data here')
             else:
-                cli=Expert.query.filter_by(NOM=str(name[83])).first()
+                cli=Expert.query.filter_by(NOM=str(name[83].lower())).first()
                 if cli is None:
-                    expert=Expert('',name[81],A,'test0001@gmail.com','1234567')
+                    expert=Expert('',name[83].lower(),A,'','')
                     db.session.add(expert)
                     db.session.commit()
                 else:
@@ -212,8 +226,7 @@ def expert_(A):
         
 
 
-def Missions():
-    loc = ("C:/Users/user/Downloads/Base histo missions EDL 2020-08.xlsx")
+def Missions(loc):
 
     wb = xlrd.open_workbook(loc)
     sheet = wb.sheet_by_index(0)
@@ -222,7 +235,7 @@ def Missions():
     for i in range(0,50):
         name=sheet.row_values(i+1)
         
-        client1=Client.query.filter_by(NOM=str(name[3])).first()
+        client1=Client.query.filter_by(NOM=str(name[3].lower())).first()
         if client1 is not None:
             name[3]=client1.id
         if name[3] =='XX' :
@@ -230,7 +243,7 @@ def Missions():
         if name[3] ==''  :
             name[3]=0
 
-        client2=Client.query.filter_by(NOM=str(name[43])).first()
+        client2=Client.query.filter_by(NOM=str(name[43].lower())).first()
         if client2 is not None:
             name[43]=client2.id
         if name[43] =='XX' :
@@ -238,7 +251,7 @@ def Missions():
         if name[43] ==''  :
             name[43]=0
 
-        client3=Client.query.filter_by(NOM=str(name[20])).first() 
+        client3=Client.query.filter_by(NOM=str(name[20].lower())).first() 
         if client3 is not None:
             name[20]=client3.id
         if name[20] =='XX' :
@@ -246,7 +259,7 @@ def Missions():
         if name[20] ==''  :
             name[20]=0
 
-        expert1=Expert.query.filter_by(NOM=str(name[17])).first()
+        expert1=Expert.query.filter_by(NOM=str(name[17].lower())).first()
         if expert1 is not None:
             name[17]=expert1.id
         if name[17] =='XX' :
@@ -254,7 +267,7 @@ def Missions():
         if name[17] ==''  :
             name[17]=0
 
-        expert2=Expert.query.filter_by(NOM=str(name[11])).first()
+        expert2=Expert.query.filter_by(NOM=str(name[11].lower())).first()
         if expert2 is not None:
             name[11]=expert2.id
         if name[11] =='XX' :
@@ -262,7 +275,7 @@ def Missions():
         if name[11] ==''  :
             name[11]=0
 
-        expert3=Expert.query.filter_by(NOM=str(name[37])).first()
+        expert3=Expert.query.filter_by(NOM=str(name[37].lower())).first()
         if expert3 is not None:
             name[37]=expert3.id
         if name[37] =='XX'  :
@@ -270,7 +283,7 @@ def Missions():
         if name[37] ==''  :
             name[37]=0
 
-        expert4=Expert.query.filter_by(NOM=str(name[39])).first()
+        expert4=Expert.query.filter_by(NOM=str(name[39].lower())).first()
         if expert4 is not None:
             name[39]=expert4.id
         if name[39] =='XX' :
@@ -278,7 +291,7 @@ def Missions():
         if name[39] ==''  :
             name[39]=0
 
-        expert5=Expert.query.filter_by(NOM=str(name[69])).first()
+        expert5=Expert.query.filter_by(NOM=str(name[69].lower())).first()
         if expert5 is not None:
             name[69]=expert5.id
         if name[69] =='XX'  :
@@ -286,7 +299,7 @@ def Missions():
         if name[69] ==''  :
             name[69]=0
 
-        expert6=Expert.query.filter_by(NOM=str(name[71])).first()
+        expert6=Expert.query.filter_by(NOM=str(name[71].lower())).first()
         if expert6 is not None:
             name[71]=expert6.id
         if name[71] =='XX'   :
@@ -294,7 +307,7 @@ def Missions():
         if name[71] ==''  :
             name[71]=0
 
-        expert7=Expert.query.filter_by(NOM=str(name[73])).first()
+        expert7=Expert.query.filter_by(NOM=str(name[73].lower())).first()
         if expert7 is not None:
             name[73]=expert7.id
         if name[73] =='XX' :
@@ -302,7 +315,7 @@ def Missions():
         if name[73] ==''  :
             name[73]=0
 
-        expert8=Expert.query.filter_by(NOM=str(name[75])).first()
+        expert8=Expert.query.filter_by(NOM=str(name[75].lower())).first()
         if expert8 is not None:
             name[75]=expert8.id
         if name[75] =='XX'  :
@@ -310,7 +323,7 @@ def Missions():
         if name[75] ==''  :
             name[75]=0
 
-        expert9=Expert.query.filter_by(NOM=str(name[77])).first()
+        expert9=Expert.query.filter_by(NOM=str(name[77].lower())).first()
         if expert9 is not None:
             name[77]=expert9.id
         if name[77] =='XX' :
@@ -318,7 +331,7 @@ def Missions():
         if name[77] ==''  :
             name[77]=0
 
-        expert10=Expert.query.filter_by(NOM=str(name[79])).first()
+        expert10=Expert.query.filter_by(NOM=str(name[79].lower())).first()
         if expert10 is not None:
             name[79]=expert10.id
         if name[79] =='XX'   :
@@ -326,7 +339,7 @@ def Missions():
         if name[79] ==''  :
             name[79]=0
 
-        expert11=Expert.query.filter_by(NOM=str(name[81])).first()
+        expert11=Expert.query.filter_by(NOM=str(name[81].lower())).first()
         if expert11 is not None:
             name[81]=expert11.id
         if name[81] =='XX' :
@@ -334,7 +347,7 @@ def Missions():
         if name[81] ==''  :
             name[81]=0
 
-        expert12=Expert.query.filter_by(NOM=str(name[83])).first()
+        expert12=Expert.query.filter_by(NOM=str(name[83].lower())).first()
         if expert12 is not None:
             name[83]=expert12.id
         if name[83] =='XX':
@@ -344,16 +357,26 @@ def Missions():
         
         box=tuple(name)
 
-        mission=Mission(name[0],name[1],name[2],name[3],name[4],name[5],name[6],name[7],name[8],name[9],name[10],name[11],name[12],name[13],name[14],name[15],name[16],name[17],name[18],
-        name[19],name[20],name[21],name[22],name[23],name[24],name[25],name[26],name[27],name[28],name[29],name[30],name[31],name[32],name[33],name[34],name[35],name[36],name[37],name[38],name[39],
-        name[40],name[41],name[42],name[43],name[44],name[45],name[46],name[47],name[48],name[49],name[50],name[51],name[52],name[53],name[54],name[55],name[56],name[57],name[58],name[59],name[60],
+        mission=Mission(name[3],name[8],name[11],name[12],name[13],name[14],name[15],name[17],name[20],name[25],name[26],name[27],name[28],name[29],name[30],name[31],name[32],name[33],name[34],name[35],name[36],name[37],name[38],name[39],
+        name[40],name[41],name[43],name[44],name[45],name[46],name[47],name[48],name[49],name[50],name[51],name[52],name[53],name[54],name[55],name[56],name[57],name[58],name[59],name[60],
         name[61],name[62],name[63],name[64],name[65],name[66],name[67],name[68],name[69],name[70],name[71],name[72],name[73],name[74],name[75],name[76],name[77],name[78],name[79],name[80],name[81],
         name[82],name[83],name[84])
 
         db.session.add(mission)
         db.session.commit()
 
-        #print(box)
+        
+def mission_date(loc):
+    wb_obj = openpyxl.load_workbook(loc)
+    sheet=wb_obj.active
+    mission_=list(Mission.query.all())
+    for i in range(1,40):
+        for a in range(0,40):
+            mission_[a].DATE_REALISE_EDL =sheet["M"][i].value
+            mission_[a].Date_chiffrage_regle =sheet["AG"][i].value
+            mission_[a].DATE_FACTURE = sheet["AP"][i].value
+            mission_[a].DATE_FACT_REGLEE = sheet["AS"][i].value
+            db.session.commit()
 
 
 

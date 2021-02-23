@@ -1,3 +1,4 @@
+import os
 class Config:
     SECRET_KEY='FABIENCLASSIC'
     SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:root@localhost/amexpert"
@@ -8,4 +9,5 @@ class Config:
     MAIL_PASSWORD = 'onetouch000100'
     RECAPTCHA_PUBLIC_KEY ='6LcghOIZAAAAAE3zgcS-maNClYmtLTqICZtmHvWi'
     RECAPTCHA_PRIVATE_KEY='6LcghOIZAAAAAFiTeOmn_gN6xW_sGIFTDcVdIO0x'
-    
+    UPLOAD_FOLDER=os.getcwd()+'\\data_base_\\static\\files'
+    DEBUG = True
