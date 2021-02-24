@@ -235,7 +235,7 @@ def Missions(loc):
     for i in range(0,50):
         name=sheet.row_values(i+1)
         
-        client1=Client.query.filter_by(NOM=str(name[3].lower())).first()
+        client1=Client.query.filter_by(nom=str(name[3].lower())).first()
         if client1 is not None:
             name[3]=client1.id
         if name[3] =='XX' :
@@ -243,7 +243,7 @@ def Missions(loc):
         if name[3] ==''  :
             name[3]=0
 
-        client2=Client.query.filter_by(NOM=str(name[43].lower())).first()
+        client2=Client.query.filter_by(nom=str(name[43].lower())).first()
         if client2 is not None:
             name[43]=client2.id
         if name[43] =='XX' :
@@ -251,7 +251,7 @@ def Missions(loc):
         if name[43] ==''  :
             name[43]=0
 
-        client3=Client.query.filter_by(NOM=str(name[20].lower())).first() 
+        client3=Client.query.filter_by(nom=str(name[20].lower())).first() 
         if client3 is not None:
             name[20]=client3.id
         if name[20] =='XX' :
@@ -259,7 +259,7 @@ def Missions(loc):
         if name[20] ==''  :
             name[20]=0
 
-        expert1=Expert.query.filter_by(NOM=str(name[17].lower())).first()
+        expert1=Expert.query.filter_by(nom=str(name[17].lower())).first()
         if expert1 is not None:
             name[17]=expert1.id
         if name[17] =='XX' :
@@ -267,7 +267,7 @@ def Missions(loc):
         if name[17] ==''  :
             name[17]=0
 
-        expert2=Expert.query.filter_by(NOM=str(name[11].lower())).first()
+        expert2=Expert.query.filter_by(nom=str(name[11].lower())).first()
         if expert2 is not None:
             name[11]=expert2.id
         if name[11] =='XX' :
@@ -275,7 +275,7 @@ def Missions(loc):
         if name[11] ==''  :
             name[11]=0
 
-        expert3=Expert.query.filter_by(NOM=str(name[37].lower())).first()
+        expert3=Expert.query.filter_by(nom=str(name[37].lower())).first()
         if expert3 is not None:
             name[37]=expert3.id
         if name[37] =='XX'  :
@@ -283,7 +283,7 @@ def Missions(loc):
         if name[37] ==''  :
             name[37]=0
 
-        expert4=Expert.query.filter_by(NOM=str(name[39].lower())).first()
+        expert4=Expert.query.filter_by(nom=str(name[39].lower())).first()
         if expert4 is not None:
             name[39]=expert4.id
         if name[39] =='XX' :
@@ -291,7 +291,7 @@ def Missions(loc):
         if name[39] ==''  :
             name[39]=0
 
-        expert5=Expert.query.filter_by(NOM=str(name[69].lower())).first()
+        expert5=Expert.query.filter_by(nom=str(name[69].lower())).first()
         if expert5 is not None:
             name[69]=expert5.id
         if name[69] =='XX'  :
@@ -299,7 +299,7 @@ def Missions(loc):
         if name[69] ==''  :
             name[69]=0
 
-        expert6=Expert.query.filter_by(NOM=str(name[71].lower())).first()
+        expert6=Expert.query.filter_by(nom=str(name[71].lower())).first()
         if expert6 is not None:
             name[71]=expert6.id
         if name[71] =='XX'   :
@@ -307,7 +307,7 @@ def Missions(loc):
         if name[71] ==''  :
             name[71]=0
 
-        expert7=Expert.query.filter_by(NOM=str(name[73].lower())).first()
+        expert7=Expert.query.filter_by(nom=str(name[73].lower())).first()
         if expert7 is not None:
             name[73]=expert7.id
         if name[73] =='XX' :
@@ -315,7 +315,7 @@ def Missions(loc):
         if name[73] ==''  :
             name[73]=0
 
-        expert8=Expert.query.filter_by(NOM=str(name[75].lower())).first()
+        expert8=Expert.query.filter_by(nom=str(name[75].lower())).first()
         if expert8 is not None:
             name[75]=expert8.id
         if name[75] =='XX'  :
@@ -323,7 +323,7 @@ def Missions(loc):
         if name[75] ==''  :
             name[75]=0
 
-        expert9=Expert.query.filter_by(NOM=str(name[77].lower())).first()
+        expert9=Expert.query.filter_by(nom=str(name[77].lower())).first()
         if expert9 is not None:
             name[77]=expert9.id
         if name[77] =='XX' :
@@ -331,7 +331,7 @@ def Missions(loc):
         if name[77] ==''  :
             name[77]=0
 
-        expert10=Expert.query.filter_by(NOM=str(name[79].lower())).first()
+        expert10=Expert.query.filter_by(nom=str(name[79].lower())).first()
         if expert10 is not None:
             name[79]=expert10.id
         if name[79] =='XX'   :
@@ -339,7 +339,7 @@ def Missions(loc):
         if name[79] ==''  :
             name[79]=0
 
-        expert11=Expert.query.filter_by(NOM=str(name[81].lower())).first()
+        expert11=Expert.query.filter_by(nom=str(name[81].lower())).first()
         if expert11 is not None:
             name[81]=expert11.id
         if name[81] =='XX' :
@@ -347,7 +347,7 @@ def Missions(loc):
         if name[81] ==''  :
             name[81]=0
 
-        expert12=Expert.query.filter_by(NOM=str(name[83].lower())).first()
+        expert12=Expert.query.filter_by(nom=str(name[83].lower())).first()
         if expert12 is not None:
             name[83]=expert12.id
         if name[83] =='XX':
@@ -355,8 +355,7 @@ def Missions(loc):
         if name[83] ==''  :
             name[83]=0
         
-        box=tuple(name)
-
+        print('ok')
         mission=Mission(name[3],name[8],name[11],name[12],name[13],name[14],name[15],name[17],name[20],name[25],name[26],name[27],name[28],name[29],name[30],name[31],name[32],name[33],name[34],name[35],name[36],name[37],name[38],name[39],
         name[40],name[41],name[43],name[44],name[45],name[46],name[47],name[48],name[49],name[50],name[51],name[52],name[53],name[54],name[55],name[56],name[57],name[58],name[59],name[60],
         name[61],name[62],name[63],name[64],name[65],name[66],name[67],name[68],name[69],name[70],name[71],name[72],name[73],name[74],name[75],name[76],name[77],name[78],name[79],name[80],name[81],

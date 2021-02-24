@@ -1151,8 +1151,8 @@ def uploader_():
             # set the file path
             uploaded_file.save(file_path)
             # save the file
-            expert__('Interv',loc)
-            expert__('CONCESS',loc)
+            #expert__('Interv',loc)
+            #expert__('CONCESS',loc)
            #''' expert__('Manager_chiffrage',loc)
            # expert__('Agent_chiffrage',loc)
            # expert__('Respon Cell Dev',loc)
@@ -1163,11 +1163,11 @@ def uploader_():
            # expert__('Respon Cell Planif',loc)
            # expert__('Suiveur Cell Planif',loc)
            # expert__('Agent saisie Cell Planif',loc)'''
-            insert_client('Bailleur',loc)
-            insert_client('Locataire',loc)
+            #insert_client('Bailleur',loc)
+           # insert_client('Locataire',loc)
            # insert_client('Prop',loc)
-          #  Missions(loc) #learn how to check a whole row for this tables
-           # mission_date(loc)
+            Missions(loc) #learn how to check a whole row for this tables
+            mission_date(loc)
             flash(f"Vous avez importer les donnees avec success",'success')
             return redirect(url_for('users.up'))
       return redirect(url_for('users.main'))
