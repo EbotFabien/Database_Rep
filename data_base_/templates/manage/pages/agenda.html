@@ -5,6 +5,7 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Agenda</h1>
+        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left"></i></h3>
     </div>
     <!-- Content Row -->
 
@@ -13,7 +14,7 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
 	        <div class="card-header py-3">
-	            <h6 class="m-0 font-weight-bold text-primary">Agenda</h6>
+	            <h6 class="m-0 font-weight-bold">Agenda</h6>
 	        </div>
 	        <div class="card-body">
 	            <div class="table-responsive">
@@ -35,7 +36,7 @@
 		                    </tr>
 		                </thead>
 		                <tbody>
-		                {%for agenda_ in Agenda %}
+		                {%for agenda_ in agendas %}
 		                    <tr>
 		                        <th scope="row">{{agenda_.id}}</th>
 		                        <td>{{agenda_.client__data.NOM}}</td>

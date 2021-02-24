@@ -1,6 +1,6 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect
-from Database_project.project.data_base_.forms import (RegistrationForm , LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda)
+from Database_project.project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda)
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.data  import Missions,expert__,insert_client,mission_date
 from Database_project.project.data_base_.utils import send_reset_email
@@ -19,7 +19,7 @@ def client():
     #db.create_all()
     if current_user.TYPE == "Admin":
         client_=list(Client.query.filter_by(visibility=True).all())
-        return render_template('manage/pages/client.html',cli_ent=client_,legend="client")
+        return render_template('manage/pages/client.html',cli_ent=client_,legend="client", highlight='client')
 
     
     return redirect(url_for('users.main'))
@@ -40,7 +40,7 @@ def ajouter_client():
             flash(f'Client créé avec succès','success')
             return redirect(url_for('users.client'))
         print("didn't validate on submit")    
-        return render_template('manage/pages/ajouter_client.html',form=form,legend="client")
+        return render_template('manage/pages/ajouter_client.html',form=form,legend="client", highlight='client')
     else:
         return redirect(url_for('users.main'))
 
@@ -50,7 +50,7 @@ def suivi_client_(id):
     if current_user.TYPE == "Admin":
         suivi_=list(suivi_client.query.filter(and_(suivi_client.client==id,suivi_client.visibility==True)).all())
 
-        return render_template('manage/pages/suivi_c.html',Suivi=suivi_,ID=id,legend="client")
+        return render_template('manage/pages/suivi_c.html',Suivi=suivi_,ID=id,legend="client",highlight='client')
 
     return redirect(url_for('users.main'))
 
@@ -66,7 +66,7 @@ def ajouter_suivic(id):
             db.session.commit()
             flash(f'suivi Client créé avec succès','success')
             return redirect(url_for('users.suivi_client_', id=id))
-        return render_template('manage/pages/ajouter_suivi.html',form=form,ID=id,legend="client")
+        return render_template('manage/pages/ajouter_suivi.html',form=form,ID=id,legend="client", highlight='client')
     #return function 
 
 @users.route('/delete/<int:id>/suivi_client', methods=['GET'])
@@ -110,7 +110,7 @@ def show_client(id):
     if current_user.TYPE == "Admin":
         client = Client.query.filter_by(id=id).first_or_404()
         client_history=Client_History.query.filter_by(client_id=id).order_by(asc(Client_History.date)).first_or_404()
-        return render_template('manage/pages/show_client.html', client=client,history=client_history,legend="client")
+        return render_template('manage/pages/show_client.html', client=client,history=client_history,legend="client", highlight='client')
 
 
 
@@ -135,7 +135,7 @@ def edit_client(id):
         form = Client_Form()
         client = Client.query.filter_by(id=id).first_or_404()
         client_history=Client_History.query.filter_by(client_id=id).order_by(asc(Client_History.date)).first_or_404()
-        return render_template('manage/pages/edit_client.html', client=client,history=client_history,form=form,legend="client")
+        return render_template('manage/pages/edit_client.html', highlight='client', client=client,history=client_history,form=form,legend="client")
 
 @users.route('/update/<int:id>/client', methods=['POST','GET'])
 @login_required
@@ -238,7 +238,7 @@ def ajouter_facturation():
 def mission():
     if current_user.TYPE == "Admin":
         mission_=list(Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).all())
-        return render_template('manage/pages/mission.html',Mission=mission_,legend="mission")
+        return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
 
     return redirect(url_for('users.main'))
 
@@ -248,7 +248,7 @@ def mission():
 def show_mission(id):
     if current_user.TYPE == "Admin":
         mission = Mission.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/show_mission.html', mission=mission,legend="show_mission")
+        return render_template('manage/pages/show_mission.html', mission=mission,legend="show_mission",highlight='mission')
 
 
 
@@ -258,8 +258,8 @@ def ajouter_mission():
     if current_user.TYPE == 'Admin':
         form=Mission_add()
         if form.validate_on_submit():
-            check=Client.query.filter_by(reference=form.Reference_client.data).first_or_404()
-            ID_=Expert.query.filter_by(id=int(form.ID_Concessionaire.data)).first_or_404()
+            check=Client.query.filter_by(reference=form.Reference_client.data).first()
+            ID_=Expert.query.filter_by(id=int(form.ID_Concessionaire.data)).first()
             if check and ID_.id:
                 mission=Mission(check.id,0,ID_.id,0,0,
                 0,0,0,0,0,0,
@@ -280,16 +280,17 @@ def ajouter_mission():
                 return redirect(url_for('users.mission'))
             else:
                 flash(f"Le client ou expert n'existe pas dans cette base",'danger')
-                return redirect(url_for('users.add_mission'))
-        return render_template('manage/pages/add_mission.html',form=form, legend="mission")
+                return redirect(url_for('users.ajouter_mission'))
+        return render_template('manage/pages/add_mission.html',form=form, legend="mission",highlight='mission')
 
 @users.route('/edit/<int:id>/mission', methods=['GET'])
 @login_required
 def edit_mission(id):
     if current_user.TYPE == 'Admin':
         form = Mission_editForm()
-        expert = Mission.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/edit_mission.html', form=form,history=expert_history,expert=expert)
+
+        mission = Mission.query.filter_by(id=id).first_or_404()
+        return render_template('manage/pages/edit_mission.html', form=form,mission=mission,highlight='mission')
 
 @users.route('/update/<int:id>/mission', methods=['POST', 'PUT'])
 @login_required
@@ -387,7 +388,7 @@ def delete_mission(id):
 def expert():
     if current_user.TYPE == "Admin":
         expert_=list(Expert.query.filter_by(visibility=True).order_by(desc(Expert.id)).all()) 
-        return render_template('manage/pages/expert.html',Expert=expert_, legend="expert")
+        return render_template('manage/pages/expert.html',Expert=expert_, legend="expert", highlight='expert')
 
     return redirect(url_for('users.main'))
 
@@ -397,7 +398,7 @@ def show_expert(id):
     if current_user.TYPE == "Admin":
         expert = Expert.query.filter_by(id=id).first_or_404()
         client_history=Expert_History.query.filter_by(expert_id=id).order_by(asc(Expert_History.date)).first_or_404()
-        return render_template('manage/pages/show_expert.html', expert=expert,history=client_history,legend="expert")
+        return render_template('manage/pages/show_expert.html', expert=expert,history=client_history,legend="expert",highlight='expert')
 
 
 @users.route('/ajouter/expert',methods=['GET','POST'])
@@ -415,7 +416,7 @@ def ajouter_expert():
             user.password=hashed_password
             db.session.commit()
             return redirect(url_for('users.expert'))
-        return render_template('manage/pages/ajouter_expert.html',form=form, legend="expert")
+        return render_template('manage/pages/ajouter_expert.html',form=form, legend="expert", highlight='expert')
     else:
         return redirect(url_for('users.main'))
 
@@ -428,7 +429,7 @@ def edit_expert(id):
         form = Expert_editForm()
         expert = Expert.query.filter_by(id=id).first_or_404()
         expert_history=Expert_History.query.filter_by(expert_id=id).order_by(asc(Expert_History.date)).first_or_404()
-        return render_template('manage/pages/edit_expert.html', form=form,history=expert_history,expert=expert)
+        return render_template('manage/pages/edit_expert.html', highlight='expert', form=form,history=expert_history,expert=expert)
 
 @users.route('/delete/<int:id>/expert', methods=['GET'])
 @login_required
@@ -493,7 +494,7 @@ def update_expert(id):
 def tarifs(id):
     if current_user.TYPE == "Admin":
         tarifs=list(Tarifs.query.filter(and_(Tarifs.reference_client==id,Tarifs.visibility==True)).all())
-        return render_template('manage/pages/tarif.html',legend="tarifs",tarifs=tarifs)
+        return render_template('manage/pages/tarif.html',legend="tarifs",tarifs=tarifs, highlight='tarif')
 
     return redirect(url_for('users.main'))
 
@@ -502,7 +503,7 @@ def tarifs(id):
 def show_tarif(id):
     if current_user.TYPE == "Admin":
         tarif_ = Tarifs.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/show_tarifs.html', tarif=tarif_,legend="tarif")
+        return render_template('manage/pages/show_tarifs.html', tarif=tarif_,legend="tarif", highlight='tarif')
 
 
 
@@ -522,7 +523,7 @@ def ajouter_tarif(id):
             db.session.commit()
             flash(f'Le tarif a été créé avec succès', 'success')
             return redirect(url_for('users.tarifs'))
-        return render_template('manage/pages/ajouter_tarif.html',form=form, legend="expert")
+        return render_template('manage/pages/ajouter_tarif.html',form=form, legend="expert", highlight='tarif')
     return redirect(url_for('users.main'))
 
 
@@ -542,7 +543,7 @@ def edit_tarif(id):
     if current_user.TYPE == "Admin":
         form = Tarif_Form()
         tarif = Tarifs.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/edit_tarif.html', tarif=tarif,form=form)
+        return render_template('manage/pages/edit_tarif.html', tarif=tarif,form=form, highlight='tarif')
 
 @users.route('/update/<int:id>/tarif', methods=['POST', 'PUT'])
 @login_required
@@ -561,7 +562,12 @@ def update_tarif(id):
 
 
 
-
+@users.route('/agendas')
+@login_required
+def agendas():
+    if current_user.TYPE == "Admin"  or current_user.TYPE == "Audit":
+        agenda = Agenda.query.all()
+        return render_template('manage/pages/edit_agenda.html', agendas=agenda,  highlight='agendas')
 
 
 
@@ -570,7 +576,7 @@ def update_tarif(id):
 def agenda(id):
     if current_user.TYPE == "Audit":
         #agenda_=list(Agenda.query.filter(_and(Agenda.client_id==id,Agenda.visibility=True)).all())
-        return render_template('manage/pages/agenda.html',legend="agenda",Agenda=agenda_) #correct
+        return render_template('manage/pages/agenda.html',legend="agenda",Agenda=agenda_, highlight='agenda') #correct
 
     return redirect(url_for('users.main'))
 
@@ -579,7 +585,7 @@ def agenda(id):
 def show_agenda(id):
     if current_user.TYPE == "Admin":
         tarif_ = Agenda.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/show_agenda.html', tarif=tarif_,legend="agenda")
+        return render_template('manage/pages/show_agenda.html', tarif=tarif_,legend="agenda", highlight='agenda')
 
 
 @users.route('/ajoutez/<int:id>/agenda')
@@ -601,7 +607,7 @@ def ajouter_agenda (id):
             db.session.commit()
             flash(f'Agenda du client a ete ajouter','success')
             return redirect(url_for('users.ajouter_agenda',id=id))
-        return render_template('manage/pages/ajouter_agenda.html', legend="agenda")
+        return render_template('manage/pages/ajouter_agenda.html', legend="agenda", highlight='agenda')
 
     return redirect(url_for('users.main'))
 
@@ -611,7 +617,7 @@ def edit_agenda(id):
     if current_user.TYPE == "Admin"  or current_user.TYPE == "Audit":
         form = Agenda_form()
         tarif = Tarifs.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/edit_agenda.html', tarif=tarif,form=form)
+        return render_template('manage/pages/edit_agenda.html', tarif=tarif,form=form, highlight='agenda')
 
 @users.route('/update/<int:id>/agenda', methods=['POST', 'PUT'])
 @login_required
@@ -651,7 +657,7 @@ def invite_agenda(id):
             flash(f"L'invitation a été envoyes","success")# you need to send a mail
             return redirect(url_for('users.agenda'))
 
-        return render_template('manage/pages/edit_agenda.html', tarif=tarif,form=form)
+        return render_template('manage/pages/edit_agenda.html', tarif=tarif,form=form, highlight='agenda')
 
 
 @users.route('/delete/<int:id>/agenda', methods=['GET'])
@@ -779,7 +785,7 @@ def ajout_agenda():
      #   db.session.add(agen)
      #   db.session.commit()
       #  return redirect(url_for('users.agenda'))
-    return render_template('manage/pages/ajouter_agenda.html', legend="agenda")
+    return render_template('manage/pages/ajouter_agenda.html', legend="agenda", highlight='agenda')
     #return redirect(url_for('users.client'))
 
 
@@ -972,7 +978,7 @@ def ajouter_prospect():
             flash(f'Prospect créé avec succès','success')
             return redirect(url_for('users.prospect_'))
         print("didn't validate on submit")    
-        return render_template('manage/pages/ajouter_client.html',form=form,legend="prospect")
+        return render_template('manage/pages/ajouter_client.html',form=form,legend="prospect", highlight='prospect')
     else:
         return redirect(url_for('users.main'))
 
@@ -1000,7 +1006,7 @@ def show_prospect(id):
     if current_user.TYPE == "Admin":
         client = prospect.query.filter_by(id=id).first_or_404()
         client_history=prospect_History.query.filter_by(prospect=id).order_by(asc(prospect_History.date)).first_or_404()
-        return render_template('manage/pages/show_client.html', client=client,history=client_history,legend='prospect')
+        return render_template('manage/pages/show_client.html', highlight='prospect', client=client,history=client_history,legend='prospect')
 
 
 @users.route('/edit/<int:id>/prospect', methods=['GET'])
@@ -1010,7 +1016,7 @@ def edit_prospect(id):
         form = Client_Form()
         client = prospect.query.filter_by(id=id).first_or_404()
         client_history=prospect_History.query.filter_by(prospect=id).order_by(asc(prospect_History.date)).first_or_404()
-        return render_template('manage/pages/edit_prospect.html', client=client,history=client_history,form=form)
+        return render_template('manage/pages/edit_prospect.html',highlight='prospect', client=client,history=client_history,form=form)
 
 @users.route('/update/<int:id>/prospect', methods=['POST', 'PUT'])#fix pages for action on form
 @login_required
@@ -1066,7 +1072,7 @@ def ajouter_suivip(id):
             db.session.commit()
             flash(f'suivi prospect créé avec succès','success')
             return redirect(url_for('users.suivi_prospect_', id=id))
-        return render_template('manage/pages/ajouter_suivi.html',form=form,ID=id,legend="prospect")
+        return render_template('manage/pages/ajouter_suivi.html',form=form,ID=id,legend="prospect",highlight='prospect')
     #return function 
 
 @users.route('/delete/<int:id>/suivi_propect', methods=['GET'])

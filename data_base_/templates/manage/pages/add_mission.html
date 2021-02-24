@@ -4,7 +4,8 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800"></h1>
+        <h1 class="h3 mb-0 text-gray-800">Mission</h1>
+        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left"></i></h3>
     </div>
     <!-- Content Row -->
 
@@ -13,7 +14,7 @@
         <div class="col-xl-6 col-lg-6 mx-auto">
             <div class="card shadow mb-4">
 	        <div class="card-header py-1 d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold is-gray">Ajouter un Suivi</h6>
+                <h6 class="m-0 font-weight-bold is-gray">Ajouter une Mission</h6>
                 {% if legend == "prospect" %}
                     <a href="{{url_for('users.suivi_prospect_', id=ID)}}" class="button is-black is-small pull-right"> les suivi du prospects</a>
                 {% endif %}
@@ -63,7 +64,7 @@
                                          {{form.ID_Concessionaire.label(class="form-control-label")}}
                                  
                                          {% if form.ID_Concessionaire.errors %}
-                                             {{form.ID_Concessionaire(class="input is-small is-invalid") }}
+                                             {{form.ID_Concessionaire(class="input is-small is-invalid")}}
                                              <div class="invalid-feedback">
                                                  {% for error in form.ID_Concessionaire.errors %}
                                                      <span>{{ error }}</span>

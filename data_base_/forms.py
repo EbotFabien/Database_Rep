@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm,RecaptchaField, Recaptcha
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField
+from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField, DateField
 from wtforms.validators import DataRequired,length,Email,EqualTo,ValidationError
 from Database_project.project.data_base_.Models import Expert ,Client
 
@@ -259,7 +259,7 @@ class Client_Form(FlaskForm):
     Ville=StringField('Ville',
                            validators=[DataRequired()])
     
-    Siret=StringField("Siret",
+    Siret=StringField("Siret N°",
                            validators=[DataRequired()])
 
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
@@ -294,10 +294,10 @@ class Suivi_Client(FlaskForm):
 
 class Mission_add(FlaskForm):
 
-    Reference_client=StringField("Reference_client",
+    Reference_client=StringField("N° Client",
                         validators=[DataRequired()])
 
-    ID_Concessionaire=StringField("ID_Concessionaire",
+    ID_Concessionaire=StringField("N° Concessionaire",
                         validators=[DataRequired()])
    
     submit = SubmitField('enregistrer')
@@ -305,35 +305,35 @@ class Mission_add(FlaskForm):
 
 class Mission_editForm(FlaskForm):
 
-    NRO_FACTURE=StringField("NRO_FACTURE",
+    NRO_FACTURE=StringField("N° Facture",
                         validators=[DataRequired()])
-    DATE_REALISE_EDL=StringField("DATE_REALISE_EDL",
+    DATE_REALISE_EDL=StringField("Date de realisation EDL",
                         validators=[DataRequired()])
-    PRIX_HT_EDL=StringField("PRIX_HT_EDL",
+    PRIX_HT_EDL=StringField("Prix HT EDL",
                         validators=[DataRequired()])
-    TVA_EDL=StringField("TVA_EDL",
+    TVA_EDL=StringField("TVA EDL",
                         validators=[DataRequired()])
-    PRIX_TTC_EDL=StringField("PRIX_TTC_EDL",
+    PRIX_TTC_EDL=StringField("Prix TTC EDL",
                         validators=[DataRequired()])
-    ID_INTERV=StringField("ID_INTERV",
+    ID_INTERV=StringField("N° INTERV",
                         validators=[DataRequired()])
-    Reference_LOCATAIRE=StringField("Reference_LOCATAIRE",
+    Reference_LOCATAIRE=StringField("N° Locataire",
                         validators=[DataRequired()])
-    CA_HT_AS=StringField("CA_HT_AS",
+    CA_HT_AS=StringField("CA HT AS",
                         validators=[DataRequired()])
-    TVA_AS=StringField("TVA_AS",
+    TVA_AS=StringField("TVA AS",
                         validators=[DataRequired()])
-    CA_TTC_AS=StringField("CA_TTC_AS",
+    CA_TTC_AS=StringField("CA TTC AS",
                         validators=[DataRequired()])
-    CA_HT_AC=StringField("CA_HT_AC",
+    CA_HT_AC=StringField("CA HT AC",
                         validators=[DataRequired()])
-    CA_TTC_AC=StringField("CA_TTC_AC",
+    CA_TTC_AC=StringField("CA TTC AC",
                         validators=[DataRequired()])
-    CA_HT_TRUST=StringField("CA_HT_TRUST",
+    CA_HT_TRUST=StringField("CA HT TRUST",
                         validators=[DataRequired()])	
-    TVA_TRUST=StringField("TVA_TRUST",
+    TVA_TRUST=StringField("TVA TRUST",
                         validators=[DataRequired()])
-    Date_chiffrage_regle=StringField("Date_chiffrage_regle",
+    Date_chiffrage_regle=StringField("Date_chiffrage_regle", 
                         validators=[DataRequired()])
     Prix_ht_chiffrage=StringField("Prix_ht_chiffrage",
                         validators=[DataRequired()])
@@ -349,13 +349,13 @@ class Mission_editForm(FlaskForm):
                         validators=[DataRequired()])
     ID_agent_chiffrage =StringField("ID_agent_chiffrage",
                         validators=[DataRequired()])
-    TYPE_EDL =StringField("TYPE_EDL",
+    TYPE_EDL =StringField("TYPE EDL",
                         validators=[DataRequired()])  	
-    DATE_FACTURE =StringField("DATE_FACTURE",
+    DATE_FACTURE =StringField("Date de Facture",
                         validators=[DataRequired()])  	
-    NOMPROPRIO =StringField("NOMPROPRIO",
+    NOMPROPRIO =StringField("Nom du Proprio",
                         validators=[DataRequired()])  	
-    DATE_FACT_REGLEE =StringField("DATE_FACT_REGLEE",
+    DATE_FACT_REGLEE =StringField("Date de paiement de la facture",
                         validators=[DataRequired()])  	
     DATE_COM_REGLEE_AS =StringField("DATE_COM_REGLEE_AS",
                         validators=[DataRequired()])  	
@@ -437,6 +437,8 @@ class Mission_editForm(FlaskForm):
                         validators=[DataRequired()])
     POURCENTAGE_Agent_saisie_CEll_planif  =  StringField("POURCENTAGE_Agent_saisie_CEll_planif",
                             validators=[DataRequired()])
+
+    modifier = SubmitField('enregistre')
 
 
 

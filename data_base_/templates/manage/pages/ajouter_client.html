@@ -4,7 +4,8 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800"></h1>
+        <h1 class="h3 mb-0 text-gray-800">Client</h1>
+        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left"></i></h3>
     </div>
     <!-- Content Row -->
 
@@ -44,18 +45,18 @@
                                 <fieldset class="form-group">
                         
                                     <div class="form-group row">
-                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
                                         {{form.Siret.label(class="form-control-label")}}
                                         
                                         {% if form.Siret.errors %}
-                                        {{form.Siret(class="form-control is-invalid") }}
+                                        {{form.Siret(class="form-control is-invalid is-fullwidth") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.Siret.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                     {% else %}
-                                        {{form.Siret(class="input is-small")}}
+                                        {{form.Siret(class="input is-small is-fullwidth")}}
                                     {% endif %}
                                     </div> 
                                     <div class="col-sm-12 pb-1">

@@ -263,7 +263,7 @@ class Facturation(db.Model):
     Date_    = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     Pays  = db.Column(db.String)
     Destinataire  = db.Column(db.Integer, db.ForeignKey('Client.id'))
-    expéditeur  = db.Column(db.Integer, db.ForeignKey('Expert.id'))
+    expediteur  = db.Column(db.Integer, db.ForeignKey('Expert.id'))
     client_data_=db.relationship("Client", 
         primaryjoin=(Destinataire == Client.id),
         backref=db.backref('client_data_',  uselist=False),  uselist=False)
@@ -335,7 +335,15 @@ class Agenda(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     Ref_agenda_date=db.Column(db.DateTime(),default=datetime.utcnow)
     client_id=db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    client_data_=db.relationship("Client", 
+        primaryjoin=(client_id == Client.id),
+        backref=db.backref('_client_data_',  uselist=False),  uselist=False)
+
     Organisateur = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"))  
+    Organisateur_data_=db.relationship("Expert", 
+        primaryjoin=(Organisateur == Expert.id),
+        backref=db.backref('Organisateur_data_',  uselist=False),  uselist=False)
+
     Titre_du_Rdv =db.Column(db.String)
     Adresse1_Rdv =db.Column(db.String)
     Adresse2_Rdv =db.Column(db.String)
@@ -350,6 +358,7 @@ class Agenda(db.Model):
     Informations_de_suivi_de_Rdv =db.Column(db.String)
     Chemin_de_fichier_joint =db.Column(db.String)
     visibility =db.Column(db.Boolean,default=True)
+
 
     def __repr__(self):
         return '<Agenda %r>' %self.id
@@ -569,7 +578,7 @@ class Mission(db.Model):
         primaryjoin=(ID_Agent_saisie_Cell_Planif == Expert.id),
         backref=db.backref('Agent_saisie_Cell_Planif__data',  uselist=False),  uselist=False)  	
     POURCENTAGE_Agent_saisie_CEll_planif  = db.Column(db.String) 
-    date =db.Column(db.DateTime(),default=datetime.utcnow)
+    #date =db.Column(db.DateTime(),default=datetime.utcnow)
     Visibility =db.Column(db.Boolean,default=True)
     
 

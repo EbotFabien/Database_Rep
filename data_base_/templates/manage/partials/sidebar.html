@@ -23,9 +23,9 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            {% if current_user.TYPE == 'Audit' or current_user.TYPE == 'CONCESS' %}
-                <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item">
+            {% if current_user.TYPE == 'Audit' or current_user.TYPE == 'CONCESS' or current_user.TYPE == 'Admin' %}
+                <!-- Nav Item - Pages Collapse Menu >
+                <li class="nav-item {% if highlight == 'agenda' %} active {% endif %}">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                         aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-calendar"></i>
@@ -33,16 +33,16 @@
                     </a>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <!-- <h6 class="collapse-header">Action:</h6> -->
+                            <comment here <h6 class="collapse-header">Action:</h6> >
                             <a class="collapse-item" href="/ajoutez/agenda">ajoutez</a>
-                            <a class="collapse-item" href="/agenda">tout afficher</a>
+                            <a class="collapse-item" href="/agendas">tout afficher</a>
                         </div>
                     </div>
-                </li>
+                </li-->
             {% endif%}
             {% if current_user.TYPE == 'Admin' %}
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item {% if highlight == 'prospect' %} active {% endif %}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-users"></i>
@@ -60,7 +60,7 @@
             {% endif %}
             {% if current_user.TYPE == 'Admin' %}
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item {% if highlight == 'client' %} active {% endif %}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClients"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-users"></i>
@@ -78,7 +78,7 @@
             {% endif %}
             {% if current_user.TYPE == 'Admin' %}
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item {% if highlight == 'expert' %} active {% endif %}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExperts"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-users"></i>
@@ -95,8 +95,7 @@
             </li>
             {% endif %}
             {% if current_user.TYPE == 'Admin' %}
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <!--li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFacturatuion"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fa fa-euro"></i>
@@ -105,17 +104,15 @@
                 <div id="collapseFacturatuion" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                       <!comment here  <h6 class="collapse-header">Custom Utilities:</h6> >
                         <a class="collapse-item" href="/ajouter/facturation">ajoutez</a>
                         <a class="collapse-item" href="/facturation">tout afficher</a>
                     </div>
                 </div>
-            </li-->
+            </li> -->
             {% endif %}
 
             {% if current_user.TYPE == 'Admin' %}
-            <!-- Nav Item - Utilities Collapse Menu >
-            <li class="nav-item">
+            <li class="nav-item {% if highlight == 'mission' %} active {% endif %}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFacturatuio"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-list"></i>
@@ -124,12 +121,11 @@
                 <div id="collapseFacturatuio" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                       <to comment  <h6 class="collapse-header">Custom Utilities:</h6> -->
-                        <!--a to comment class="collapse-item" href="/ajouter/mission">ajoutez</a>
+                        <a class="collapse-item" href="/ajouter/mission">ajoutez</a>
                         <a class="collapse-item" href="/mission">tout afficher</a>
                     </div>
                 </div>
-            </li-->
+            </li>
             {% endif %}
 
             {% if current_user.TYPE == 'Admin' %}
