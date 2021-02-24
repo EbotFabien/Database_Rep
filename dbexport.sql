@@ -26,18 +26,64 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public."Agenda" (
     id integer NOT NULL,
-    clien_t integer,
-    audit_planner integer,
-    "Agent_referent_du_client" integer,
-    "Validation_par_agent" boolean,
-    "Lieu" character varying,
-    "Date_" timestamp without time zone NOT NULL,
-    "Rapport" character varying,
-    "Status" boolean
+    "Adresse1_Rdv" character varying,
+    "Adresse2_Rdv" character varying,
+    "Chemin_de_fichier_joint" character varying,
+    "Code_postal_Rdv" character varying,
+    "Date_Rdv" character varying,
+    "Date_Rdv_annulé" character varying,
+    "Heure_début_Rdv" character varying,
+    "Heure_fin_Rdv" character varying,
+    "Informations_de_suivi_de_Rdv" character varying,
+    "Informations_générales" character varying,
+    "Informations_réservées_service_planification" character varying,
+    "Organisateur" integer,
+    "Ref_agenda_date" timestamp without time zone,
+    "Titre_du_Rdv" character varying,
+    "Ville_du_Rdv" character varying,
+    client_id integer,
+    visibility boolean
 );
 
 
 ALTER TABLE public."Agenda" OWNER TO postgres;
+
+--
+-- Name: Agenda_expert; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Agenda_expert" (
+    id integer NOT NULL,
+    agenda_taken integer,
+    "Participant_invité" integer,
+    validation boolean,
+    visibility boolean
+);
+
+
+ALTER TABLE public."Agenda_expert" OWNER TO postgres;
+
+--
+-- Name: Agenda_expert_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Agenda_expert_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Agenda_expert_id_seq" OWNER TO postgres;
+
+--
+-- Name: Agenda_expert_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Agenda_expert_id_seq" OWNED BY public."Agenda_expert".id;
+
 
 --
 -- Name: Agenda_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -294,7 +340,6 @@ CREATE TABLE public."Facturation" (
     "Date_" timestamp without time zone NOT NULL,
     "Pays" character varying,
     "Destinataire" integer,
-    "expéditeur" integer,
     "Montant" character varying,
     "TVA" character varying,
     "Total" character varying,
@@ -305,7 +350,8 @@ CREATE TABLE public."Facturation" (
     "Surface" character varying,
     "Tarif" character varying,
     "Appt_Pav" character varying,
-    "Visibility" boolean
+    "Visibility" boolean,
+    expediteur integer
 );
 
 
@@ -487,69 +533,31 @@ CREATE TABLE public."Tarifs" (
     type_maison character varying,
     "Prix_EDL" character varying,
     "Prix_Chiffrage" character varying,
-    visibility boolean
-);
-
-
-ALTER TABLE public."Tarifs" OWNER TO postgres;
-
---
--- Name: Tarifs_client; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public."Tarifs_client" (
-    id integer NOT NULL,
-    reference_client integer,
-    maison_appartement character varying,
-    type_maison character varying,
-    "Prix_EDL" character varying,
-    "Prix_Chiffrage" character varying,
-    code_tva character varying,
+    visibility boolean,
     "Cell_AS_referent_client" integer,
     "Cell_AS_referent_client_taux_com" character varying,
-    "Cell_devel_client" integer,
-    "Cell_devel_respon_client_taux_com" character varying,
-    "Cell_devel_agent_suivi_client" integer,
-    "Cell_devel_agent_suivi_client_taux_com" character varying,
-    "Cell_tech_Ref_agent_suivi_client" integer,
-    "Cell_tech_Ref_respon_suivi_client_taux_com" character varying,
-    "Cell_tech_Ref_suiveur_client" integer,
-    "Cell_tech_Ref_suiveur_taux_com" character varying,
+    "Cell_Planif_Ref_agent_client" integer,
+    "Cell_Planif_Ref_agent_taux_com" character varying,
     "Cell_Planif_Ref_respon_client" integer,
     "Cell_Planif_Ref_respon_taux_com" character varying,
     "Cell_Planif_Ref_suiveur_client" integer,
     "Cell_Planif_Ref_suiveur_taux_com" character varying,
-    "Cell_Planif_Ref_agent_client" integer,
-    "Cell_Planif_Ref_agent_taux_com" character varying,
+    "Cell_devel_agent_suivi_client" integer,
+    "Cell_devel_agent_suivi_client_taux_com" character varying,
+    "Cell_devel_client" integer,
+    "Cell_devel_respon_client_taux_com" character varying,
+    "Cell_tech_Ref_agent_suivi_client" integer,
+    "Cell_tech_Ref_respon_suivi_client_taux_com" character varying,
+    "Cell_tech_Ref_suiveur_client" integer,
+    "Cell_tech_Ref_suiveur_taux_com" character varying,
+    code_tva character varying,
     commentaire_libre character varying,
-    date timestamp without time zone NOT NULL,
-    visibility boolean
+    date timestamp without time zone,
+    reference_client integer
 );
 
 
-ALTER TABLE public."Tarifs_client" OWNER TO postgres;
-
---
--- Name: Tarifs_client_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public."Tarifs_client_id_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public."Tarifs_client_id_seq" OWNER TO postgres;
-
---
--- Name: Tarifs_client_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public."Tarifs_client_id_seq" OWNED BY public."Tarifs_client".id;
-
+ALTER TABLE public."Tarifs" OWNER TO postgres;
 
 --
 -- Name: Tarifs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -768,6 +776,13 @@ ALTER TABLE ONLY public."Agenda" ALTER COLUMN id SET DEFAULT nextval('public."Ag
 
 
 --
+-- Name: Agenda_expert id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Agenda_expert" ALTER COLUMN id SET DEFAULT nextval('public."Agenda_expert_id_seq"'::regclass);
+
+
+--
 -- Name: Client id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -831,13 +846,6 @@ ALTER TABLE ONLY public."Tarifs" ALTER COLUMN id SET DEFAULT nextval('public."Ta
 
 
 --
--- Name: Tarifs_client id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Tarifs_client" ALTER COLUMN id SET DEFAULT nextval('public."Tarifs_client_id_seq"'::regclass);
-
-
---
 -- Name: prospect id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -869,7 +877,15 @@ ALTER TABLE ONLY public.suivi_prospect ALTER COLUMN id SET DEFAULT nextval('publ
 -- Data for Name: Agenda; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Agenda" (id, clien_t, audit_planner, "Agent_referent_du_client", "Validation_par_agent", "Lieu", "Date_", "Rapport", "Status") FROM stdin;
+COPY public."Agenda" (id, "Adresse1_Rdv", "Adresse2_Rdv", "Chemin_de_fichier_joint", "Code_postal_Rdv", "Date_Rdv", "Date_Rdv_annulé", "Heure_début_Rdv", "Heure_fin_Rdv", "Informations_de_suivi_de_Rdv", "Informations_générales", "Informations_réservées_service_planification", "Organisateur", "Ref_agenda_date", "Titre_du_Rdv", "Ville_du_Rdv", client_id, visibility) FROM stdin;
+\.
+
+
+--
+-- Data for Name: Agenda_expert; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Agenda_expert" (id, agenda_taken, "Participant_invité", validation, visibility) FROM stdin;
 \.
 
 
@@ -915,6 +931,7 @@ COPY public."Client" (id, reference, "TYPE", societe, sexe, nom, email, numero, 
 35	124460.0	Bailleur	guy hoquet sceaux - sarl csg immobilier	madame	coppola christine&grégory	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.3855	t
 36	124170.0	Bailleur	terre d'argence immobilier 	monsieur	poincet philippe	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.40449	t
 37	123630.0	Bailleur	l'adresse les herbiers - sarl les herbiers gestion 	monsieur	blavillain et teillol	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:36.63665	t
+0	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -977,7 +994,6 @@ COPY public."Client_negotiateur" (id, client_id, reference, "TYPE", societe, sex
 --
 
 COPY public."Expert" (id, sexe, nom, trigramme, "TYPE", "date_entrée", siret, email, numero, code_tva, taux_tva, password, visibility) FROM stdin;
-1	Mr.	Admin	\N	Admin	2021-02-20 15:54:43.253003	\N	test0001@gmail.com	12345	\N	\N	$2b$12$yHDxvsc5OHtOr/P0/HTlSuUdHqnpGgLPU/J2zE4OZqAjwEDHJ.Ns.	t
 2	MME	DE NAZELLE ANNE	\N	Interv	2021-02-20 15:55:42.481004	\N			\N	\N	\N	t
 3	M.	ST- BURLON ROMAIN	\N	Interv	2021-02-20 15:55:42.513987	\N			\N	\N	\N	t
 4	M.	SIMIER MATTHEW	\N	Interv	2021-02-20 15:55:42.534975	\N			\N	\N	\N	t
@@ -2501,6 +2517,10 @@ COPY public."Expert" (id, sexe, nom, trigramme, "TYPE", "date_entrée", siret, e
 1522	M.	LESNE ALAN	\N	CONCESS	2021-02-20 16:14:31.65949	\N	test@gmail.com	222000000	\N	\N	\N	t
 1523	M.	LESNE ALAN	\N	CONCESS	2021-02-20 16:14:31.676479	\N	test@gmail.com	222000000	\N	\N	\N	t
 1524	M.	LESNE ALAN	\N	CONCESS	2021-02-20 16:14:31.695466	\N	test@gmail.com	222000000	\N	\N	\N	t
+1525	Mr.	Admin	\N	Admin	2021-02-22 10:05:00.245439	\N	test0001@gmail.com	12345	\N	\N	$2b$12$byRg/RHXL3sHoDrXt8CkD.UozKeqQbZ6fICSBnARm.5gNGpgSsgm2	t
+1526	Mr.	Admin	\N	Admin	2021-02-22 10:05:32.325944	\N	test0001@gmail.com	12345	\N	\N	$2b$12$3ltYbFvY5NQyTfje0Tall.bs867a2MG5uMu.csV19GLCON3LMOIzy	t
+0	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f
+1	Mr.	Admin	\N	Admin	2021-02-20 15:54:43.253003	\N	test0001@gmail.com	12345	\N	\N	$2b$12$yHDxvsc5OHtOr/P0/HTlSuUdHqnpGgLPU/J2zE4OZqAjwEDHJ.Ns.	f
 \.
 
 
@@ -4038,7 +4058,7 @@ COPY public."Expert_History" (id, expert_id, actif_parti, type_certification, da
 -- Data for Name: Facturation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Facturation" (id, "Facture_no", "Date_", "Pays", "Destinataire", "expéditeur", "Montant", "TVA", "Total", "Type", "Proprietaire", "Locataire", "Ville", "Surface", "Tarif", "Appt_Pav", "Visibility") FROM stdin;
+COPY public."Facturation" (id, "Facture_no", "Date_", "Pays", "Destinataire", "Montant", "TVA", "Total", "Type", "Proprietaire", "Locataire", "Ville", "Surface", "Tarif", "Appt_Pav", "Visibility", expediteur) FROM stdin;
 \.
 
 
@@ -4047,6 +4067,8 @@ COPY public."Facturation" (id, "Facture_no", "Date_", "Pays", "Destinataire", "e
 --
 
 COPY public."Mission" (id, "Reference_BAILLEUR", "NRO_FACTURE", "ID_CONCESS", "DATE_REALISE_EDL", "PRIX_HT_EDL", "TVA_EDL", "PRIX_TTC_EDL", "ID_INTERV", "Reference_LOCATAIRE", "CA_HT_AS", "TVA_AS", "CA_TTC_AS", "CA_HT_AC", "CA_TTC_AC", "CA_HT_TRUST", "TVA_TRUST", "Date_chiffrage_regle", "Prix_ht_chiffrage", "POURCENTAGE_suiveur_chiffrage", "POURCENTAGE_AS_chiffrage", "POURCENTAGE_manager_chiffrage", "ID_manager_chiffrage", "POURCENTAGE_agent_chiffrage", "ID_agent_chiffrage", "TYPE_EDL", "DATE_FACTURE", "NOMPROPRIO", "DATE_FACT_REGLEE", "DATE_COM_REGLEE_AS", "MONTANT_COM_REGLEE_AS", "DATE_COM_REGLEE_AC", "MONTANT_COM_REGLEE_AC", "TYPE_LOGEMENT", "NBRE_EDL_ABOONEMENT", "MAIL_CONTACT_ENVOI_FACT", "DATE_saisie_enregistrement", "CODE_AMEXPERT", "COMMENTAIRE_FACTURE", "TYPE_PAIEMENT", "N_REMISE_DE_CHEQUE", "SAISIE_TRAITE_PAR", "infos_et_TRAITEMENT", "LOGEMENT_MEUBLE", "CODE_FACTURATION", "TYPE_DE_BIEN", surface_logement1, "ETAGE", "POINTAGE", "DATE_POINTAGE", "DEVEL", "DATE_EXTRACTION_COMPTABLE", "POURCENTAGE_COM_AS_DU_CLIENT", "ID_Respon_Cell_Dev", "POURCENTAGE_Respon_Cell_Dev", "ID_agent_Cell_Dev", "POURCENTAGE_Agent_Cell_Dev", "ID_Agent_CellTech", "POURCENTAGE_Agent_Cell_Tech", "ID_Respon_Cell_Tech", "POURCENTAGE_Respon_Cell_Tech", "ID_Suiveur_Cell_Tech", "POURCENTAGE_Suiveur_Cell_Tech", "ID_Respon_Cell_Planif", "POURCENTAGE_Respon_Cell_Planif", "ID_Suiveur_Cell_Planif", "POURCENTAGE_Suiveur_Cell_Planif", "ID_Agent_saisie_Cell_Planif", "POURCENTAGE_Agent_saisie_CEll_planif", "Visibility") FROM stdin;
+1	1	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	\N	0	0	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+2	1	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	\N	0	0	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 \.
 
 
@@ -4063,15 +4085,7 @@ COPY public."Negotiateur_History" (id, negotiateur_id, adresse, etat_client, cp,
 -- Data for Name: Tarifs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Tarifs" (id, maison_appartement, type_maison, "Prix_EDL", "Prix_Chiffrage", visibility) FROM stdin;
-\.
-
-
---
--- Data for Name: Tarifs_client; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public."Tarifs_client" (id, reference_client, maison_appartement, type_maison, "Prix_EDL", "Prix_Chiffrage", code_tva, "Cell_AS_referent_client", "Cell_AS_referent_client_taux_com", "Cell_devel_client", "Cell_devel_respon_client_taux_com", "Cell_devel_agent_suivi_client", "Cell_devel_agent_suivi_client_taux_com", "Cell_tech_Ref_agent_suivi_client", "Cell_tech_Ref_respon_suivi_client_taux_com", "Cell_tech_Ref_suiveur_client", "Cell_tech_Ref_suiveur_taux_com", "Cell_Planif_Ref_respon_client", "Cell_Planif_Ref_respon_taux_com", "Cell_Planif_Ref_suiveur_client", "Cell_Planif_Ref_suiveur_taux_com", "Cell_Planif_Ref_agent_client", "Cell_Planif_Ref_agent_taux_com", commentaire_libre, date, visibility) FROM stdin;
+COPY public."Tarifs" (id, maison_appartement, type_maison, "Prix_EDL", "Prix_Chiffrage", visibility, "Cell_AS_referent_client", "Cell_AS_referent_client_taux_com", "Cell_Planif_Ref_agent_client", "Cell_Planif_Ref_agent_taux_com", "Cell_Planif_Ref_respon_client", "Cell_Planif_Ref_respon_taux_com", "Cell_Planif_Ref_suiveur_client", "Cell_Planif_Ref_suiveur_taux_com", "Cell_devel_agent_suivi_client", "Cell_devel_agent_suivi_client_taux_com", "Cell_devel_client", "Cell_devel_respon_client_taux_com", "Cell_tech_Ref_agent_suivi_client", "Cell_tech_Ref_respon_suivi_client_taux_com", "Cell_tech_Ref_suiveur_client", "Cell_tech_Ref_suiveur_taux_com", code_tva, commentaire_libre, date, reference_client) FROM stdin;
 \.
 
 
@@ -4080,7 +4094,7 @@ COPY public."Tarifs_client" (id, reference_client, maison_appartement, type_mais
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-1af5ecbfe036
+bb1db1e02677
 \.
 
 
@@ -4834,6 +4848,13 @@ COPY public.suivi_prospect (id, prospect_id, responsable, commentaire, date_crea
 
 
 --
+-- Name: Agenda_expert_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Agenda_expert_id_seq"', 1, false);
+
+
+--
 -- Name: Agenda_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -4872,7 +4893,7 @@ SELECT pg_catalog.setval('public."Expert_History_id_seq"', 1522, true);
 -- Name: Expert_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Expert_id_seq"', 1524, true);
+SELECT pg_catalog.setval('public."Expert_id_seq"', 1526, true);
 
 
 --
@@ -4886,7 +4907,7 @@ SELECT pg_catalog.setval('public."Facturation_id_seq"', 1, false);
 -- Name: Mission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Mission_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."Mission_id_seq"', 2, true);
 
 
 --
@@ -4894,13 +4915,6 @@ SELECT pg_catalog.setval('public."Mission_id_seq"', 1, false);
 --
 
 SELECT pg_catalog.setval('public."Negotiateur_History_id_seq"', 1, true);
-
-
---
--- Name: Tarifs_client_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public."Tarifs_client_id_seq"', 1, false);
 
 
 --
@@ -4943,6 +4957,14 @@ SELECT pg_catalog.setval('public.suivi_client_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.suivi_prospect_id_seq', 1, true);
+
+
+--
+-- Name: Agenda_expert Agenda_expert_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Agenda_expert"
+    ADD CONSTRAINT "Agenda_expert_pkey" PRIMARY KEY (id);
 
 
 --
@@ -5026,14 +5048,6 @@ ALTER TABLE ONLY public."Negotiateur_History"
 
 
 --
--- Name: Tarifs_client Tarifs_client_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Tarifs_client"
-    ADD CONSTRAINT "Tarifs_client_pkey" PRIMARY KEY (id);
-
-
---
 -- Name: Tarifs Tarifs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5082,6 +5096,38 @@ ALTER TABLE ONLY public.suivi_prospect
 
 
 --
+-- Name: Agenda Agenda_Organisateur_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Agenda"
+    ADD CONSTRAINT "Agenda_Organisateur_fkey" FOREIGN KEY ("Organisateur") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Agenda Agenda_client_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Agenda"
+    ADD CONSTRAINT "Agenda_client_id_fkey" FOREIGN KEY (client_id) REFERENCES public."Client"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Agenda_expert Agenda_expert_Participant_invité_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Agenda_expert"
+    ADD CONSTRAINT "Agenda_expert_Participant_invité_fkey" FOREIGN KEY ("Participant_invité") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Agenda_expert Agenda_expert_agenda_taken_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Agenda_expert"
+    ADD CONSTRAINT "Agenda_expert_agenda_taken_fkey" FOREIGN KEY (agenda_taken) REFERENCES public."Agenda"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
 -- Name: Client_History Client_History_client_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5106,11 +5152,227 @@ ALTER TABLE ONLY public."Expert_History"
 
 
 --
+-- Name: Facturation Facturation_Destinataire_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Facturation"
+    ADD CONSTRAINT "Facturation_Destinataire_fkey" FOREIGN KEY ("Destinataire") REFERENCES public."Client"(id);
+
+
+--
+-- Name: Facturation Facturation_Locataire_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Facturation"
+    ADD CONSTRAINT "Facturation_Locataire_fkey" FOREIGN KEY ("Locataire") REFERENCES public."Client"(id);
+
+
+--
+-- Name: Facturation Facturation_Proprietaire_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Facturation"
+    ADD CONSTRAINT "Facturation_Proprietaire_fkey" FOREIGN KEY ("Proprietaire") REFERENCES public."Client"(id);
+
+
+--
+-- Name: Facturation Facturation_expediteur_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Facturation"
+    ADD CONSTRAINT "Facturation_expediteur_fkey" FOREIGN KEY (expediteur) REFERENCES public."Expert"(id);
+
+
+--
+-- Name: Mission Mission_ID_Agent_CellTech_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Mission"
+    ADD CONSTRAINT "Mission_ID_Agent_CellTech_fkey" FOREIGN KEY ("ID_Agent_CellTech") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Mission Mission_ID_Agent_saisie_Cell_Planif_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Mission"
+    ADD CONSTRAINT "Mission_ID_Agent_saisie_Cell_Planif_fkey" FOREIGN KEY ("ID_Agent_saisie_Cell_Planif") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Mission Mission_ID_CONCESS_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Mission"
+    ADD CONSTRAINT "Mission_ID_CONCESS_fkey" FOREIGN KEY ("ID_CONCESS") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Mission Mission_ID_INTERV_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Mission"
+    ADD CONSTRAINT "Mission_ID_INTERV_fkey" FOREIGN KEY ("ID_INTERV") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Mission Mission_ID_Respon_Cell_Dev_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Mission"
+    ADD CONSTRAINT "Mission_ID_Respon_Cell_Dev_fkey" FOREIGN KEY ("ID_Respon_Cell_Dev") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Mission Mission_ID_Respon_Cell_Planif_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Mission"
+    ADD CONSTRAINT "Mission_ID_Respon_Cell_Planif_fkey" FOREIGN KEY ("ID_Respon_Cell_Planif") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Mission Mission_ID_Respon_Cell_Tech_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Mission"
+    ADD CONSTRAINT "Mission_ID_Respon_Cell_Tech_fkey" FOREIGN KEY ("ID_Respon_Cell_Tech") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Mission Mission_ID_Suiveur_Cell_Planif_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Mission"
+    ADD CONSTRAINT "Mission_ID_Suiveur_Cell_Planif_fkey" FOREIGN KEY ("ID_Suiveur_Cell_Planif") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Mission Mission_ID_Suiveur_Cell_Tech_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Mission"
+    ADD CONSTRAINT "Mission_ID_Suiveur_Cell_Tech_fkey" FOREIGN KEY ("ID_Suiveur_Cell_Tech") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Mission Mission_ID_agent_Cell_Dev_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Mission"
+    ADD CONSTRAINT "Mission_ID_agent_Cell_Dev_fkey" FOREIGN KEY ("ID_agent_Cell_Dev") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Mission Mission_ID_agent_chiffrage_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Mission"
+    ADD CONSTRAINT "Mission_ID_agent_chiffrage_fkey" FOREIGN KEY ("ID_agent_chiffrage") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Mission Mission_ID_manager_chiffrage_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Mission"
+    ADD CONSTRAINT "Mission_ID_manager_chiffrage_fkey" FOREIGN KEY ("ID_manager_chiffrage") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Mission Mission_Reference_BAILLEUR_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Mission"
+    ADD CONSTRAINT "Mission_Reference_BAILLEUR_fkey" FOREIGN KEY ("Reference_BAILLEUR") REFERENCES public."Client"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Mission Mission_Reference_LOCATAIRE_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Mission"
+    ADD CONSTRAINT "Mission_Reference_LOCATAIRE_fkey" FOREIGN KEY ("Reference_LOCATAIRE") REFERENCES public."Client"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
 -- Name: Negotiateur_History Negotiateur_History_negotiateur_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public."Negotiateur_History"
     ADD CONSTRAINT "Negotiateur_History_negotiateur_id_fkey" FOREIGN KEY (negotiateur_id) REFERENCES public."Client_negotiateur"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_Cell_AS_referent_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_Cell_AS_referent_client_fkey" FOREIGN KEY ("Cell_AS_referent_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_Cell_Planif_Ref_agent_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_Cell_Planif_Ref_agent_client_fkey" FOREIGN KEY ("Cell_Planif_Ref_agent_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_Cell_Planif_Ref_respon_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_Cell_Planif_Ref_respon_client_fkey" FOREIGN KEY ("Cell_Planif_Ref_respon_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_Cell_Planif_Ref_suiveur_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_Cell_Planif_Ref_suiveur_client_fkey" FOREIGN KEY ("Cell_Planif_Ref_suiveur_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_Cell_devel_agent_suivi_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_Cell_devel_agent_suivi_client_fkey" FOREIGN KEY ("Cell_devel_agent_suivi_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_Cell_devel_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_Cell_devel_client_fkey" FOREIGN KEY ("Cell_devel_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_Cell_tech_Ref_agent_suivi_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_Cell_tech_Ref_agent_suivi_client_fkey" FOREIGN KEY ("Cell_tech_Ref_agent_suivi_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_Cell_tech_Ref_suiveur_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_Cell_tech_Ref_suiveur_client_fkey" FOREIGN KEY ("Cell_tech_Ref_suiveur_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_reference_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_reference_client_fkey" FOREIGN KEY (reference_client) REFERENCES public."Client"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
