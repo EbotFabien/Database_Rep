@@ -21,7 +21,7 @@
 	            <div class="row">
                     <div class="col-lg-12 mx-auto">
                         <div class="">
-                            {% with messages = get_flashed_messages(with_categories=true)%}
+                            {% with messages = get_flashed_messages(with_categories=true) %}
                             {% if messages %}
                             {%for category,message in messages%}
                             <div class="alert alert-{{category}}">
@@ -36,6 +36,7 @@
                                 <!-- <legend class="mb4">Créer un Expert</legend> -->
                                 <div class="row">
                                    <div class="col-md-12">
+                                       
                                        <div class="form-group">
                                         {{form.Reference_LOCATAIRE.label(class="form-control-label")}}
                                 
@@ -52,51 +53,18 @@
                                     </div>
                                    </div> 
                                    <div class="col-md-12">
-                                       <div class="form-group">
-                                        {{form.PRIX_HT_EDL.label(class="form-control-label")}}
-                                
-                                        {% if form.PRIX_HT_EDL.errors %}
-                                            {{form.PRIX_HT_EDL(class="input is-small is-invalid", value=mission.PRIX_HT_EDL) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.PRIX_HT_EDL.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{form.PRIX_HT_EDL(class="input is-small", value=mission.PRIX_HT_EDL)}}
-                                        {% endif %}
-                                    </div>
-                                   </div>
-                                   <div class="col-md-12">
                                     <div class="form-group">
-                                     {{form.TVA_EDL.label(class="form-control-label")}}
+                                     {{form.NOMPROPRIO.label(class="form-control-label")}}
                              
-                                     {% if form.TVA_EDL.errors %}
-                                         {{form.TVA_EDL(class="input is-small is-invalid", value=mission.TVA_EDL) }}
+                                     {% if form.NOMPROPRIO.errors %}
+                                         {{form.NOMPROPRIO(class="input is-small is-invalid", value=mission.NOMPROPRIO, type=date) }}
                                          <div class="invalid-feedback">
-                                             {% for error in form.TVA_EDL.errors %}
+                                             {% for error in form.NOMPROPRIO.errors %}
                                                  <span>{{ error }}</span>
                                              {% endfor %}
                                          </div>
                                      {% else %}
-                                         {{form.TVA_EDL(class="input is-small", value=mission.TVA_EDL)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.PRIX_TTC_EDL.label(class="form-control-label")}}
-                             
-                                     {% if form.PRIX_TTC_EDL.errors %}
-                                         {{form.PRIX_TTC_EDL(class="input is-small is-invalid", value=mission.PRIX_TTC_EDL) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.PRIX_TTC_EDL.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.PRIX_TTC_EDL(class="input is-small", value=mission.PRIX_TTC_EDL)}}
+                                         {{form.NOMPROPRIO(class="input is-small", value=mission.NOMPROPRIO)}}
                                      {% endif %}
                                     </div>
                                 </div>
@@ -118,22 +86,75 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
+                                   <div class="col-md-12">
+                                       <div class="form-group">
+                                        {{form.PRIX_HT_EDL.label(class="form-control-label")}}
+                                
+                                        {% if form.PRIX_HT_EDL.errors %}
+                                            {{form.PRIX_HT_EDL(class="input is-small is-invalid", value=mission.PRIX_HT_EDL) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.PRIX_HT_EDL.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{form.PRIX_HT_EDL(class="input is-small", value=mission.PRIX_HT_EDL)}}
+                                        {% endif %}
+                                    </div>
+                                   </div>
+                                   
+                                   <div class="col-md-12">
                                     <div class="form-group">
-                                     {{form.CA_HT_AS.label(class="form-control-label")}}
+                                     {{form.PRIX_TTC_EDL.label(class="form-control-label")}}
                              
-                                     {% if form.CA_HT_AS.errors %}
-                                         {{form.CA_HT_AS(class="input is-small is-invalid", value=mission.CA_HT_AS) }}
+                                     {% if form.PRIX_TTC_EDL.errors %}
+                                         {{form.PRIX_TTC_EDL(class="input is-small is-invalid", value=mission.PRIX_TTC_EDL) }}
                                          <div class="invalid-feedback">
-                                             {% for error in form.CA_HT_AS.errors %}
+                                             {% for error in form.PRIX_TTC_EDL.errors %}
                                                  <span>{{ error }}</span>
                                              {% endfor %}
                                          </div>
                                      {% else %}
-                                         {{form.CA_HT_AS(class="input is-small", value=mission.CA_HT_AS)}}
+                                         {{form.PRIX_TTC_EDL(class="input is-small", value=mission.PRIX_TTC_EDL)}}
                                      {% endif %}
                                     </div>
                                 </div>
+
+                                
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                 {{form.Prix_ht_chiffrage.label(class="form-control-label")}}
+                         
+                                 {% if form.Prix_ht_chiffrage.errors %}
+                                     {{form.Prix_ht_chiffrage(class="input is-small is-invalid", value=mission.Prix_ht_chiffrage, type=date) }}
+                                     <div class="invalid-feedback">
+                                         {% for error in form.Prix_ht_chiffrage.errors %}
+                                             <span>{{ error }}</span>
+                                         {% endfor %}
+                                     </div>
+                                 {% else %}
+                                     {{form.Prix_ht_chiffrage(class="input is-small", value=mission.Prix_ht_chiffrage)}}
+                                 {% endif %}
+                                </div>
+                            </div>
+                                   <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.TVA_EDL.label(class="form-control-label")}}
+                             
+                                     {% if form.TVA_EDL.errors %}
+                                         {{form.TVA_EDL(class="input is-small is-invalid", value=mission.TVA_EDL) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.TVA_EDL.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.TVA_EDL(class="input is-small", value=mission.TVA_EDL)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                               
 
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -152,179 +173,6 @@
                                     </div>
                                 </div>
 
-                                
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.CA_TTC_AS.label(class="form-control-label")}}
-                             
-                                     {% if form.CA_TTC_AS.errors %}
-                                         {{form.CA_TTC_AS(class="input is-small is-invalid", value=mission.CA_TTC_AS) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.CA_TTC_AS.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.CA_TTC_AS(class="input is-small", value=mission.CA_TTC_AS)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.CA_HT_AC.label(class="form-control-label")}}
-                             
-                                     {% if form.CA_HT_AC.errors %}
-                                         {{form.CA_HT_AC(class="input is-small is-invalid", value=mission.CA_HT_AC) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.CA_HT_AC.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.CA_HT_AC(class="input is-small", value=mission.CA_HT_AC)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.CA_TTC_AC.label(class="form-control-label")}}
-                             
-                                     {% if form.CA_TTC_AC.errors %}
-                                         {{form.CA_TTC_AC(class="input is-small is-invalid", value=mission.CA_TTC_AC) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.CA_TTC_AC.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.CA_TTC_AC(class="input is-small", value=mission.CA_TTC_AC)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.CA_HT_TRUST.label(class="form-control-label")}}
-                             
-                                     {% if form.CA_HT_TRUST.errors %}
-                                         {{form.CA_HT_TRUST(class="input is-small is-invalid", value=mission.CA_HT_TRUST) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.CA_HT_TRUST.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.CA_HT_TRUST(class="input is-small", value=mission.CA_HT_TRUST)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.TVA_TRUST.label(class="form-control-label")}}
-                             
-                                     {% if form.TVA_TRUST.errors %}
-                                         {{form.TVA_TRUST(class="input is-small is-invalid", value=mission.TVA_TRUST) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.TVA_TRUST.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.TVA_TRUST(class="input is-small", value=mission.TVA_TRUST)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.Date_chiffrage_regle.label(class="form-control-label")}}
-                             
-                                     {% if form.Date_chiffrage_regle.errors %}
-                                         {{form.Date_chiffrage_regle(class="input is-small is-invalid", value=mission.Date_chiffrage_regle, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.Date_chiffrage_regle.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.Date_chiffrage_regle(class="input is-small", value=mission.Date_chiffrage_regle)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.Prix_ht_chiffrage.label(class="form-control-label")}}
-                             
-                                     {% if form.Prix_ht_chiffrage.errors %}
-                                         {{form.Prix_ht_chiffrage(class="input is-small is-invalid", value=mission.Prix_ht_chiffrage, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.Prix_ht_chiffrage.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.Prix_ht_chiffrage(class="input is-small", value=mission.Prix_ht_chiffrage)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.POURCENTAGE_suiveur_chiffrage.label(class="form-control-label")}}
-                             
-                                     {% if form.POURCENTAGE_suiveur_chiffrage.errors %}
-                                         {{form.POURCENTAGE_suiveur_chiffrage(class="input is-small is-invalid", value=mission.POURCENTAGE_suiveur_chiffrage, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.POURCENTAGE_suiveur_chiffrage.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.POURCENTAGE_suiveur_chiffrage(class="input is-small", value=mission.POURCENTAGE_suiveur_chiffrage)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.POURCENTAGE_AS_chiffrage.label(class="form-control-label")}}
-                             
-                                     {% if form.POURCENTAGE_AS_chiffrage.errors %}
-                                         {{form.POURCENTAGE_AS_chiffrage(class="input is-small is-invalid", value=mission.POURCENTAGE_AS_chiffrage, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.POURCENTAGE_AS_chiffrage.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.POURCENTAGE_AS_chiffrage(class="input is-small", value=mission.POURCENTAGE_AS_chiffrage)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.POURCENTAGE_manager_chiffrage.label(class="form-control-label")}}
-                             
-                                     {% if form.POURCENTAGE_manager_chiffrage.errors %}
-                                         {{form.POURCENTAGE_manager_chiffrage(class="input is-small is-invalid", value=mission.POURCENTAGE_manager_chiffrage, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.POURCENTAGE_manager_chiffrage.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.POURCENTAGE_manager_chiffrage(class="input is-small", value=mission.POURCENTAGE_manager_chiffrage)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
                                 <div class="col-md-12">
                                     <div class="form-group">
                                      {{form.ID_manager_chiffrage.label(class="form-control-label")}}
@@ -338,23 +186,6 @@
                                          </div>
                                      {% else %}
                                          {{form.ID_manager_chiffrage(class="input is-small", value=mission.ID_manager_chiffrage)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.POURCENTAGE_agent_chiffrage.label(class="form-control-label")}}
-                             
-                                     {% if form.POURCENTAGE_agent_chiffrage.errors %}
-                                         {{form.POURCENTAGE_agent_chiffrage(class="input is-small is-invalid", value=mission.POURCENTAGE_agent_chiffrage, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.ID_manager_chiffrage.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.POURCENTAGE_agent_chiffrage(class="input is-small", value=mission.POURCENTAGE_agent_chiffrage)}}
                                      {% endif %}
                                     </div>
                                 </div>
@@ -393,6 +224,22 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.Date_chiffrage_regle.label(class="form-control-label")}}
+                             
+                                     {% if form.Date_chiffrage_regle.errors %}
+                                         {{form.Date_chiffrage_regle(class="input is-small is-invalid", value=mission.Date_chiffrage_regle, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.Date_chiffrage_regle.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.Date_chiffrage_regle(class="input is-small", value=mission.Date_chiffrage_regle)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
                                 
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -411,25 +258,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.NOMPROPRIO.label(class="form-control-label")}}
-                             
-                                     {% if form.NOMPROPRIO.errors %}
-                                         {{form.NOMPROPRIO(class="input is-small is-invalid", value=mission.NOMPROPRIO, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.NOMPROPRIO.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.NOMPROPRIO(class="input is-small", value=mission.NOMPROPRIO)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-
-                                
+                                                               
                                 <div class="col-md-12">
                                     <div class="form-group">
                                      {{form.DATE_FACT_REGLEE.label(class="form-control-label")}}
@@ -466,23 +295,6 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                     {{form.MONTANT_COM_REGLEE_AS.label(class="form-control-label")}}
-                             
-                                     {% if form.MONTANT_COM_REGLEE_AS.errors %}
-                                         {{form.MONTANT_COM_REGLEE_AS(class="input is-small is-invalid", value=mission.MONTANT_COM_REGLEE_AS, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.MONTANT_COM_REGLEE_AS.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.MONTANT_COM_REGLEE_AS(class="input is-small", value=mission.MONTANT_COM_REGLEE_AS)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
                                      {{form.DATE_COM_REGLEE_AC.label(class="form-control-label")}}
                              
                                      {% if form.DATE_COM_REGLEE_AC.errors %}
@@ -494,6 +306,74 @@
                                          </div>
                                      {% else %}
                                          {{form.DATE_COM_REGLEE_AC(class="input is-small", value=mission.DATE_COM_REGLEE_AC)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.DATE_saisie_enregistrement.label(class="form-control-label")}}
+                             
+                                     {% if form.DATE_saisie_enregistrement.errors %}
+                                         {{form.DATE_saisie_enregistrement(class="input is-small is-invalid", value=mission.DATE_saisie_enregistrement, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.DATE_saisie_enregistrement.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.DATE_saisie_enregistrement(class="input is-small", value=mission.DATE_saisie_enregistrement)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.DATE_POINTAGE.label(class="form-control-label")}}
+                             
+                                     {% if form.DATE_POINTAGE.errors %}
+                                         {{form.DATE_POINTAGE(class="input is-small is-invalid", value=mission.DATE_POINTAGE, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.DATE_POINTAGE.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.DATE_POINTAGE(class="input is-small", value=mission.DATE_POINTAGE)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.DATE_EXTRACTION_COMPTABLE.label(class="form-control-label")}}
+                             
+                                     {% if form.DATE_EXTRACTION_COMPTABLE.errors %}
+                                         {{form.DATE_EXTRACTION_COMPTABLE(class="input is-small is-invalid", value=mission.DATE_EXTRACTION_COMPTABLE, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.DATE_EXTRACTION_COMPTABLE.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.DATE_EXTRACTION_COMPTABLE(class="input is-small", value=mission.DATE_EXTRACTION_COMPTABLE)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.MONTANT_COM_REGLEE_AS.label(class="form-control-label")}}
+                             
+                                     {% if form.MONTANT_COM_REGLEE_AS.errors %}
+                                         {{form.MONTANT_COM_REGLEE_AS(class="input is-small is-invalid", value=mission.MONTANT_COM_REGLEE_AS, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.MONTANT_COM_REGLEE_AS.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.MONTANT_COM_REGLEE_AS(class="input is-small", value=mission.MONTANT_COM_REGLEE_AS)}}
                                      {% endif %}
                                     </div>
                                 </div>
@@ -566,22 +446,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.DATE_saisie_enregistrement.label(class="form-control-label")}}
-                             
-                                     {% if form.DATE_saisie_enregistrement.errors %}
-                                         {{form.DATE_saisie_enregistrement(class="input is-small is-invalid", value=mission.DATE_saisie_enregistrement, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.DATE_saisie_enregistrement.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.DATE_saisie_enregistrement(class="input is-small", value=mission.DATE_saisie_enregistrement)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
+                                
 
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -791,23 +656,6 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                     {{form.DATE_POINTAGE.label(class="form-control-label")}}
-                             
-                                     {% if form.DATE_POINTAGE.errors %}
-                                         {{form.DATE_POINTAGE(class="input is-small is-invalid", value=mission.DATE_POINTAGE, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.DATE_POINTAGE.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.DATE_POINTAGE(class="input is-small", value=mission.DATE_POINTAGE)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
                                      {{form.DEVEL.label(class="form-control-label")}}
                              
                                      {% if form.DEVEL.errors %}
@@ -819,40 +667,6 @@
                                          </div>
                                      {% else %}
                                          {{form.DEVEL(class="input is-small", value=mission.DEVEL)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.DATE_EXTRACTION_COMPTABLE.label(class="form-control-label")}}
-                             
-                                     {% if form.DATE_EXTRACTION_COMPTABLE.errors %}
-                                         {{form.DATE_EXTRACTION_COMPTABLE(class="input is-small is-invalid", value=mission.DATE_EXTRACTION_COMPTABLE, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.DATE_EXTRACTION_COMPTABLE.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.DATE_EXTRACTION_COMPTABLE(class="input is-small", value=mission.DATE_EXTRACTION_COMPTABLE)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.POURCENTAGE_COM_AS_DU_CLIENT.label(class="form-control-label")}}
-                             
-                                     {% if form.POURCENTAGE_COM_AS_DU_CLIENT.errors %}
-                                         {{form.POURCENTAGE_COM_AS_DU_CLIENT(class="input is-small is-invalid", value=mission.POURCENTAGE_COM_AS_DU_CLIENT, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.POURCENTAGE_COM_AS_DU_CLIENT.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.POURCENTAGE_COM_AS_DU_CLIENT(class="input is-small", value=mission.POURCENTAGE_COM_AS_DU_CLIENT)}}
                                      {% endif %}
                                     </div>
                                 </div>
@@ -876,23 +690,6 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                     {{form.POURCENTAGE_Respon_Cell_Dev.label(class="form-control-label")}}
-                             
-                                     {% if form.POURCENTAGE_Respon_Cell_Dev.errors %}
-                                         {{form.POURCENTAGE_Respon_Cell_Dev(class="input is-small is-invalid", value=mission.POURCENTAGE_Respon_Cell_Dev, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.POURCENTAGE_Respon_Cell_Dev.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.POURCENTAGE_Respon_Cell_Dev(class="input is-small", value=mission.POURCENTAGE_Respon_Cell_Dev)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
                                      {{form.ID_agent_Cell_Dev.label(class="form-control-label")}}
                              
                                      {% if form.ID_agent_Cell_Dev.errors %}
@@ -904,6 +701,162 @@
                                          </div>
                                      {% else %}
                                          {{form.ID_agent_Cell_Dev(class="input is-small", value=mission.ID_agent_Cell_Dev)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.ID_Agent_CellTech.label(class="form-control-label")}}
+                             
+                                     {% if form.ID_Agent_CellTech.errors %}
+                                         {{form.ID_Agent_CellTech(class="input is-small is-invalid", value=mission.ID_Agent_CellTech, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.ID_Agent_CellTech.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.ID_Agent_CellTech(class="input is-small", value=mission.ID_Agent_CellTech)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.ID_Respon_Cell_Tech.label(class="form-control-label")}}
+                             
+                                     {% if form.ID_Respon_Cell_Tech.errors %}
+                                         {{form.ID_Respon_Cell_Tech(class="input is-small is-invalid", value=mission.ID_Respon_Cell_Tech, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.ID_Respon_Cell_Tech.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.ID_Respon_Cell_Tech(class="input is-small", value=mission.ID_Respon_Cell_Tech)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.ID_Suiveur_Cell_Tech.label(class="form-control-label")}}
+                             
+                                     {% if form.ID_Suiveur_Cell_Tech.errors %}
+                                         {{form.ID_Suiveur_Cell_Tech(class="input is-small is-invalid", value=mission.ID_Suiveur_Cell_Tech, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.ID_Suiveur_Cell_Tech.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.ID_Suiveur_Cell_Tech(class="input is-small", value=mission.ID_Suiveur_Cell_Tech)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.ID_Respon_Cell_Planif.label(class="form-control-label")}}
+                             
+                                     {% if form.ID_Respon_Cell_Planif.errors %}
+                                         {{form.ID_Respon_Cell_Planif(class="input is-small is-invalid", value=mission.ID_Respon_Cell_Planif, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.ID_Respon_Cell_Planif.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.ID_Respon_Cell_Planif(class="input is-small", value=mission.ID_Respon_Cell_Planif)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.ID_Suiveur_Cell_Planif.label(class="form-control-label")}}
+                             
+                                     {% if form.ID_Suiveur_Cell_Planif.errors %}
+                                         {{form.ID_Suiveur_Cell_Planif(class="input is-small is-invalid", value=mission.ID_Suiveur_Cell_Planif, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.ID_Suiveur_Cell_Planif.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.ID_Suiveur_Cell_Planif(class="input is-small", value=mission.ID_Suiveur_Cell_Planif)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+                                    <!--id_manager_chiffrage -->
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                         {{form.POURCENTAGE_agent_chiffrage.label(class="form-control-label")}}
+                                 
+                                         {% if form.POURCENTAGE_agent_chiffrage.errors %}
+                                             {{form.POURCENTAGE_agent_chiffrage(class="input is-small is-invalid", value=mission.POURCENTAGE_agent_chiffrage, type=date) }}
+                                             <div class="invalid-feedback">
+                                                 {% for error in form.ID_manager_chiffrage.errors %}
+                                                     <span>{{ error }}</span>
+                                                 {% endfor %}
+                                             </div>
+                                         {% else %}
+                                             {{form.POURCENTAGE_agent_chiffrage(class="input is-small", value=mission.POURCENTAGE_agent_chiffrage)}}
+                                         {% endif %}
+                                        </div>
+                                    </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.ID_Agent_saisie_Cell_Planif.label(class="form-control-label")}}
+                             
+                                     {% if form.ID_Agent_saisie_Cell_Planif.errors %}
+                                         {{form.ID_Agent_saisie_Cell_Planif(class="input is-small is-invalid", value=mission.ID_Agent_saisie_Cell_Planif, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.ID_Agent_saisie_Cell_Planif.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.ID_Agent_saisie_Cell_Planif(class="input is-small", value=mission.ID_Agent_saisie_Cell_Planif)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.POURCENTAGE_COM_AS_DU_CLIENT.label(class="form-control-label")}}
+                             
+                                     {% if form.POURCENTAGE_COM_AS_DU_CLIENT.errors %}
+                                         {{form.POURCENTAGE_COM_AS_DU_CLIENT(class="input is-small is-invalid", value=mission.POURCENTAGE_COM_AS_DU_CLIENT, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.POURCENTAGE_COM_AS_DU_CLIENT.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.POURCENTAGE_COM_AS_DU_CLIENT(class="input is-small", value=mission.POURCENTAGE_COM_AS_DU_CLIENT)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.POURCENTAGE_Respon_Cell_Dev.label(class="form-control-label")}}
+                             
+                                     {% if form.POURCENTAGE_Respon_Cell_Dev.errors %}
+                                         {{form.POURCENTAGE_Respon_Cell_Dev(class="input is-small is-invalid", value=mission.POURCENTAGE_Respon_Cell_Dev, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.POURCENTAGE_Respon_Cell_Dev.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.POURCENTAGE_Respon_Cell_Dev(class="input is-small", value=mission.POURCENTAGE_Respon_Cell_Dev)}}
                                      {% endif %}
                                     </div>
                                 </div>
@@ -927,23 +880,6 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                     {{form.ID_Agent_CellTech.label(class="form-control-label")}}
-                             
-                                     {% if form.ID_Agent_CellTech.errors %}
-                                         {{form.ID_Agent_CellTech(class="input is-small is-invalid", value=mission.ID_Agent_CellTech, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.ID_Agent_CellTech.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.ID_Agent_CellTech(class="input is-small", value=mission.ID_Agent_CellTech)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
                                      {{form.POURCENTAGE_Agent_Cell_Tech.label(class="form-control-label")}}
                              
                                      {% if form.POURCENTAGE_Agent_Cell_Tech.errors %}
@@ -955,23 +891,6 @@
                                          </div>
                                      {% else %}
                                          {{form.POURCENTAGE_Agent_Cell_Tech(class="input is-small", value=mission.POURCENTAGE_Agent_Cell_Tech)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.ID_Respon_Cell_Tech.label(class="form-control-label")}}
-                             
-                                     {% if form.ID_Respon_Cell_Tech.errors %}
-                                         {{form.ID_Respon_Cell_Tech(class="input is-small is-invalid", value=mission.ID_Respon_Cell_Tech, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.ID_Respon_Cell_Tech.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.ID_Respon_Cell_Tech(class="input is-small", value=mission.ID_Respon_Cell_Tech)}}
                                      {% endif %}
                                     </div>
                                 </div>
@@ -993,22 +912,6 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                     {{form.ID_Suiveur_Cell_Tech.label(class="form-control-label")}}
-                             
-                                     {% if form.ID_Suiveur_Cell_Tech.errors %}
-                                         {{form.ID_Suiveur_Cell_Tech(class="input is-small is-invalid", value=mission.ID_Suiveur_Cell_Tech, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.ID_Suiveur_Cell_Tech.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.ID_Suiveur_Cell_Tech(class="input is-small", value=mission.ID_Suiveur_Cell_Tech)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
 
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -1029,23 +932,6 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                     {{form.ID_Respon_Cell_Planif.label(class="form-control-label")}}
-                             
-                                     {% if form.ID_Respon_Cell_Planif.errors %}
-                                         {{form.ID_Respon_Cell_Planif(class="input is-small is-invalid", value=mission.POURCENTAGE_Suiveur_Cell_Tech, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.ID_Respon_Cell_Planif.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.ID_Respon_Cell_Planif(class="input is-small", value=mission.ID_Respon_Cell_Planif)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
                                      {{form.POURCENTAGE_Respon_Cell_Planif.label(class="form-control-label")}}
                              
                                      {% if form.POURCENTAGE_Respon_Cell_Planif.errors %}
@@ -1060,20 +946,53 @@
                                      {% endif %}
                                     </div>
                                 </div>
-
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                     {{form.ID_Suiveur_Cell_Planif.label(class="form-control-label")}}
+                                     {{form.POURCENTAGE_suiveur_chiffrage.label(class="form-control-label")}}
                              
-                                     {% if form.ID_Suiveur_Cell_Planif.errors %}
-                                         {{form.ID_Suiveur_Cell_Planif(class="input is-small is-invalid", value=mission.ID_Suiveur_Cell_Planif, type=date) }}
+                                     {% if form.POURCENTAGE_suiveur_chiffrage.errors %}
+                                         {{form.POURCENTAGE_suiveur_chiffrage(class="input is-small is-invalid", value=mission.POURCENTAGE_suiveur_chiffrage, type=date) }}
                                          <div class="invalid-feedback">
-                                             {% for error in form.ID_Suiveur_Cell_Planif.errors %}
+                                             {% for error in form.POURCENTAGE_suiveur_chiffrage.errors %}
                                                  <span>{{ error }}</span>
                                              {% endfor %}
                                          </div>
                                      {% else %}
-                                         {{form.ID_Suiveur_Cell_Planif(class="input is-small", value=mission.ID_Suiveur_Cell_Planif)}}
+                                         {{form.POURCENTAGE_suiveur_chiffrage(class="input is-small", value=mission.POURCENTAGE_suiveur_chiffrage)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.POURCENTAGE_AS_chiffrage.label(class="form-control-label")}}
+                             
+                                     {% if form.POURCENTAGE_AS_chiffrage.errors %}
+                                         {{form.POURCENTAGE_AS_chiffrage(class="input is-small is-invalid", value=mission.POURCENTAGE_AS_chiffrage, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.POURCENTAGE_AS_chiffrage.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.POURCENTAGE_AS_chiffrage(class="input is-small", value=mission.POURCENTAGE_AS_chiffrage)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.POURCENTAGE_manager_chiffrage.label(class="form-control-label")}}
+                             
+                                     {% if form.POURCENTAGE_manager_chiffrage.errors %}
+                                         {{form.POURCENTAGE_manager_chiffrage(class="input is-small is-invalid", value=mission.POURCENTAGE_manager_chiffrage, type=date) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.POURCENTAGE_manager_chiffrage.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.POURCENTAGE_manager_chiffrage(class="input is-small", value=mission.POURCENTAGE_manager_chiffrage)}}
                                      {% endif %}
                                     </div>
                                 </div>
@@ -1097,23 +1016,6 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                     {{form.ID_Agent_saisie_Cell_Planif.label(class="form-control-label")}}
-                             
-                                     {% if form.ID_Agent_saisie_Cell_Planif.errors %}
-                                         {{form.ID_Agent_saisie_Cell_Planif(class="input is-small is-invalid", value=mission.ID_Agent_saisie_Cell_Planif, type=date) }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.ID_Agent_saisie_Cell_Planif.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.ID_Agent_saisie_Cell_Planif(class="input is-small", value=mission.ID_Agent_saisie_Cell_Planif)}}
-                                     {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
                                      {{form.POURCENTAGE_Agent_saisie_CEll_planif.label(class="form-control-label")}}
                              
                                      {% if form.POURCENTAGE_Agent_saisie_CEll_planif.errors %}
@@ -1128,6 +1030,110 @@
                                      {% endif %}
                                     </div>
                                 </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.CA_HT_AS.label(class="form-control-label")}}
+                             
+                                     {% if form.CA_HT_AS.errors %}
+                                         {{form.CA_HT_AS(class="input is-small is-invalid", value=mission.CA_HT_AS) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.CA_HT_AS.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.CA_HT_AS(class="input is-small", value=mission.CA_HT_AS)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.CA_TTC_AS.label(class="form-control-label")}}
+                             
+                                     {% if form.CA_TTC_AS.errors %}
+                                         {{form.CA_TTC_AS(class="input is-small is-invalid", value=mission.CA_TTC_AS) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.CA_TTC_AS.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.CA_TTC_AS(class="input is-small", value=mission.CA_TTC_AS)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.CA_HT_AC.label(class="form-control-label")}}
+                             
+                                     {% if form.CA_HT_AC.errors %}
+                                         {{form.CA_HT_AC(class="input is-small is-invalid", value=mission.CA_HT_AC) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.CA_HT_AC.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.CA_HT_AC(class="input is-small", value=mission.CA_HT_AC)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.CA_TTC_AC.label(class="form-control-label")}}
+                             
+                                     {% if form.CA_TTC_AC.errors %}
+                                         {{form.CA_TTC_AC(class="input is-small is-invalid", value=mission.CA_TTC_AC) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.CA_TTC_AC.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.CA_TTC_AC(class="input is-small", value=mission.CA_TTC_AC)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.CA_HT_TRUST.label(class="form-control-label")}}
+                             
+                                     {% if form.CA_HT_TRUST.errors %}
+                                         {{form.CA_HT_TRUST(class="input is-small is-invalid", value=mission.CA_HT_TRUST) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.CA_HT_TRUST.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.CA_HT_TRUST(class="input is-small", value=mission.CA_HT_TRUST)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                     {{form.TVA_TRUST.label(class="form-control-label")}}
+                             
+                                     {% if form.TVA_TRUST.errors %}
+                                         {{form.TVA_TRUST(class="input is-small is-invalid", value=mission.TVA_TRUST) }}
+                                         <div class="invalid-feedback">
+                                             {% for error in form.TVA_TRUST.errors %}
+                                                 <span>{{ error }}</span>
+                                             {% endfor %}
+                                         </div>
+                                     {% else %}
+                                         {{form.TVA_TRUST(class="input is-small", value=mission.TVA_TRUST)}}
+                                     {% endif %}
+                                    </div>
+                                </div>
+
 
 
                                 </div>
