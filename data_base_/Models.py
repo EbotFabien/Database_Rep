@@ -667,32 +667,47 @@ class Mission(db.Model):
 
 
 
-#class facturation_client(db.Model):
- #   __tablename__ = 'facturation_client'
+class facturation_client(db.Model):
+    __tablename__ = 'facturation_client'
 
-  #  id = db.Column(db.Integer,primary_key=True)
-   # n_facture = db.Column(db.String) 
-    #ref_mission = db.Column(db.Integer, ForeignKey('Mission.id', onupdate="CASCADE", ondelete="CASCADE"))   
-    #Mission__data=db.relationship("Mission", 
-     #   primaryjoin=(ref_mission == Mission.id),
-      #  backref=db.backref('Mission__data',  uselist=False),  uselist=False)
-    #Montant_HT = db.Column(db.String)
-    #Montant_TTC = db.Column(db.String)
-    #TTC = db.Column(db.String)
-    #Date_de_creation=db.Column(db.String)
-    #Date_reglement_client=db.Column(db.String)
-    #Statut=db.Column(db.String) #(payé ou en attente) differentes types de satus
-    #Observations suivi paiement=db.Column(db.String)
-    #Date_première_relance=db.Column(db.String) # date cree plus 15 jr
-    #Date_seconde_relance=db.Column(db.String) # date cree plus seconde relance plus 15 jr
-    #Date_mise_en_demeure=db.Column(db.String) # date seconde plus 15jr
-    #Email_de_relance=db.Column(db.String)
+    id = db.Column(db.Integer,primary_key=True)
+    n_facture = db.Column(db.String)   
+    client	= db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
+    client__data_=db.relationship("Client", 
+        primaryjoin=(client == Client.id),
+        backref=db.backref('client__data_',  uselist=False),  uselist=False)
+    Montant_HT = db.Column(db.String)
+    Montant_TTC = db.Column(db.String)
+    TTC = db.Column(db.String)
+    Date_de_creation=db.Column(db.String)
+    Date_reglement_client=db.Column(db.String)
+    Statut=db.Column(db.String) #(payé ou en attente) differentes types de satus
+    Observations_suivi_paiement=db.Column(db.String)
+    Date_première_relance=db.Column(db.String) # date cree plus 15 jr
+    Date_seconde_relance=db.Column(db.String) # date cree plus seconde relance plus 15 jr
+    Date_mise_en_demeure=db.Column(db.String) # date seconde plus 15jr
+    Email_de_relance=db.Column(db.String)
 
 
-    #def __repr__(self):
-     #   return '<facturation_client %r>' %self.id
+    def __repr__(self):
+        return '<facturation_client %r>' %self.id
+
+
+
+class facturation_mission(db.Model):
+    __tablename__ = 'facturation_mission'
+
+    id = db.Column(db.Integer,primary_key=True)
+    ref_mission = db.Column(db.Integer, ForeignKey('Mission.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    fact_mission = db.Column(db.Integer, ForeignKey('facturation_client.id', onupdate="CASCADE", ondelete="CASCADE"))
+
+    def __repr__(self):
+        return '<facturation_mission %r>' %self.id
 
 
 
 #class expert_constat(db.Model):
   #  __tablename__ = 'expert_constat'
+  #Mission__data=db.relationship("Mission", 
+     #   primaryjoin=(ref_mission == Mission.id),
+     #   backref=db.backref('Mission__data',  uselist=False),  uselist=False)

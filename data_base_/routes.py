@@ -1,6 +1,6 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
-from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect
-from Database_project.project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda)
+from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission
+from Database_project.project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time)
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.data  import Missions,expert__,insert_client,mission_date
 from Database_project.project.data_base_.utils import send_reset_email
@@ -166,71 +166,8 @@ def update_client(id):
     return redirect(url_for('users.edit_client', id=id))
        
 
-@users.route('/facturation')
-@login_required
-def facturation():
-    if current_user.TYPE == "Admin":
-        facturation_=list(Facturation.query.filter_by(Visibility=True).all())
-        return render_template('manage/pages/facturation.html',legend="facturation",Facturation=facturation_)
 
-    return redirect(url_for('users.main'))
 
-@users.route('/delete/<int:id>/facturation', methods=['GET'])
-@login_required
-def delete_facturation(id):
-    if current_user.TYPE == "Admin":
-        facturation = Facturation.query.filter_by(id=id).first_or_404()
-        facturation.Visibility = False
-        db.session.commit()
-        flash(f'Les donnes de facturation ont été  suprimmer','success')
-        return redirect(url_for('users.facturation'))
-
-@users.route('/edit/<int:id>/facturation', methods=['GET'])
-@login_required
-def edit_facturation(id):
-    if current_user.TYPE == "Admin":
-        form = Facturation_Form()
-        facturation = Facturation.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/edit_facturation.html', facturation=facturation,form=form)
-
-@users.route('/update/<int:id>/facturation', methods=['POST', 'PUT'])
-@login_required
-def update_facturation(id):
-    if current_user.TYPE == "Admin":
-        facturation = Facturation.query.filter_by(id=id).first_or_404()
-        facturation.Pays = request.form['Pays']
-        facturation.Destinataire=request.form['ID_Destinataire']
-        facturation.expéditeur=request.form['ID_expediteur']
-        facturation.Montant=request.form['montant']
-        facturation.Total=request.form['total']
-        facturation.Type=request.form['Type_']
-        facturation.Proprietaire=request.form['ID_proprietaire']
-        facturation.Locataire=request.form['ID_locataire']
-        facturation.Ville=request.form['ville']
-        facturation.Surface=request.form['surface']
-        facturation.Tarif=request.form['tarifs']
-        facturation.Appt_Pav=request.form['appt_pav']
-        db.session.commit()
-        flash(f'Les donnes de facturation a été modifiées','success')
-        return redirect(url_for('users.facturation'))
-
-    return redirect(url_for('users.edit_client', id=id))
-@users.route('/ajouter/facturation',methods=['GET','POST'])
-@login_required
-def ajouter_facturation():
-    if current_user.TYPE == "Admin" :
-        form=Facturation_Form()
-        if form.validate_on_submit():
-            user=Facturation(form.Pays.data,form.ID_Destinataire.data,form.ID_expediteur.data,form.montant.data,form.total.data,form.Type_.data,form.ID_proprietaire.data,form.ID_locataire.data,form.ville.data,
-            form.surface.data,form.tarifs.data,form.appt_pav.data)
-            db.session.add(user)
-            db.session.commit()
-            #db.session.commit()
-            return redirect(url_for('users.facturation'))
-
-        return render_template('manage/pages/ajouter_facturation.html',form=form, legend="facturation")
-    else:
-        return redirect(url_for('users.main'))
 
 
 @users.route('/mission')
@@ -240,6 +177,64 @@ def mission():
         mission_=list(Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).all())
         return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
 
+    return redirect(url_for('users.main'))
+
+@users.route('/choose/<int:id>/mission',methods=['GET','POST'])
+@login_required
+def choose(id):
+    if current_user.TYPE == "Admin":
+        form=time()
+        form2=Facturation_Form()
+        if form.validate_on_submit():  
+            start=form.Demarrer.data
+            end=form.Fin.data#check how to sum dates
+            if end < start:
+                flash(f"La fin ne peut pas etre moins que le debut ",'danger')
+                return redirect(url_for('users.choose'))
+            else:
+                mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL=='0',Mission.DATE_REALISE_EDL=='0',Mission.Reference_BAILLEUR==id)).order_by(desc(Mission.id)).all())#check query
+                return render_template('manage/pages/ajouter_facturation.html', mission=mission_,form=form2)
+        return render_template('manage/pages/choose.html',form=form,legend="time")
+
+    return redirect(url_for('users.main'))
+
+
+
+@users.route('/create_facture')
+@login_required
+def create_facture():
+    if current_user.TYPE == "Admin":
+        form=Facturation_Form()
+        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())#check query
+        
+        facture=facturation_client(Montant_HT=request.form['Montant_HT'],Montant_TTC=request.form['Montant_TTC'],TTC=request.form['TTC'],Date_reglement_client=request.form['Date_reglement_client'],Statut=request.form['Statut.data'],
+        Observations_suivi_paiement=request.form['Observations_suivi_paiement'],Email_de_relance=request.form['Email_de_relance'],client=request.form['Reference_client'])
+        db.session.add(facture)
+        db.session.commit()
+        for i in mission_:
+            fact_m=facturation_mission(ref_mission=i.id,fact_mission=facture.id)
+            db.session.add(fact_m)
+            db.session.commit()
+        return redirect(url_for('users.facturation',id=request.form['Reference_client']))
+
+    return redirect(url_for('users.main'))
+
+@users.route('/client/<int:id>/mission')
+@login_required
+def client_mission(id):
+    if current_user.TYPE == "Admin":
+        mission_=list(Mission.query.filter(and_(Mission.Visibility=True,Mission.Reference_BAILLEUR=id)).order_by(desc(Mission.id)).all())
+        return render_template('manage/pages/mission_client.html',Mission=mission_,legend="mission", highlight='mission')# design a page for clients to see missions by their mission id and date only
+#add a button on this page to add facturation
+    return redirect(url_for('users.main'))
+
+@users.route('client/<int:id>/facture')
+@login_required
+def facturation(id):
+    if current_user.TYPE == "Admin":
+        facturation_=list(facturation_client.query.filter(and_(facturation_client.client==id,facturation_client.Visibility==True)).all())
+        return render_template('manage/pages/facturation.html',legend="facturation",Facturation=facturation_) 
+#shows all the factures of the clients,make a page that will show all the data of this particular table
     return redirect(url_for('users.main'))
 
 
