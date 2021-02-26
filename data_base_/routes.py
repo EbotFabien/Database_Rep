@@ -9,7 +9,7 @@ from flask_login import login_user,current_user,logout_user,login_required,Login
 import os
 from Database_project.project.data_base_ import create_app
 from os.path import join, dirname, realpath
-from datetime import date
+from datetime import date,timedelta
 
 users =Blueprint('users',__name__)
 app= create_app()
@@ -188,17 +188,10 @@ def choose(id):
         form2=Facturation_Form()
         if form.validate_on_submit():  
             start=form.Demarrer.data
-            end=form.Fin.data#check how to sum dates
-            delta =end-start
-            if end < start:
-                flash(f"La fin ne peut pas etre moins que le debut ",'danger')
-                return redirect(url_for('users.choose',id=id))
-            if delta.days < 30:
-                flash(f"La date doit etre egale a 30 jours ",'danger')
-                return redirect(url_for('users.choose',id=id))
-            else:
-                mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>='0',Mission.DATE_REALISE_EDL<='0',Mission.Reference_BAILLEUR==id)).order_by(desc(Mission.id)).all())#check query
-                return render_template('manage/pages/ajouter_facturation.html', mission=mission_,form=form2)
+            end=start+timedelta(days=30)
+            
+            mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>='0',Mission.DATE_REALISE_EDL<='0',Mission.Reference_BAILLEUR==id)).order_by(desc(Mission.id)).all())#check query
+            return render_template('manage/pages/ajouter_facturation.html', mission=mission_,form=form2)
         return render_template('manage/pages/choose.html',form=form,legend="time")
 
     return redirect(url_for('users.main'))

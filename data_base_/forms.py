@@ -493,6 +493,5 @@ class time(FlaskForm):
 
     Demarrer=DateField("Demarrer")
 
-    Fin=DateField("Fin")
 
     submit = SubmitField('enregistrer')

@@ -35,7 +35,7 @@
                                 <fieldset class="form-group">
                                 <!-- <legend class="mb4">Créer un Expert</legend> -->
                                 <div class="row">
-                                   <div class="col-md-6">
+                                   <div class="col-md-12">
                                        <div class="form-group">
                                         {{form.Demarrer.label(class="form-control-label")}}
                                 
@@ -51,22 +51,6 @@
                                         {% endif %}
                                     </div>
                                    </div>
-                                   <div class="col-md-6">
-                                    <div class="form-group">
-                                     {{form.Fin.label(class="form-control-label")}}
-                             
-                                     {% if form.Fin.errors %}
-                                         {{form.Fin(class="input is-small is-invalid") }}
-                                         <div class="invalid-feedback">
-                                             {% for error in form.Fin.errors %}
-                                                 <span>{{ error }}</span>
-                                             {% endfor %}
-                                         </div>
-                                     {% else %}
-                                         {{form.Fin(class="input is-small" )}}
-                                     {% endif %}
-                                 </div>
-                                </div>
                                 </div>
                             </fieldset>
                             <div class="form-group">
