@@ -9,6 +9,7 @@ from flask_login import login_user,current_user,logout_user,login_required,Login
 import os
 from Database_project.project.data_base_ import create_app
 from os.path import join, dirname, realpath
+from datetime import date
 
 users =Blueprint('users',__name__)
 app= create_app()
@@ -188,11 +189,15 @@ def choose(id):
         if form.validate_on_submit():  
             start=form.Demarrer.data
             end=form.Fin.data#check how to sum dates
+            delta =end-start
             if end < start:
                 flash(f"La fin ne peut pas etre moins que le debut ",'danger')
-                return redirect(url_for('users.choose'))
+                return redirect(url_for('users.choose',id=id))
+            if delta.days < 30:
+                flash(f"La date doit etre egale a 30 jours ",'danger')
+                return redirect(url_for('users.choose',id=id))
             else:
-                mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL=='0',Mission.DATE_REALISE_EDL=='0',Mission.Reference_BAILLEUR==id)).order_by(desc(Mission.id)).all())#check query
+                mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>='0',Mission.DATE_REALISE_EDL<='0',Mission.Reference_BAILLEUR==id)).order_by(desc(Mission.id)).all())#check query
                 return render_template('manage/pages/ajouter_facturation.html', mission=mission_,form=form2)
         return render_template('manage/pages/choose.html',form=form,legend="time")
 
@@ -210,11 +215,11 @@ def create_facture():
         facture=facturation_client(Montant_HT=request.form['Montant_HT'],Montant_TTC=request.form['Montant_TTC'],TTC=request.form['TTC'],Date_reglement_client=request.form['Date_reglement_client'],Statut=request.form['Statut'],
         Observations_suivi_paiement=request.form['Observations_suivi_paiement'],Email_de_relance=request.form['Email_de_relance'],client=request.form['Reference_client'])
         db.session.add(facture)
-        #db.session.commit()
+        db.session.commit()
         for i in mission_:
             fact_m=facturation_mission(ref_mission=i.id,fact_mission=facture.id)
             db.session.add(fact_m)
-           # db.session.commit()
+            db.session.commit()
         return redirect(url_for('users.facturation',id=request.form['Reference_client']))
 
     return redirect(url_for('users.main'))
@@ -244,8 +249,8 @@ def delete_facturation(id):
     if current_user.TYPE == 'Admin':
         fact = facturation_client.query.filter_by(id=id).first_or_404()
         mission = facturation_mission.query.filter_by(fact_mission=id).first_or_404()
-        #fact.Visibility=False
-        #mission.visibility=False
+        fact.Visibility=False
+        mission.visibility=False
         db.session.commit()
         flash(f'Les donnes de la facture  ont été  suprimmer','success')
         return redirect(url_for('users.mission'))
