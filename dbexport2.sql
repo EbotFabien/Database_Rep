@@ -610,7 +610,8 @@ CREATE TABLE public.facturation_client (
     "Date_première_relance" character varying,
     "Date_seconde_relance" character varying,
     "Date_mise_en_demeure" character varying,
-    "Email_de_relance" character varying
+    "Email_de_relance" character varying,
+    visibility boolean
 );
 
 
@@ -645,7 +646,8 @@ ALTER SEQUENCE public.facturation_client_id_seq OWNED BY public.facturation_clie
 CREATE TABLE public.facturation_mission (
     id integer NOT NULL,
     ref_mission integer,
-    fact_mission integer
+    fact_mission integer,
+    visibility boolean
 );
 
 
@@ -4186,6 +4188,7 @@ COPY public."Negotiateur_History" (id, negotiateur_id, adresse, etat_client, cp,
 --
 
 COPY public."Tarifs" (id, maison_appartement, type_maison, "Prix_EDL", "Prix_Chiffrage", visibility, "Cell_AS_referent_client", "Cell_AS_referent_client_taux_com", "Cell_Planif_Ref_agent_client", "Cell_Planif_Ref_agent_taux_com", "Cell_Planif_Ref_respon_client", "Cell_Planif_Ref_respon_taux_com", "Cell_Planif_Ref_suiveur_client", "Cell_Planif_Ref_suiveur_taux_com", "Cell_devel_agent_suivi_client", "Cell_devel_agent_suivi_client_taux_com", "Cell_devel_client", "Cell_devel_respon_client_taux_com", "Cell_tech_Ref_agent_suivi_client", "Cell_tech_Ref_respon_suivi_client_taux_com", "Cell_tech_Ref_suiveur_client", "Cell_tech_Ref_suiveur_taux_com", code_tva, commentaire_libre, date, reference_client) FROM stdin;
+1	Maison	F1	4566	44444	t	1	sdfg	1	erty	1	fghj	1	dfgh	1	fghdf	1	dfgh	1	dfgh	1	dfgh	44444	aert	2021-02-26 07:05:55.097965	1
 \.
 
 
@@ -4194,7 +4197,7 @@ COPY public."Tarifs" (id, maison_appartement, type_maison, "Prix_EDL", "Prix_Chi
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-4c634d8dafbf
+cf590bc6f60c
 \.
 
 
@@ -4202,7 +4205,8 @@ COPY public.alembic_version (version_num) FROM stdin;
 -- Data for Name: facturation_client; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.facturation_client (id, n_facture, client, "Montant_HT", "Montant_TTC", "TTC", "Date_de_creation", "Date_reglement_client", "Statut", "Observations_suivi_paiement", "Date_première_relance", "Date_seconde_relance", "Date_mise_en_demeure", "Email_de_relance") FROM stdin;
+COPY public.facturation_client (id, n_facture, client, "Montant_HT", "Montant_TTC", "TTC", "Date_de_creation", "Date_reglement_client", "Statut", "Observations_suivi_paiement", "Date_première_relance", "Date_seconde_relance", "Date_mise_en_demeure", "Email_de_relance", visibility) FROM stdin;
+1	\N	1	446464	146464	4646464	\N	2021-02-16	attente	Entrant	\N	\N	\N	fabien2777@gmail.com	\N
 \.
 
 
@@ -4210,7 +4214,10 @@ COPY public.facturation_client (id, n_facture, client, "Montant_HT", "Montant_TT
 -- Data for Name: facturation_mission; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.facturation_mission (id, ref_mission, fact_mission) FROM stdin;
+COPY public.facturation_mission (id, ref_mission, fact_mission, visibility) FROM stdin;
+1	3	1	\N
+2	2	1	\N
+3	1	1	\N
 \.
 
 
@@ -5037,21 +5044,21 @@ SELECT pg_catalog.setval('public."Negotiateur_History_id_seq"', 1, true);
 -- Name: Tarifs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Tarifs_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."Tarifs_id_seq"', 1, true);
 
 
 --
 -- Name: facturation_client_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.facturation_client_id_seq', 1, false);
+SELECT pg_catalog.setval('public.facturation_client_id_seq', 1, true);
 
 
 --
 -- Name: facturation_mission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.facturation_mission_id_seq', 1, false);
+SELECT pg_catalog.setval('public.facturation_mission_id_seq', 3, true);
 
 
 --
