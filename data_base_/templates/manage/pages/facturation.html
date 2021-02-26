@@ -4,7 +4,7 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Facturation</h1>
-        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left"></i></h3>
+        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left" onclick="history.back(-1)"></i></h3>
     </div>
     <!-- Content Row -->
 
@@ -13,8 +13,7 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
 	        <div class="card-header py-3 justify-content-between d-flex align-items-center">
-	            <h6 class="m-0 font-weight-bold text-gray-600">Facturation</h6>
-              <a href="/ajouter/facturation" title="ajouter un expert" class="button is-dark is-small">ajouter une facture</a>
+	            <h6 class="m-0 font-weight-bold text-gray-600">Facturation de {{facturations[0].client__data_.nom}}</h6>
 	        </div>
 	        <div class="card-body">
 	            <div class="table-responsive">
@@ -22,49 +21,42 @@
                         <thead class="">
                         <tr>
                             <th scope="col">id</th>
-                            <th scope="col">Facture_no</th>
-                            <th scope="col">Date_</th>
-                            <th scope="col">Pays</th> 
-                            <th scope="col">Destinataire</th>
-                            <th scope="col">expéditeur</th> 
-                            <th scope="col">Montant</th>
-                            <th scope="col">TVA</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Type</th> 
-                            <th scope="col">Proprietaire</th> 
-                            <th scope="col">Locataire</th>
-                            <th scope="col">Ville</th> 
-                            <th scope="col">Surface</th>
-                            <th scope="col">Tarif</th>
-                            <th scope="col">Appt_Pav</th>
-                            <th>Modification</th>
-                            <th>Supprimer</th>
+                            <th scope="col">N° Facture</th>
+                            <th scope="col">Montant HT</th>
+                            <th scope="col">Montant TTC</th> 
+                            <th scope="col">TTC</th>
+                            <th scope="col">Statut</th> 
+                            <th scope="col">Email de relance</th>
+                            <th scope="col">Observations suivi paiement</th>
+                            <th scope="col">Date première relance</th>
+                            <th scope="col">Date seconde relance</th> 
+                            <th scope="col">Date mise en demeure</th> 
+                            <th scope="col">Email de relance</th>
+                            <th scope="col">Date de creation</th> 
+                           
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                            {%for facturation_ in Facturation %}
+                            {%for facturation in facturations %}
                                 <tr>
-                                    <th scope="row">{{facturation_.id}}</th>
-                                    <td>{{facturation_.Facture_no}}</td>
-                                    <td>{{facturation_.Date_}}</td>
-                                    <td>{{facturation_.Pays}}</td> 
-                                    <td>{{facturation_.Destinataire}}</td>
-                                    <td>{{facturation_.expéditeur}}</td> 
-                                    <td>{{facturation_.Montant}}</td>
-                                    <td>{{facturation_.TVA}}</td>
-                                    <td>{{facturation_.Total}}</td>
-                                    <td>{{facturation_.Type}}</td> 
-                                    <td>{{facturation_.Proprietaire}}</td>
-                                    <td>{{facturation_.Locataire}}</td>
-                                    <td>{{facturation_.Ville}}</td> 
-                                    <td>{{facturation_.Surface}}</td>
-                                    <td>{{facturation_.Tarif}}</td>
-                                    <td>{{facturation_.Appt_Pav}}</td>
+                                    <th scope="row">{{facturation.id}}</th>
+                                    <td>{{facturation.n_facture}}</td>
+                                    <td>{{facturation.client}}</td>
+                                    <td>{{facturation.Montant_HT}}</td>
+                                    <td>{{facturation.Montant_TTC}}</td> 
+                                    <td>{{facturation.TTC}}</td>
+                                    <td>{{facturation.Statut}}</td> 
+                                    <td>{{facturation.Email_de_relance}}</td>
+                                    <td>{{facturation.Observations_suivi_paiement}}</td>
+                                    <td>{{facturation.Date_première_relance}}</td>
+                                    <td>{{facturation.Date_seconde_relance}}</td> 
+                                    <td>{{facturation.Date_mise_en_demeure}}</td>
+                                    <td>{{facturation.Email_de_relance}}</td>
+                                    <td>{{facturation.Date_de_creation}}</td> 
+                                      
                                     <td>
-                                        <a href="{{url_for('users.edit_facturation', id=facturation_.id)}}" title="modifier" class="center button is-outlined-black is-small"><i class="fa fa-pen"></i></a> &nbsp;
-                                    </td>   
-                                    <td>
-                                        <a href="{{url_for('users.delete_facturation', id=facturation_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="modifier" class="center button is-danger	 is-small"><i class="fa fa-trash"></i></a> &nbsp;
+                                        <a href="{{url_for('users.delete_facturation', id=facturation.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="modifier" class="center button is-danger	 is-small"><i class="fa fa-trash"></i></a> &nbsp;
                                     </td> 
                                 </tr>
                                

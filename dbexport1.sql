@@ -35,14 +35,14 @@ CREATE TABLE public."Agenda" (
     "Heure_début_Rdv" character varying,
     "Heure_fin_Rdv" character varying,
     "Informations_de_suivi_de_Rdv" character varying,
-    "Informations_générales" character varying,
-    "Informations_réservées_service_planification" character varying,
     "Organisateur" integer,
     "Ref_agenda_date" timestamp without time zone,
     "Titre_du_Rdv" character varying,
     "Ville_du_Rdv" character varying,
     client_id integer,
-    visibility boolean
+    visibility boolean,
+    "Informations_generales" character varying,
+    "Informations_reservees_service_planification" character varying
 );
 
 
@@ -593,6 +593,87 @@ CREATE TABLE public.alembic_version (
 ALTER TABLE public.alembic_version OWNER TO postgres;
 
 --
+-- Name: facturation_client; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.facturation_client (
+    id integer NOT NULL,
+    n_facture character varying,
+    client integer,
+    "Montant_HT" character varying,
+    "Montant_TTC" character varying,
+    "TTC" character varying,
+    "Date_de_creation" character varying,
+    "Date_reglement_client" character varying,
+    "Statut" character varying,
+    "Observations_suivi_paiement" character varying,
+    "Date_première_relance" character varying,
+    "Date_seconde_relance" character varying,
+    "Date_mise_en_demeure" character varying,
+    "Email_de_relance" character varying
+);
+
+
+ALTER TABLE public.facturation_client OWNER TO postgres;
+
+--
+-- Name: facturation_client_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.facturation_client_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.facturation_client_id_seq OWNER TO postgres;
+
+--
+-- Name: facturation_client_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.facturation_client_id_seq OWNED BY public.facturation_client.id;
+
+
+--
+-- Name: facturation_mission; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.facturation_mission (
+    id integer NOT NULL,
+    ref_mission integer,
+    fact_mission integer
+);
+
+
+ALTER TABLE public.facturation_mission OWNER TO postgres;
+
+--
+-- Name: facturation_mission_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.facturation_mission_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.facturation_mission_id_seq OWNER TO postgres;
+
+--
+-- Name: facturation_mission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.facturation_mission_id_seq OWNED BY public.facturation_mission.id;
+
+
+--
 -- Name: prospect; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -846,6 +927,20 @@ ALTER TABLE ONLY public."Tarifs" ALTER COLUMN id SET DEFAULT nextval('public."Ta
 
 
 --
+-- Name: facturation_client id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.facturation_client ALTER COLUMN id SET DEFAULT nextval('public.facturation_client_id_seq'::regclass);
+
+
+--
+-- Name: facturation_mission id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.facturation_mission ALTER COLUMN id SET DEFAULT nextval('public.facturation_mission_id_seq'::regclass);
+
+
+--
 -- Name: prospect id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -877,7 +972,7 @@ ALTER TABLE ONLY public.suivi_prospect ALTER COLUMN id SET DEFAULT nextval('publ
 -- Data for Name: Agenda; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Agenda" (id, "Adresse1_Rdv", "Adresse2_Rdv", "Chemin_de_fichier_joint", "Code_postal_Rdv", "Date_Rdv", "Date_Rdv_annulé", "Heure_début_Rdv", "Heure_fin_Rdv", "Informations_de_suivi_de_Rdv", "Informations_générales", "Informations_réservées_service_planification", "Organisateur", "Ref_agenda_date", "Titre_du_Rdv", "Ville_du_Rdv", client_id, visibility) FROM stdin;
+COPY public."Agenda" (id, "Adresse1_Rdv", "Adresse2_Rdv", "Chemin_de_fichier_joint", "Code_postal_Rdv", "Date_Rdv", "Date_Rdv_annulé", "Heure_début_Rdv", "Heure_fin_Rdv", "Informations_de_suivi_de_Rdv", "Organisateur", "Ref_agenda_date", "Titre_du_Rdv", "Ville_du_Rdv", client_id, visibility, "Informations_generales", "Informations_reservees_service_planification") FROM stdin;
 \.
 
 
@@ -2521,6 +2616,10 @@ COPY public."Expert" (id, sexe, nom, trigramme, "TYPE", "date_entrée", siret, e
 1526	Mr.	Admin	\N	Admin	2021-02-22 10:05:32.325944	\N	test0001@gmail.com	12345	\N	\N	$2b$12$3ltYbFvY5NQyTfje0Tall.bs867a2MG5uMu.csV19GLCON3LMOIzy	t
 0	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f
 1	Mr.	Admin	\N	Admin	2021-02-20 15:54:43.253003	\N	test0001@gmail.com	12345	\N	\N	$2b$12$yHDxvsc5OHtOr/P0/HTlSuUdHqnpGgLPU/J2zE4OZqAjwEDHJ.Ns.	f
+1527	Mr.	Admin	\N	Admin	2021-02-25 13:16:12.168884	\N	test0001@gmail.com	12345	\N	\N	$2b$12$Wye1k5T0UkmnoORaaM5f8u7nA9PdgwfLcU57L03M0Yo0TN3btk9qq	t
+1528	Mr.	Admin	\N	Admin	2021-02-25 13:16:14.293026	\N	test0001@gmail.com	12345	\N	\N	$2b$12$UbDY/aBfCd081j4LAbn32.ipFPhyn1WkIQatlqBOjf1KEepxvVqPS	t
+1529	Mr.	Admin	\N	Admin	2021-02-25 13:30:56.304819	\N	test0001@gmail.com	12345	\N	\N	$2b$12$jS0hTl8IMvr0kUQ8NQoZs.k/T7o1kz6Bm.33U04.6bvmXIFR/b2zC	t
+1530	Mr.	Admin	\N	Admin	2021-02-25 13:31:23.64607	\N	test0001@gmail.com	12345	\N	\N	$2b$12$wNugpxmOM5hn6A0PU2et4e10taO7aYgVuxYB8Y7yvFIX50VaNihAO	t
 \.
 
 
@@ -4069,6 +4168,7 @@ COPY public."Facturation" (id, "Facture_no", "Date_", "Pays", "Destinataire", "M
 COPY public."Mission" (id, "Reference_BAILLEUR", "NRO_FACTURE", "ID_CONCESS", "DATE_REALISE_EDL", "PRIX_HT_EDL", "TVA_EDL", "PRIX_TTC_EDL", "ID_INTERV", "Reference_LOCATAIRE", "CA_HT_AS", "TVA_AS", "CA_TTC_AS", "CA_HT_AC", "CA_TTC_AC", "CA_HT_TRUST", "TVA_TRUST", "Date_chiffrage_regle", "Prix_ht_chiffrage", "POURCENTAGE_suiveur_chiffrage", "POURCENTAGE_AS_chiffrage", "POURCENTAGE_manager_chiffrage", "ID_manager_chiffrage", "POURCENTAGE_agent_chiffrage", "ID_agent_chiffrage", "TYPE_EDL", "DATE_FACTURE", "NOMPROPRIO", "DATE_FACT_REGLEE", "DATE_COM_REGLEE_AS", "MONTANT_COM_REGLEE_AS", "DATE_COM_REGLEE_AC", "MONTANT_COM_REGLEE_AC", "TYPE_LOGEMENT", "NBRE_EDL_ABOONEMENT", "MAIL_CONTACT_ENVOI_FACT", "DATE_saisie_enregistrement", "CODE_AMEXPERT", "COMMENTAIRE_FACTURE", "TYPE_PAIEMENT", "N_REMISE_DE_CHEQUE", "SAISIE_TRAITE_PAR", "infos_et_TRAITEMENT", "LOGEMENT_MEUBLE", "CODE_FACTURATION", "TYPE_DE_BIEN", surface_logement1, "ETAGE", "POINTAGE", "DATE_POINTAGE", "DEVEL", "DATE_EXTRACTION_COMPTABLE", "POURCENTAGE_COM_AS_DU_CLIENT", "ID_Respon_Cell_Dev", "POURCENTAGE_Respon_Cell_Dev", "ID_agent_Cell_Dev", "POURCENTAGE_Agent_Cell_Dev", "ID_Agent_CellTech", "POURCENTAGE_Agent_Cell_Tech", "ID_Respon_Cell_Tech", "POURCENTAGE_Respon_Cell_Tech", "ID_Suiveur_Cell_Tech", "POURCENTAGE_Suiveur_Cell_Tech", "ID_Respon_Cell_Planif", "POURCENTAGE_Respon_Cell_Planif", "ID_Suiveur_Cell_Planif", "POURCENTAGE_Suiveur_Cell_Planif", "ID_Agent_saisie_Cell_Planif", "POURCENTAGE_Agent_saisie_CEll_planif", "Visibility") FROM stdin;
 1	1	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	\N	0	0	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 2	1	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	\N	0	0	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+3	1	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	\N	0	0	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 \.
 
 
@@ -4094,7 +4194,23 @@ COPY public."Tarifs" (id, maison_appartement, type_maison, "Prix_EDL", "Prix_Chi
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-bb1db1e02677
+4c634d8dafbf
+\.
+
+
+--
+-- Data for Name: facturation_client; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.facturation_client (id, n_facture, client, "Montant_HT", "Montant_TTC", "TTC", "Date_de_creation", "Date_reglement_client", "Statut", "Observations_suivi_paiement", "Date_première_relance", "Date_seconde_relance", "Date_mise_en_demeure", "Email_de_relance") FROM stdin;
+\.
+
+
+--
+-- Data for Name: facturation_mission; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.facturation_mission (id, ref_mission, fact_mission) FROM stdin;
 \.
 
 
@@ -4893,7 +5009,7 @@ SELECT pg_catalog.setval('public."Expert_History_id_seq"', 1522, true);
 -- Name: Expert_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Expert_id_seq"', 1526, true);
+SELECT pg_catalog.setval('public."Expert_id_seq"', 1530, true);
 
 
 --
@@ -4907,7 +5023,7 @@ SELECT pg_catalog.setval('public."Facturation_id_seq"', 1, false);
 -- Name: Mission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Mission_id_seq"', 2, true);
+SELECT pg_catalog.setval('public."Mission_id_seq"', 3, true);
 
 
 --
@@ -4922,6 +5038,20 @@ SELECT pg_catalog.setval('public."Negotiateur_History_id_seq"', 1, true);
 --
 
 SELECT pg_catalog.setval('public."Tarifs_id_seq"', 1, false);
+
+
+--
+-- Name: facturation_client_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.facturation_client_id_seq', 1, false);
+
+
+--
+-- Name: facturation_mission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.facturation_mission_id_seq', 1, false);
 
 
 --
@@ -5061,6 +5191,22 @@ ALTER TABLE ONLY public."Tarifs"
 
 ALTER TABLE ONLY public.alembic_version
     ADD CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num);
+
+
+--
+-- Name: facturation_client facturation_client_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.facturation_client
+    ADD CONSTRAINT facturation_client_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: facturation_mission facturation_mission_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.facturation_mission
+    ADD CONSTRAINT facturation_mission_pkey PRIMARY KEY (id);
 
 
 --
@@ -5373,6 +5519,30 @@ ALTER TABLE ONLY public."Tarifs"
 
 ALTER TABLE ONLY public."Tarifs"
     ADD CONSTRAINT "Tarifs_reference_client_fkey" FOREIGN KEY (reference_client) REFERENCES public."Client"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: facturation_client facturation_client_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.facturation_client
+    ADD CONSTRAINT facturation_client_client_fkey FOREIGN KEY (client) REFERENCES public."Client"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: facturation_mission facturation_mission_fact_mission_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.facturation_mission
+    ADD CONSTRAINT facturation_mission_fact_mission_fkey FOREIGN KEY (fact_mission) REFERENCES public.facturation_client(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: facturation_mission facturation_mission_ref_mission_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.facturation_mission
+    ADD CONSTRAINT facturation_mission_ref_mission_fkey FOREIGN KEY (ref_mission) REFERENCES public."Mission"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

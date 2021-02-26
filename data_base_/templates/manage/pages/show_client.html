@@ -1,6 +1,12 @@
 {% extends 'manage/index.html' %}
 {% block manage_content %}
 	<div class="container-fluid">
+
+		  <!-- Page Heading -->
+		  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800">Client</h1>
+			<h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left" onclick="history.back(-1)"></i></h3>
+		</div>
  	    <!-- Content Row -->
  	    <div class="row">
 			<main class="col-md-12">
@@ -28,6 +34,9 @@
 								<h6 class="text-muted"><a href="{{url_for('users.ajouter_negotiateur', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">Cree Negotiateur</a></h6>
 								<h6 class="text-muted"><a href="{{url_for('users.negotiateur', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">voir  Negotiateur</a></h6>
 								<h6 class="text-muted"><a href="{{url_for('users.ajouter_tarif', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">Ajouter un Tarif</a></h6>
+								<h6 class="text-muted"><a href="{{url_for('users.client_mission', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">Missions</a></h6>
+								<h6 class="text-muted"><a href="{{url_for('users.tarifs', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">Tarifs</a></h6>
+								<h6 class="text-muted"><a href="{{url_for('users.facturation', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">Factures</a></h6>
 							{% endif %}
 							{% if legend == "prospect" %}
 								<h6 class="text-muted"><a href="{{url_for('users.suivi_prospect_', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">Voir Suivi</a></h6>

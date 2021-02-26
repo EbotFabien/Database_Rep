@@ -1,6 +1,11 @@
 {% extends 'manage/index.html' %}
 {% block manage_content %}
 	<div class="container-fluid">
+		  <!-- Page Heading -->
+		  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800">Mission</h1>
+			<h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left" onclick="history.back(-1)"></i></h3>
+		</div>
  	    <!-- Content Row -->
  	    <div class="row">
 			<main class="col-md-12">
@@ -13,8 +18,11 @@
 						<div class="col-md-4">
                             <h4>Information des concernées</h4>
 							<p>N° du client: <strong>{{mission.Bailleur__data.reference}}</strong></p>
+							<p>Societe: <strong>{{mission.Bailleur__data.societe}}</strong></p>
                             <p>N° du Concensionnaire: <strong>{{mission.ID_CONCESS}}</strong></p>
+							<p>Nom : <strong>{{mission.CONCESS__data.nom}}</strong></p>
 							<p>ID Interv: <strong>{{mission.ID_INTERV}}</strong></p>
+							<p>Nom : <strong>{{mission.INTERV__data.nom}}</strong></p>
                             <p>Reference Locataire: <strong>{{mission.Reference_LOCATAIRE}}</strong></p>
 						</div>
                         <div class="col-md-4">

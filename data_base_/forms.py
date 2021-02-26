@@ -1,9 +1,11 @@
 from flask_wtf import FlaskForm,RecaptchaField, Recaptcha
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField, DateField, TextAreaField
+from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired,length,Email,EqualTo,ValidationError
 from Database_project.project.data_base_.Models import Expert ,Client
+from wtforms.fields.html5 import DateField
+
 
 
 
@@ -188,42 +190,35 @@ class Tarif_Form(FlaskForm):
   modifier = SubmitField('modifier')
 
 class Facturation_Form(FlaskForm):
+    Reference_client=StringField('Reference_client',
+                           render_kw={'readonly':True})
+
+    Demarrer=StringField('Demarrer',
+                           render_kw={'readonly':True})
+
+    Fin=StringField('Fin',
+                           render_kw={'readonly':True})
     
-    Pays =StringField('Pays',
+    Montant_HT =StringField('Montant_HT',
                            validators=[DataRequired()])
 
-    ID_Destinataire =StringField('ID_Destinataire',
+    Montant_TTC =StringField('Montant_TTC',
                            validators=[DataRequired()])    
 
-    ID_expediteur =StringField('ID_expediteur',
+    TTC =StringField('TTC',
                            validators=[DataRequired()])
 
-    montant=StringField('montant',
-                           validators=[DataRequired()])
+    Date_reglement_client=DateField("Date_reglement_client")
 
     
-    total=StringField('total',
-                           validators=[DataRequired()])
+    Statut=SelectField('Statut',
+                             choices=[('paye', 'paye'), ('attente', 'attente')])
     
-    Type_=SelectField('Type_',
+    Observations_suivi_paiement=SelectField('Type_',
                              choices=[('Entrant', 'Entrant'), ('Sortant', 'Sortant')])
 
-    ID_proprietaire=StringField('proprietaire',
-                           validators=[DataRequired()])
-
-    ID_locataire=StringField('locataire',
-                           validators=[DataRequired()])
     
-    ville=StringField('ville',
-                           validators=[DataRequired()])
-
-    surface=StringField('surface',
-                           validators=[DataRequired()])
-
-    tarifs=StringField('tarifs',
-                           validators=[DataRequired()])
-    
-    appt_pav=StringField('appt_pav',
+    Email_de_relance=StringField('Email_de_relance',
                            validators=[DataRequired()])
 
 
@@ -490,5 +485,14 @@ class Invitation_Agenda(FlaskForm):
 
     Expert_invite=StringField("Expert invite",
                         validators=[DataRequired()])
+
+    submit = SubmitField('enregistrer')
+
+
+class time(FlaskForm):
+
+    Demarrer=DateField("Demarrer")
+
+    Fin=DateField("Fin")
 
     submit = SubmitField('enregistrer')

@@ -1,0 +1,58 @@
+{% extends 'manage/index.html'%}
+{% block manage_content %}
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Client Missions</h1>
+        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left" onclick="history.back(-1)"></i></h3>
+    </div>
+    <!-- Content Row -->
+
+    <div class="row">
+        <!-- Area Chart -->
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+	        <div class="card-header py-1 justify-content-between d-flex align-items-center">
+	            <h6 class="m-0 font-weight-bold">Client Missions</h6>
+	             <a href="{{url_for('users.choose', id=missions[0].Reference_BAILLEUR)}}" title="ajouter une facture" class="button is-black is-small pull-right"><span class="is-warning">ajouter une facture</span></a>
+	        </div>
+	        <div class="card-body">
+	            <div class="table-responsive">
+	                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+	                    <thead class="">
+	                	<tr>
+		                    <th scope="col">N° Mission</th>
+		                    <th scope="col">Date de realisation de la mission</th>
+		                    
+		                    <th></th>
+		                    <th></th>
+
+	                	</tr>
+	            	</thead>
+		            <tbody>
+		                {%for mission in missions %}
+		                    <tr>
+		                        <td scope="col">{{mission.id}}</td>
+		                        <td>{{mission.DATE_REALISE_EDL}}</td>
+                              
+		                        <td>
+                                    <a href="{{url_for('users.edit_mission', id=mission.id)}}" title="modifier" class="center button is-outlined-black is-small"><i class="fa fa-pen"></i></a> &nbsp;
+                                </td>   
+                                <td>
+                                    <a href="{{url_for('users.delete_mission', id=mission.id)}}" title="Suprimmer" class="center button is-danger	 is-small"><i class="fa fa-trash"></i></a> &nbsp;
+                                </td>
+		                    </tr>
+		                {%endfor%}                               
+		            </tbody>         
+	             </table>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+    <!-- Pie Chart --> 
+</div>
+
+    <!-- Content Row -->
+</div>
+    <!-- /.container-fluid -->
+{% endblock %}
