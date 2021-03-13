@@ -23,14 +23,8 @@
                             <th scope="col">id</th>
                             <th scope="col">N° Facture</th>
                             <th scope="col">Montant HT</th>
-                            <th scope="col">Montant TTC</th> 
-                            <th scope="col">TTC</th>
                             <th scope="col">Statut</th> 
-                            <th scope="col">Email de relance</th>
                             <th scope="col">Observations suivi paiement</th>
-                            <th scope="col">Date première relance</th>
-                            <th scope="col">Date seconde relance</th> 
-                            <th scope="col">Date mise en demeure</th> 
                             <th scope="col">Email de relance</th>
                             <th scope="col">Date de creation</th> 
                            
@@ -42,17 +36,10 @@
                                 <tr>
                                     <th scope="row">{{facturation.id}}</th>
                                     <td>{{facturation.n_facture}}</td>
-                                    <td>{{facturation.client}}</td>
                                     <td>{{facturation.Montant_HT}}</td>
-                                    <td>{{facturation.Montant_TTC}}</td> 
-                                    <td>{{facturation.TTC}}</td>
                                     <td>{{facturation.Statut}}</td> 
-                                    <td>{{facturation.Email_de_relance}}</td>
                                     <td>{{facturation.Observations_suivi_paiement}}</td>
-                                    <td>{{facturation.Date_première_relance}}</td>
-                                    <td>{{facturation.Date_seconde_relance}}</td> 
-                                    <td>{{facturation.Date_mise_en_demeure}}</td>
-                                    <td>{{facturation.Email_de_relance}}</td>
+                                    <td>{{facturation.client__data_.email}}</td>
                                     <td>{{facturation.Date_de_creation}}</td> 
                                       
                                     <td>

@@ -200,13 +200,8 @@ class Facturation_Form(FlaskForm):
                            render_kw={'readonly':True})
     
     Montant_HT =StringField('Montant_HT',
-                           validators=[DataRequired()])
+                             render_kw={'readonly':True})
 
-    Montant_TTC =StringField('Montant_TTC',
-                           validators=[DataRequired()])    
-
-    TTC =StringField('TTC',
-                           validators=[DataRequired()])
 
     Date_reglement_client=DateField("Date_reglement_client")
 
@@ -217,16 +212,12 @@ class Facturation_Form(FlaskForm):
     Observations_suivi_paiement=SelectField('Type_',
                              choices=[('Entrant', 'Entrant'), ('Sortant', 'Sortant')])
 
-    
-    Email_de_relance=StringField('Email_de_relance',
-                           validators=[DataRequired()])
-
 
     submit = SubmitField('enregistrer')
 
 
 class Client_Form(FlaskForm):
-    
+       
     Type=SelectField('Type',
                              choices=[('BAILLEUR', 'Bailleur'), ('LOCATAIRE', 'Locataire')])
 
@@ -494,4 +485,17 @@ class time(FlaskForm):
     Demarrer=DateField("Demarrer")
 
 
+    submit = SubmitField('enregistrer')
+
+
+class Tarif_Base(FlaskForm):
+
+    maison_appartement=StringField("maison_appartement",
+                        validators=[DataRequired()])
+    Nombre_de_piece=StringField("Nombre_de_piece",
+                    validators=[DataRequired()])   
+    Prix_EDL=StringField("Prix_EDL",
+                validators=[DataRequired()])
+    Prix_Chiffrage=StringField("Prix_EDL",
+                validators=[DataRequired()])      
     submit = SubmitField('enregistrer')
