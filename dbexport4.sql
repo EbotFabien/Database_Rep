@@ -113,7 +113,7 @@ ALTER SEQUENCE public."Agenda_id_seq" OWNED BY public."Agenda".id;
 
 CREATE TABLE public."Client" (
     id integer NOT NULL,
-    reference character varying,
+    reference integer,
     "TYPE" character varying,
     societe character varying,
     sexe character varying,
@@ -388,12 +388,12 @@ CREATE TABLE public."Mission" (
     "Reference_BAILLEUR" integer,
     "NRO_FACTURE" character varying,
     "ID_CONCESS" integer,
-    "DATE_REALISE_EDL" character varying,
+    "DATE_REALISE_EDL" timestamp without time zone,
     "PRIX_HT_EDL" character varying,
     "TVA_EDL" character varying,
     "PRIX_TTC_EDL" character varying,
     "ID_INTERV" integer,
-    "Reference_LOCATAIRE" integer,
+    "Reference_LOCATAIRE" character varying,
     "CA_HT_AS" character varying,
     "TVA_AS" character varying,
     "CA_TTC_AS" character varying,
@@ -524,36 +524,102 @@ ALTER SEQUENCE public."Negotiateur_History_id_seq" OWNED BY public."Negotiateur_
 
 
 --
+-- Name: Tarif_base; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Tarif_base" (
+    id integer NOT NULL,
+    maison_appartement character varying,
+    "Type" character varying,
+    "Prix_EDL" character varying,
+    "Prix_Chiffrage" character varying,
+    visibility boolean
+);
+
+
+ALTER TABLE public."Tarif_base" OWNER TO postgres;
+
+--
+-- Name: Tarif_base_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Tarif_base_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Tarif_base_id_seq" OWNER TO postgres;
+
+--
+-- Name: Tarif_base_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Tarif_base_id_seq" OWNED BY public."Tarif_base".id;
+
+
+--
 -- Name: Tarifs; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public."Tarifs" (
     id integer NOT NULL,
-    maison_appartement character varying,
-    type_maison character varying,
-    "Prix_EDL" character varying,
-    "Prix_Chiffrage" character varying,
-    visibility boolean,
-    "Cell_AS_referent_client" integer,
-    "Cell_AS_referent_client_taux_com" character varying,
-    "Cell_Planif_Ref_agent_client" integer,
-    "Cell_Planif_Ref_agent_taux_com" character varying,
-    "Cell_Planif_Ref_respon_client" integer,
-    "Cell_Planif_Ref_respon_taux_com" character varying,
-    "Cell_Planif_Ref_suiveur_client" integer,
-    "Cell_Planif_Ref_suiveur_taux_com" character varying,
-    "Cell_devel_agent_suivi_client" integer,
-    "Cell_devel_agent_suivi_client_taux_com" character varying,
-    "Cell_devel_client" integer,
-    "Cell_devel_respon_client_taux_com" character varying,
-    "Cell_tech_Ref_agent_suivi_client" integer,
-    "Cell_tech_Ref_respon_suivi_client_taux_com" character varying,
-    "Cell_tech_Ref_suiveur_client" integer,
-    "Cell_tech_Ref_suiveur_taux_com" character varying,
+    reference_client integer,
+    "EDL_APPT_prix_F1" character varying,
+    "EDL_APPT_prix_F2" character varying,
+    "EDL_APPT_prix_F3" character varying,
+    "EDL_APPT_prix_F4" character varying,
+    "EDL_APPT_prix_F5" character varying,
+    "EDL_APPT_prix_F6" character varying,
+    "EDL_PAV_villa_prix_T1" character varying,
+    "EDL_PAV_villa_prix_T2" character varying,
+    "EDL_PAV_villa_prix_T3" character varying,
+    "EDL_PAV_villa_prix_T4" character varying,
+    "EDL_PAV_villa_prix_T5" character varying,
+    "EDL_PAV_villa_prix_T6" character varying,
+    "EDL_PAV_villa_prix_T7" character varying,
+    "EDL_PAV_villa_prix_T8" character varying,
+    "CHIF_APPT_prix_stu" character varying,
+    "CHIF_APPT_prix_F1" character varying,
+    "CHIF_APPT_prix_F2" character varying,
+    "CHIF_APPT_prix_F3" character varying,
+    "CHIF_APPT_prix_F4" character varying,
+    "CHIF_APPT_prix_F5" character varying,
+    "CHIF_PAV_villa_prix_T1" character varying,
+    "CHIF_PAV_villa_prix_T2" character varying,
+    "CHIF_PAV_villa_prix_T3" character varying,
+    "CHIF_PAV_villa_prix_T4" character varying,
+    "CHIF_PAV_villa_prix_T5" character varying,
+    "CHIF_PAV_villa_prix_T6" character varying,
+    "CHIF_PAV_villa_prix_T7" character varying,
+    "CHIF_PAV_villa_prix_T8" character varying,
     code_tva character varying,
+    taux_meuble character varying,
+    referent_as_client integer,
+    com_as_sur_ca_client character varying,
+    cell_dev_ref_responsable integer,
+    com_cell_dev_ref_responsable character varying,
+    "Cell_dev_ref_agent" integer,
+    com_cell_dev_ref_agent character varying,
+    "Cell_tech_Ref_agent" integer,
+    "com_cell_tech_Ref_agent" character varying,
+    "CELL_TECH_ref_responsable" integer,
+    "COM_CELL_TECH_ref_responsable" character varying,
+    "CELL_TECH_ref_suiveur" integer,
+    "com_CELL_TECH_ref_suiveur" character varying,
+    "CELL_planif_ref_responsable" integer,
+    "com_CELL_planif_ref_responsable" character varying,
+    "CELL_PLANIF_ref_suiveur" integer,
+    "com_CELL_PLANIF_ref_suiveur" character varying,
+    "CELL_PLANIF_ref_agent_saisie" integer,
+    "com_CELL_PLANIF_ref_agent_saisie" character varying,
+    prix_autre character varying,
     commentaire_libre character varying,
     date timestamp without time zone,
-    reference_client integer
+    visibility boolean
 );
 
 
@@ -601,16 +667,13 @@ CREATE TABLE public.facturation_client (
     n_facture character varying,
     client integer,
     "Montant_HT" character varying,
-    "Montant_TTC" character varying,
-    "TTC" character varying,
-    "Date_de_creation" character varying,
+    "Date_de_creation" timestamp without time zone,
     "Date_reglement_client" character varying,
     "Statut" character varying,
     "Observations_suivi_paiement" character varying,
     "Date_première_relance" character varying,
     "Date_seconde_relance" character varying,
     "Date_mise_en_demeure" character varying,
-    "Email_de_relance" character varying,
     visibility boolean
 );
 
@@ -922,6 +985,13 @@ ALTER TABLE ONLY public."Negotiateur_History" ALTER COLUMN id SET DEFAULT nextva
 
 
 --
+-- Name: Tarif_base id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarif_base" ALTER COLUMN id SET DEFAULT nextval('public."Tarif_base_id_seq"'::regclass);
+
+
+--
 -- Name: Tarifs id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -991,44 +1061,10 @@ COPY public."Agenda_expert" (id, agenda_taken, "Participant_invité", validation
 --
 
 COPY public."Client" (id, reference, "TYPE", societe, sexe, nom, email, numero, siret, date_creation, visibility) FROM stdin;
-1	107505.0	Bailleur	guy hoquet - cabinet fredelion	monsieur	bismuth & teboul	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.512	t
-2	1270235.0	Bailleur	sombim rambouillet 	monsieur	morel jean marc	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.574964	t
-3	1075491.0	Bailleur	l'adresse-les ardoisières sarl 3b	monsieur	blanvilain sébastien	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.600949	t
-4	123630.0	Bailleur	l'adresse les herbiers - sarl les herbiers gestion 	messieux	blanvillain et teillol	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.629932	t
-5	109750.0	Bailleur	etude thierry keravec notaire	monsieur	keravec thierry	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.661917	t
-6	124320.0	Bailleur	orpi - immobiliere du bouquet 	monsieur	lamotte stéphane	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.693898	t
-7	1270213.0	Bailleur	procity immobilier	monsieur	payen franck	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.723882	t
-8	1270216.0	Bailleur	procity gest immobilier procity gest	madame	deesnoyers de bieville	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.753863	t
-9	107801.0	Bailleur	barbara immobilier - gic immobilier	madame              	barbara sandrine	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.780847	t
-10	110570.0	Bailleur	citya nantes	madame	vancapel sandra	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.803832	t
-11	1270234.0	Bailleur	west immobilier  laforet quimper	monsieur 	le floc'h françois	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.823825	t
-12	124560.0	Bailleur	vestalia immo 	monsieur	lescure thierry	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.8638	t
-13	123000.0	Bailleur	guy hoquet-sas bussat dunne immobilier  	monsieur	monneray jordan	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.883789	t
-14	124140.0	Bailleur	sarl afi - guy hoquet l'immobilier patrimoine epone	madame	jouvet	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.907776	t
-15	10510.0	Bailleur	central immobilier	monsieur	garcia jérémy	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.929763	t
-16	123610.0	Bailleur	immo de france laval	madame              	vaigreville murielle	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.950749	t
-17	122165.0	Bailleur	cabinet fruchet 	monsieur	fruchet benjamin	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.971737	t
-18	110270.0	Bailleur	pool immobilier sablais	monsieur	vercelleto antoine	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:32.993725	t
-19	110670.0	Bailleur	saint mars immobilier-sarl else immo	madame	colomez christine	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.014715	t
-20	123490.0	Bailleur	l'adresse - label'immo 85 	monsieur	teillol gilles	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.037698	t
-21	110920.0	Bailleur	agence immobiliere thierry fourny	monsieur	fourny thierry	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.066687	t
-22	1270240.0	Bailleur	espace habitat - bci 	madame              	lagueyt brigitte	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.092669	t
-23	123500.0	Bailleur	l'adresse - civm 	monsieur	pouyet laurent	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.113657	t
-24	122160.0	Bailleur	cabinet pige	monsieur	brachet sebastien	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.133645	t
-25	124110.0	Bailleur	coeur lauragais immo 7 agence quint-fonsegrives	monsieur	soual yannick	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.154633	t
-26	120070.0	Bailleur	djc invest 	monsieur	craunot david	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.180619	t
-27	1270223.0	Bailleur	penn immobilier sarl mpi	monsieur	penn marc	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.210602	t
-28	1270206.0	Bailleur	sci fdj m. azema david	monsieur	azema david	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.231587	t
-29	1270229.0	Bailleur	nestenn - logette immobilier 	madame	logette christine	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.254575	t
-30	109662.0	Bailleur	l'adresse lau des naiades	madame              	thibaud guilbaud	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.276564	t
-31	1270225.0	Bailleur	laforet saint orens de gameville	monsieur	rezag remy	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.295552	t
-32	124450.0	Bailleur	l'adresse nation - sasu delf immogest	madame	perrillat delphine	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.318541	t
-33	123450.0	Bailleur	locagestion-toulouse 	madame	vanhecke nathalie	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.338529	t
-34	123560.0	Bailleur	pierres&cosas sarpig	monsieur	sarrazin pierre	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.360517	t
-35	124460.0	Bailleur	guy hoquet sceaux - sarl csg immobilier	madame	coppola christine&grégory	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.3855	t
-36	124170.0	Bailleur	terre d'argence immobilier 	monsieur	poincet philippe	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:33.40449	t
-37	123630.0	Bailleur	l'adresse les herbiers - sarl les herbiers gestion 	monsieur	blavillain et teillol	test@gmail.com	6777650822	22222222222	2021-02-20 16:14:36.63665	t
-0	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1	1075491	professionelle	l'adresse anjou maine sarl les 3b 	monsieur	blanvilain sébastien	test@gmail.com	6777650822	22222222222	2021-03-12 18:01:19.503467	t
+2	123630	professionelle	l'adresse les herbiers - sarl les herbiers gestion 	monsieur	blavillain et teillol	test@gmail.com	6777650822	22222222222	2021-03-12 18:02:30.317045	t
+3	120020	professionelle	l'adresse maison blanche 	monsieur	blanvillain sebastien	test@gmail.com	6777650822	22222222222	2021-03-12 18:02:30.357021	t
+4	1270234	professionelle	west immobilier  laforet quimper	monsieur 	le floc'h françois	test@gmail.com	6777650822	22222222222	2021-03-12 18:02:30.406995	t
 \.
 
 
@@ -1037,43 +1073,15 @@ COPY public."Client" (id, reference, "TYPE", societe, sexe, nom, email, numero, 
 --
 
 COPY public."Client_History" (id, client_id, adresse, etat_client, cp, ville, pays, abonnement, date, visibility) FROM stdin;
-1	1	67 RUE CAULAINCOURT	t	75018.0	PARIS	Britain	\N	2021-02-20 16:14:32.560972	t
-2	2	20 RUE CHASLES	t	78120.0	RAMBOUILLET	Britain	\N	2021-02-20 16:14:32.591954	t
-3	3	184 RUE FERDINAND VEST	t	49800.0	TRELAZE	Britain	\N	2021-02-20 16:14:32.619938	t
-4	4	48  RUE DE BRANDON	t	85500.0	LES HERBIERS	Britain	\N	2021-02-20 16:14:32.647924	t
-5	5	28 rue de Verdun	t	44210.0	PORNIC	Britain	\N	2021-02-20 16:14:32.682903	t
-6	6	55 AVENUE DE LA REPUBLIQUE	t	77340.0	PONTAULT COMBAULT	Britain	\N	2021-02-20 16:14:32.713886	t
-7	7	95 RUE ORDENER	t	75018.0	PARIS	Britain	\N	2021-02-20 16:14:32.742869	t
-8	8	57 RUE CAULAINCOURT	t	75018.0	PARIS	Britain	\N	2021-02-20 16:14:32.771852	t
-9	9	CENTRE COMMERCIAL DES GRANDES TERRES	t	78160.0	MARLY LE ROY	Britain	\N	2021-02-20 16:14:32.796836	t
-10	10	21 BOULEVARD GUIST'HAU	t	44000.0	NANTES	Britain	\N	2021-02-20 16:14:32.816828	t
-11	11	57 RUE DE BENODET	t	29000.0	QUIMPER	Britain	\N	2021-02-20 16:14:32.855803	t
-12	12	346 AVENUE D'ARES	t	33700.0	MERIGNAC	Britain	\N	2021-02-20 16:14:32.876792	t
-13	13	 234 RUE DE LA CONVENTION	t	75015.0	PARIS 	Britain	\N	2021-02-20 16:14:32.899779	t
-14	14	 1 CHEMIN DES ETANIERES	t	78680.0	EPONE	Britain	\N	2021-02-20 16:14:32.921765	t
-15	15	21 COUR DUPONT	t	85100.0	LES SABLES D'OLONNE	Britain	\N	2021-02-20 16:14:32.942755	t
-16	16	19 allée du Vieux Saint Louis	t	53000.0	LAVAL	Britain	\N	2021-02-20 16:14:32.963744	t
-17	17	7 RUE NATIONALE	t	85110.0	CHANTONNAY	Britain	\N	2021-02-20 16:14:32.986728	t
-18	18	1 RUE AMEDEE GORDINI	t	85109.0	LES SABLES D'OLONNE	Britain	\N	2021-02-20 16:14:33.007716	t
-19	19	4 rue Julienne David	t	44850.0	SAINT MARS DU DESERT	Britain	\N	2021-02-20 16:14:33.029704	t
-20	20	1 RUE DES HALLES	t	85000.0	LA ROCHE SUR YON	Britain	\N	2021-02-20 16:14:33.05369	t
-21	21	20 B RUE DE L'OCEAN	t	44810.0	HERIC	Britain	\N	2021-02-20 16:14:33.086672	t
-22	22	14 PLACE FREDERIC OZANAM	t	33200.0	BORDEAUX CAUDERAN	Britain	\N	2021-02-20 16:14:33.106665	t
-23	23	 25 GRANDE RUE CHARLES DE GAULLE	t	94360.0	BRY SUR MARNE	Britain	\N	2021-02-20 16:14:33.126648	t
-24	24	32 RUE DE L'ETANDUERE	t	49000.0	ANGERS	Britain	\N	2021-02-20 16:14:33.145639	t
-25	25	COURS GOUDOULI	t	31130.0	FONSEGRIVES	Britain	\N	2021-02-20 16:14:33.167627	t
-26	26	 96 Boulevard des Batignolles	t	75018.0	PARIS	Britain	\N	2021-02-20 16:14:33.203604	t
-27	27	2 RUE DE BREST	t	35500.0	VITRE	Britain	\N	2021-02-20 16:14:33.223593	t
-28	28	6 RUE D'EN BARTHAS	t	81570.0	SEMALENS	Britain	\N	2021-02-20 16:14:33.245584	t
-29	29	491 AVENUE DE VERDUN	t	33700.0	MERIGNAC	Britain	\N	2021-02-20 16:14:33.269567	t
-30	30	11 BIS RUE GEORGES CLEMENCEAU	t	85200.0	FONTENAY LE COMTE	Britain	\N	2021-02-20 16:14:33.288558	t
-31	31	3 AVENUE DE GAMEVILLE	t	31650.0	ST-ORENS-DE-GAMEVILLE	Britain	\N	2021-02-20 16:14:33.310545	t
-32	32	284 BOULEVARD VOLTAIRE	t	75011.0	PARIS	Britain	\N	2021-02-20 16:14:33.331531	t
-33	33	40 ROUTE D'ALBI	t	31000.0	TOULOUSE	Britain	\N	2021-02-20 16:14:33.352523	t
-34	34	4 RUE DES ARENES	t	49000.0	ANGERS	Britain	\N	2021-02-20 16:14:33.375509	t
-35	35	3 RUE FLORIAN	t	92330.0	SCEAUX	Britain	\N	2021-02-20 16:14:33.397493	t
-36	36	14 COURS GAMBETTA	t	30300.0	BEAUCAIRE	Britain	\N	2021-02-20 16:14:33.419481	t
-37	37	 48 RUE DU BRANDON	t	85500.0	LES HERBIERS	Britain	\N	2021-02-20 16:14:36.663627	t
+1	1	8  RUE DE LA CLAIE	t	49070.0	BEAUCOUZE		\N	2021-03-12 12:30:55.957067	t
+2	2	 48 RUE DU BRANDON	t	85500.0	LES HERBIERS		\N	2021-03-12 12:30:56.009041	t
+3	3	50 BOULEVARD FELIX GRAT	t	53000.0	LAVAL		\N	2021-03-12 12:30:56.038021	t
+4	4	57 RUE DE BENODET	t	29000.0	QUIMPER		\N	2021-03-12 12:30:56.065005	t
+5	5	ADRESSE1 BAILLEUR	t	CP BAILLEUR	VILLE BAILLEUR		\N	2021-03-12 12:46:07.824871	t
+6	1	8  RUE DE LA CLAIE	t	49070.0	BEAUCOUZE		\N	2021-03-12 18:01:19.693364	t
+7	2	 48 RUE DU BRANDON	t	85500.0	LES HERBIERS		\N	2021-03-12 18:02:30.34503	t
+8	3	50 BOULEVARD FELIX GRAT	t	53000.0	LAVAL		\N	2021-03-12 18:02:30.394999	t
+9	4	57 RUE DE BENODET	t	29000.0	QUIMPER		\N	2021-03-12 18:02:30.422985	t
 \.
 
 
@@ -2622,6 +2630,11 @@ COPY public."Expert" (id, sexe, nom, trigramme, "TYPE", "date_entrée", siret, e
 1528	Mr.	Admin	\N	Admin	2021-02-25 13:16:14.293026	\N	test0001@gmail.com	12345	\N	\N	$2b$12$UbDY/aBfCd081j4LAbn32.ipFPhyn1WkIQatlqBOjf1KEepxvVqPS	t
 1529	Mr.	Admin	\N	Admin	2021-02-25 13:30:56.304819	\N	test0001@gmail.com	12345	\N	\N	$2b$12$jS0hTl8IMvr0kUQ8NQoZs.k/T7o1kz6Bm.33U04.6bvmXIFR/b2zC	t
 1530	Mr.	Admin	\N	Admin	2021-02-25 13:31:23.64607	\N	test0001@gmail.com	12345	\N	\N	$2b$12$wNugpxmOM5hn6A0PU2et4e10taO7aYgVuxYB8Y7yvFIX50VaNihAO	t
+1531	Mr.	Admin	\N	Admin	2021-03-09 06:32:41.856364	\N	test0001@gmail.com	12345	\N	\N	$2b$12$dg9tPjCLStpPom6RkuIOC.4ENpDY1Km69igbFa2IKPF7xRNKEquTq	t
+1532	Mr.	Admin	\N	Admin	2021-03-09 06:32:48.898393	\N	test0001@gmail.com	12345	\N	\N	$2b$12$70nPBpJgy9G1bTEU7ZG4M.f3PW1.4VyRzi3ovPhFzmTKVpIy8bX6u	t
+1533	Mr.	Admin	\N	Admin	2021-03-09 06:35:09.593692	\N	test0001@gmail.com	12345	\N	\N	$2b$12$bPC/2lJtZ/i9MbnWzFrJdu6sJ8OZ2xrjhk0qZq4bxoUBEebpafRuy	t
+1534	Mr.	Admin	\N	Admin	2021-03-09 06:35:50.450871	\N	test0001@gmail.com	12345	\N	\N	$2b$12$hv//AmOCRiVETudbCu/UBeTxEvvJWuqBi0ip7bx/jAx4bRlml2vai	t
+1535	Mr.	Admin	\N	Admin	2021-03-12 12:19:15.77888	\N	test0001@gmail.com	12345	\N	\N	$2b$12$2Pim7j2EY7iG/zBOdHhuw.Lx4z6worg8NVW/CpidolVqEpouExp0u	t
 \.
 
 
@@ -4168,9 +4181,101 @@ COPY public."Facturation" (id, "Facture_no", "Date_", "Pays", "Destinataire", "M
 --
 
 COPY public."Mission" (id, "Reference_BAILLEUR", "NRO_FACTURE", "ID_CONCESS", "DATE_REALISE_EDL", "PRIX_HT_EDL", "TVA_EDL", "PRIX_TTC_EDL", "ID_INTERV", "Reference_LOCATAIRE", "CA_HT_AS", "TVA_AS", "CA_TTC_AS", "CA_HT_AC", "CA_TTC_AC", "CA_HT_TRUST", "TVA_TRUST", "Date_chiffrage_regle", "Prix_ht_chiffrage", "POURCENTAGE_suiveur_chiffrage", "POURCENTAGE_AS_chiffrage", "POURCENTAGE_manager_chiffrage", "ID_manager_chiffrage", "POURCENTAGE_agent_chiffrage", "ID_agent_chiffrage", "TYPE_EDL", "DATE_FACTURE", "NOMPROPRIO", "DATE_FACT_REGLEE", "DATE_COM_REGLEE_AS", "MONTANT_COM_REGLEE_AS", "DATE_COM_REGLEE_AC", "MONTANT_COM_REGLEE_AC", "TYPE_LOGEMENT", "NBRE_EDL_ABOONEMENT", "MAIL_CONTACT_ENVOI_FACT", "DATE_saisie_enregistrement", "CODE_AMEXPERT", "COMMENTAIRE_FACTURE", "TYPE_PAIEMENT", "N_REMISE_DE_CHEQUE", "SAISIE_TRAITE_PAR", "infos_et_TRAITEMENT", "LOGEMENT_MEUBLE", "CODE_FACTURATION", "TYPE_DE_BIEN", surface_logement1, "ETAGE", "POINTAGE", "DATE_POINTAGE", "DEVEL", "DATE_EXTRACTION_COMPTABLE", "POURCENTAGE_COM_AS_DU_CLIENT", "ID_Respon_Cell_Dev", "POURCENTAGE_Respon_Cell_Dev", "ID_agent_Cell_Dev", "POURCENTAGE_Agent_Cell_Dev", "ID_Agent_CellTech", "POURCENTAGE_Agent_Cell_Tech", "ID_Respon_Cell_Tech", "POURCENTAGE_Respon_Cell_Tech", "ID_Suiveur_Cell_Tech", "POURCENTAGE_Suiveur_Cell_Tech", "ID_Respon_Cell_Planif", "POURCENTAGE_Respon_Cell_Planif", "ID_Suiveur_Cell_Planif", "POURCENTAGE_Suiveur_Cell_Planif", "ID_Agent_saisie_Cell_Planif", "POURCENTAGE_Agent_saisie_CEll_planif", "Visibility") FROM stdin;
-1	1	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	\N	0	0	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-2	1	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	\N	0	0	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-3	1	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	\N	0	0	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+2	1	0	18	2020-10-02 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+3	1	0	18	2020-10-02 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+4	1	0	18	2020-10-05 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+5	1	0	18	2020-10-06 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+6	1	0	18	2020-10-06 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+7	1	0	18	2020-10-08 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+9	1	0	18	2020-10-10 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+10	1	0	18	2020-10-14 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+11	1	0	18	2020-10-15 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+12	1	0	18	2020-10-16 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+13	1	0	18	2020-10-22 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+14	1	0	18	2020-10-22 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+15	1	0	18	2020-10-27 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+16	1	0	18	2020-10-29 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+18	1	0	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+19	1	0	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+20	1	0	18	2020-10-31 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+22	1	0	18	2020-11-02 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+23	1	0	18	2020-11-02 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+24	1	0	18	2020-11-02 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+25	1	0	18	2020-11-03 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+27	1	0	18	2020-11-04 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+28	1	0	18	2020-11-05 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+29	1	0	18	2020-11-06 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+30	1	0	18	2020-11-09 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+31	1	0	18	2020-11-09 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+32	1	0	18	2020-11-09 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+33	1	0	18	2020-11-12 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+34	1	0	18	2020-11-13 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+21	1	0	18	2020-10-31 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+37	1	0	18	2020-11-25 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+38	1	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+39	1	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+40	1	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+41	1	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+42	1	0	18	2020-10-02 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+44	1	0	18	2020-10-14 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+45	1	0	18	2020-10-21 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+46	1	0	18	2020-10-22 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+47	1	0	18	2020-10-23 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+48	1	0	18	2020-10-28 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+49	1	0	18	2020-10-28 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+50	1	0	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+51	1	0	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+54	1	0	18	2020-11-02 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+55	1	0	18	2020-11-14 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+56	1	0	18	2020-11-25 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+57	1	0	18	2020-11-26 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+58	4	0	33	2020-11-04 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+59	4	0	33	2020-11-20 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+53	1	0	18	2020-10-31 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+62	1	0	18	2020-11-07 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+63	1	0	18	2020-11-09 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+64	1	0	18	2020-11-10 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+65	1	0	18	2020-11-13 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+60	1	0	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+67	2	0	15	2020-10-23 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+68	2	0	15	2020-10-24 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+69	2	0	15	2020-10-26 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+66	1	0	18	2020-10-01 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+26	1	0	18	2020-11-03 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+35	1	0	18	2020-11-19 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+36	1	0	18	2020-11-19 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+61	1	0	18	2020-11-03 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+72	2	0	15	2020-11-03 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+73	2	0	15	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+74	1	0	18	2020-11-16 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+75	1	0	18	2020-11-21 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+76	1	0	18	2020-11-27 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+77	1	0	18	2020-11-27 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+78	1	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+80	1	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+52	1	0	18	2020-10-31 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+82	3	0	18	2020-10-20 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+83	3	0	18	2020-10-29 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+84	3	0	18	2020-11-02 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+85	3	0	18	2020-11-03 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+86	3	0	18	2020-11-05 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+87	3	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+89	4	0	33	2020-10-03 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+90	4	0	33	2020-10-03 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+91	4	0	33	2020-10-08 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+92	4	0	33	2020-10-24 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+93	4	0	33	2020-11-13 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+94	4	0	33	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+95	4	0	33	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+81	1	0	18	2020-10-08 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+43	1	0	18	2020-10-10 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+8	1	0	18	2020-10-09 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+1	1	0	18	2020-10-01 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+70	2	0	15	2020-10-27 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+71	2	0	15	2020-10-28 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+79	1	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+88	3	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+17	1	0	18	2020-10-29 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 \.
 
 
@@ -4184,11 +4289,26 @@ COPY public."Negotiateur_History" (id, negotiateur_id, adresse, etat_client, cp,
 
 
 --
+-- Data for Name: Tarif_base; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Tarif_base" (id, maison_appartement, "Type", "Prix_EDL", "Prix_Chiffrage", visibility) FROM stdin;
+\.
+
+
+--
 -- Data for Name: Tarifs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Tarifs" (id, maison_appartement, type_maison, "Prix_EDL", "Prix_Chiffrage", visibility, "Cell_AS_referent_client", "Cell_AS_referent_client_taux_com", "Cell_Planif_Ref_agent_client", "Cell_Planif_Ref_agent_taux_com", "Cell_Planif_Ref_respon_client", "Cell_Planif_Ref_respon_taux_com", "Cell_Planif_Ref_suiveur_client", "Cell_Planif_Ref_suiveur_taux_com", "Cell_devel_agent_suivi_client", "Cell_devel_agent_suivi_client_taux_com", "Cell_devel_client", "Cell_devel_respon_client_taux_com", "Cell_tech_Ref_agent_suivi_client", "Cell_tech_Ref_respon_suivi_client_taux_com", "Cell_tech_Ref_suiveur_client", "Cell_tech_Ref_suiveur_taux_com", code_tva, commentaire_libre, date, reference_client) FROM stdin;
-1	Maison	F1	4566	44444	t	1	sdfg	1	erty	1	fghj	1	dfgh	1	fghdf	1	dfgh	1	dfgh	1	dfgh	44444	aert	2021-02-26 07:05:55.097965	1
+COPY public."Tarifs" (id, reference_client, "EDL_APPT_prix_F1", "EDL_APPT_prix_F2", "EDL_APPT_prix_F3", "EDL_APPT_prix_F4", "EDL_APPT_prix_F5", "EDL_APPT_prix_F6", "EDL_PAV_villa_prix_T1", "EDL_PAV_villa_prix_T2", "EDL_PAV_villa_prix_T3", "EDL_PAV_villa_prix_T4", "EDL_PAV_villa_prix_T5", "EDL_PAV_villa_prix_T6", "EDL_PAV_villa_prix_T7", "EDL_PAV_villa_prix_T8", "CHIF_APPT_prix_stu", "CHIF_APPT_prix_F1", "CHIF_APPT_prix_F2", "CHIF_APPT_prix_F3", "CHIF_APPT_prix_F4", "CHIF_APPT_prix_F5", "CHIF_PAV_villa_prix_T1", "CHIF_PAV_villa_prix_T2", "CHIF_PAV_villa_prix_T3", "CHIF_PAV_villa_prix_T4", "CHIF_PAV_villa_prix_T5", "CHIF_PAV_villa_prix_T6", "CHIF_PAV_villa_prix_T7", "CHIF_PAV_villa_prix_T8", code_tva, taux_meuble, referent_as_client, com_as_sur_ca_client, cell_dev_ref_responsable, com_cell_dev_ref_responsable, "Cell_dev_ref_agent", com_cell_dev_ref_agent, "Cell_tech_Ref_agent", "com_cell_tech_Ref_agent", "CELL_TECH_ref_responsable", "COM_CELL_TECH_ref_responsable", "CELL_TECH_ref_suiveur", "com_CELL_TECH_ref_suiveur", "CELL_planif_ref_responsable", "com_CELL_planif_ref_responsable", "CELL_PLANIF_ref_suiveur", "com_CELL_PLANIF_ref_suiveur", "CELL_PLANIF_ref_agent_saisie", "com_CELL_PLANIF_ref_agent_saisie", prix_autre, commentaire_libre, date, visibility) FROM stdin;
+1	1	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	18	0.14999999999999997	18	0.01	42	0.04	3	0.01	15	0.01	42	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:53:46.01549	t
+2	2	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	15	0.24999999999999997	0	0.0	0		0		0		0		11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:53:46.067458	t
+3	3	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	18	0.14999999999999997	18	0.01	42	0.04	3	0.01	15	0.01	42	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:53:46.088447	t
+4	4	80	85	90	110	120	130	120	120	130	150	180	190	220	250	15	15	20	20	25	25	25	25	25	35	35	35	45	45	0	0.5	33	0.14999999999999997	24	0.01	24	0.04	3	0.01	15	0.01	18	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:53:46.108434	t
+5	1	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	18	0.14999999999999997	18	0.01	42	0.04	3	0.01	15	0.01	42	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:54:28.892012	t
+6	2	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	15	0.24999999999999997	0	0.0	0		0		0		0		11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:54:28.920996	t
+7	3	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	18	0.14999999999999997	18	0.01	42	0.04	3	0.01	15	0.01	42	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:54:28.944985	t
+8	4	80	85	90	110	120	130	120	120	130	150	180	190	220	250	15	15	20	20	25	25	25	25	25	35	35	35	45	45	0	0.5	33	0.14999999999999997	24	0.01	24	0.04	3	0.01	15	0.01	18	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:54:28.96497	t
 \.
 
 
@@ -4197,7 +4317,7 @@ COPY public."Tarifs" (id, maison_appartement, type_maison, "Prix_EDL", "Prix_Chi
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-cf590bc6f60c
+a91344953523
 \.
 
 
@@ -4205,8 +4325,8 @@ cf590bc6f60c
 -- Data for Name: facturation_client; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.facturation_client (id, n_facture, client, "Montant_HT", "Montant_TTC", "TTC", "Date_de_creation", "Date_reglement_client", "Statut", "Observations_suivi_paiement", "Date_première_relance", "Date_seconde_relance", "Date_mise_en_demeure", "Email_de_relance", visibility) FROM stdin;
-1	\N	1	446464	146464	4646464	\N	2021-02-16	attente	Entrant	\N	\N	\N	fabien2777@gmail.com	\N
+COPY public.facturation_client (id, n_facture, client, "Montant_HT", "Date_de_creation", "Date_reglement_client", "Statut", "Observations_suivi_paiement", "Date_première_relance", "Date_seconde_relance", "Date_mise_en_demeure", visibility) FROM stdin;
+1	\N	1	5400	2021-03-13 08:45:26.764295		paye	Sortant	\N	\N	\N	t
 \.
 
 
@@ -4215,9 +4335,6 @@ COPY public.facturation_client (id, n_facture, client, "Montant_HT", "Montant_TT
 --
 
 COPY public.facturation_mission (id, ref_mission, fact_mission, visibility) FROM stdin;
-1	3	1	\N
-2	2	1	\N
-3	1	1	\N
 \.
 
 
@@ -4988,14 +5105,14 @@ SELECT pg_catalog.setval('public."Agenda_id_seq"', 1, false);
 -- Name: Client_History_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Client_History_id_seq"', 37, true);
+SELECT pg_catalog.setval('public."Client_History_id_seq"', 9, true);
 
 
 --
 -- Name: Client_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Client_id_seq"', 37, true);
+SELECT pg_catalog.setval('public."Client_id_seq"', 4, true);
 
 
 --
@@ -5016,7 +5133,7 @@ SELECT pg_catalog.setval('public."Expert_History_id_seq"', 1522, true);
 -- Name: Expert_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Expert_id_seq"', 1530, true);
+SELECT pg_catalog.setval('public."Expert_id_seq"', 1535, true);
 
 
 --
@@ -5030,7 +5147,7 @@ SELECT pg_catalog.setval('public."Facturation_id_seq"', 1, false);
 -- Name: Mission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Mission_id_seq"', 3, true);
+SELECT pg_catalog.setval('public."Mission_id_seq"', 95, true);
 
 
 --
@@ -5041,10 +5158,17 @@ SELECT pg_catalog.setval('public."Negotiateur_History_id_seq"', 1, true);
 
 
 --
+-- Name: Tarif_base_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Tarif_base_id_seq"', 1, false);
+
+
+--
 -- Name: Tarifs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Tarifs_id_seq"', 1, true);
+SELECT pg_catalog.setval('public."Tarifs_id_seq"', 8, true);
 
 
 --
@@ -5058,7 +5182,7 @@ SELECT pg_catalog.setval('public.facturation_client_id_seq', 1, true);
 -- Name: facturation_mission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.facturation_mission_id_seq', 3, true);
+SELECT pg_catalog.setval('public.facturation_mission_id_seq', 1, false);
 
 
 --
@@ -5185,6 +5309,14 @@ ALTER TABLE ONLY public."Negotiateur_History"
 
 
 --
+-- Name: Tarif_base Tarif_base_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarif_base"
+    ADD CONSTRAINT "Tarif_base_pkey" PRIMARY KEY (id);
+
+
+--
 -- Name: Tarifs Tarifs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5257,14 +5389,6 @@ ALTER TABLE ONLY public."Agenda"
 
 
 --
--- Name: Agenda Agenda_client_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Agenda"
-    ADD CONSTRAINT "Agenda_client_id_fkey" FOREIGN KEY (client_id) REFERENCES public."Client"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
 -- Name: Agenda_expert Agenda_expert_Participant_invité_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5281,51 +5405,11 @@ ALTER TABLE ONLY public."Agenda_expert"
 
 
 --
--- Name: Client_History Client_History_client_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Client_History"
-    ADD CONSTRAINT "Client_History_client_id_fkey" FOREIGN KEY (client_id) REFERENCES public."Client"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: Client_negotiateur Client_negotiateur_client_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Client_negotiateur"
-    ADD CONSTRAINT "Client_negotiateur_client_id_fkey" FOREIGN KEY (client_id) REFERENCES public."Client"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
 -- Name: Expert_History Expert_History_expert_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public."Expert_History"
     ADD CONSTRAINT "Expert_History_expert_id_fkey" FOREIGN KEY (expert_id) REFERENCES public."Expert"(id);
-
-
---
--- Name: Facturation Facturation_Destinataire_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Facturation"
-    ADD CONSTRAINT "Facturation_Destinataire_fkey" FOREIGN KEY ("Destinataire") REFERENCES public."Client"(id);
-
-
---
--- Name: Facturation Facturation_Locataire_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Facturation"
-    ADD CONSTRAINT "Facturation_Locataire_fkey" FOREIGN KEY ("Locataire") REFERENCES public."Client"(id);
-
-
---
--- Name: Facturation Facturation_Proprietaire_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Facturation"
-    ADD CONSTRAINT "Facturation_Proprietaire_fkey" FOREIGN KEY ("Proprietaire") REFERENCES public."Client"(id);
 
 
 --
@@ -5441,14 +5525,6 @@ ALTER TABLE ONLY public."Mission"
 
 
 --
--- Name: Mission Mission_Reference_LOCATAIRE_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Mission"
-    ADD CONSTRAINT "Mission_Reference_LOCATAIRE_fkey" FOREIGN KEY ("Reference_LOCATAIRE") REFERENCES public."Client"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
 -- Name: Negotiateur_History Negotiateur_History_negotiateur_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5457,67 +5533,67 @@ ALTER TABLE ONLY public."Negotiateur_History"
 
 
 --
--- Name: Tarifs Tarifs_Cell_AS_referent_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: Tarifs Tarifs_CELL_PLANIF_ref_agent_saisie_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_Cell_AS_referent_client_fkey" FOREIGN KEY ("Cell_AS_referent_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "Tarifs_CELL_PLANIF_ref_agent_saisie_fkey" FOREIGN KEY ("CELL_PLANIF_ref_agent_saisie") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- Name: Tarifs Tarifs_Cell_Planif_Ref_agent_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_Cell_Planif_Ref_agent_client_fkey" FOREIGN KEY ("Cell_Planif_Ref_agent_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: Tarifs Tarifs_Cell_Planif_Ref_respon_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: Tarifs Tarifs_CELL_PLANIF_ref_suiveur_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_Cell_Planif_Ref_respon_client_fkey" FOREIGN KEY ("Cell_Planif_Ref_respon_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "Tarifs_CELL_PLANIF_ref_suiveur_fkey" FOREIGN KEY ("CELL_PLANIF_ref_suiveur") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- Name: Tarifs Tarifs_Cell_Planif_Ref_suiveur_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_Cell_Planif_Ref_suiveur_client_fkey" FOREIGN KEY ("Cell_Planif_Ref_suiveur_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: Tarifs Tarifs_Cell_devel_agent_suivi_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: Tarifs Tarifs_CELL_TECH_ref_responsable_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_Cell_devel_agent_suivi_client_fkey" FOREIGN KEY ("Cell_devel_agent_suivi_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "Tarifs_CELL_TECH_ref_responsable_fkey" FOREIGN KEY ("CELL_TECH_ref_responsable") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- Name: Tarifs Tarifs_Cell_devel_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_Cell_devel_client_fkey" FOREIGN KEY ("Cell_devel_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: Tarifs Tarifs_Cell_tech_Ref_agent_suivi_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: Tarifs Tarifs_CELL_TECH_ref_suiveur_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_Cell_tech_Ref_agent_suivi_client_fkey" FOREIGN KEY ("Cell_tech_Ref_agent_suivi_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "Tarifs_CELL_TECH_ref_suiveur_fkey" FOREIGN KEY ("CELL_TECH_ref_suiveur") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- Name: Tarifs Tarifs_Cell_tech_Ref_suiveur_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: Tarifs Tarifs_CELL_planif_ref_responsable_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_Cell_tech_Ref_suiveur_client_fkey" FOREIGN KEY ("Cell_tech_Ref_suiveur_client") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "Tarifs_CELL_planif_ref_responsable_fkey" FOREIGN KEY ("CELL_planif_ref_responsable") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_Cell_dev_ref_agent_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_Cell_dev_ref_agent_fkey" FOREIGN KEY ("Cell_dev_ref_agent") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_Cell_tech_Ref_agent_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_Cell_tech_Ref_agent_fkey" FOREIGN KEY ("Cell_tech_Ref_agent") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_cell_dev_ref_responsable_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_cell_dev_ref_responsable_fkey" FOREIGN KEY (cell_dev_ref_responsable) REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -5526,6 +5602,14 @@ ALTER TABLE ONLY public."Tarifs"
 
 ALTER TABLE ONLY public."Tarifs"
     ADD CONSTRAINT "Tarifs_reference_client_fkey" FOREIGN KEY (reference_client) REFERENCES public."Client"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_referent_as_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_referent_as_client_fkey" FOREIGN KEY (referent_as_client) REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -5558,14 +5642,6 @@ ALTER TABLE ONLY public.facturation_mission
 
 ALTER TABLE ONLY public."prospect_History"
     ADD CONSTRAINT "prospect_History_prospect_fkey" FOREIGN KEY (prospect) REFERENCES public.prospect(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: suivi_client suivi_client_client_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.suivi_client
-    ADD CONSTRAINT suivi_client_client_fkey FOREIGN KEY (client) REFERENCES public."Client"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
