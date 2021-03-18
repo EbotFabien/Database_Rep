@@ -340,6 +340,7 @@ CREATE TABLE public."Facturation" (
     "Date_" timestamp without time zone NOT NULL,
     "Pays" character varying,
     "Destinataire" integer,
+    expediteur integer,
     "Montant" character varying,
     "TVA" character varying,
     "Total" character varying,
@@ -350,8 +351,7 @@ CREATE TABLE public."Facturation" (
     "Surface" character varying,
     "Tarif" character varying,
     "Appt_Pav" character varying,
-    "Visibility" boolean,
-    expediteur integer
+    "Visibility" boolean
 );
 
 
@@ -568,54 +568,55 @@ ALTER SEQUENCE public."Tarif_base_id_seq" OWNED BY public."Tarif_base".id;
 CREATE TABLE public."Tarifs" (
     id integer NOT NULL,
     reference_client integer,
-    "EDL_APPT_prix_F1" character varying,
-    "EDL_APPT_prix_F2" character varying,
-    "EDL_APPT_prix_F3" character varying,
-    "EDL_APPT_prix_F4" character varying,
-    "EDL_APPT_prix_F5" character varying,
-    "EDL_APPT_prix_F6" character varying,
-    "EDL_PAV_villa_prix_T1" character varying,
-    "EDL_PAV_villa_prix_T2" character varying,
-    "EDL_PAV_villa_prix_T3" character varying,
-    "EDL_PAV_villa_prix_T4" character varying,
-    "EDL_PAV_villa_prix_T5" character varying,
-    "EDL_PAV_villa_prix_T6" character varying,
-    "EDL_PAV_villa_prix_T7" character varying,
-    "EDL_PAV_villa_prix_T8" character varying,
-    "CHIF_APPT_prix_stu" character varying,
-    "CHIF_APPT_prix_F1" character varying,
-    "CHIF_APPT_prix_F2" character varying,
-    "CHIF_APPT_prix_F3" character varying,
-    "CHIF_APPT_prix_F4" character varying,
-    "CHIF_APPT_prix_F5" character varying,
-    "CHIF_PAV_villa_prix_T1" character varying,
-    "CHIF_PAV_villa_prix_T2" character varying,
-    "CHIF_PAV_villa_prix_T3" character varying,
-    "CHIF_PAV_villa_prix_T4" character varying,
-    "CHIF_PAV_villa_prix_T5" character varying,
-    "CHIF_PAV_villa_prix_T6" character varying,
-    "CHIF_PAV_villa_prix_T7" character varying,
-    "CHIF_PAV_villa_prix_T8" character varying,
+    edl_prix_std character varying,
+    edl_appt_prix_f1 character varying,
+    edl_appt_prix_f2 character varying,
+    edl_appt_prix_f3 character varying,
+    edl_appt_prix_f4 character varying,
+    edl_appt_prix_f5 character varying,
+    edl_appt_prix_f6 character varying,
+    edl_pav_villa_prix_t1 character varying,
+    edl_pav_villa_prix_t2 character varying,
+    edl_pav_villa_prix_t3 character varying,
+    edl_pav_villa_prix_t4 character varying,
+    edl_pav_villa_prix_t5 character varying,
+    edl_pav_villa_prix_t6 character varying,
+    edl_pav_villa_prix_t7 character varying,
+    edl_pav_villa_prix_t8 character varying,
+    chif_appt_prix_stu character varying,
+    chif_appt_prix_f1 character varying,
+    chif_appt_prix_f2 character varying,
+    chif_appt_prix_f3 character varying,
+    chif_appt_prix_f4 character varying,
+    chif_appt_prix_f5 character varying,
+    chif_pav_villa_prix_t1 character varying,
+    chif_pav_villa_prix_t2 character varying,
+    chif_pav_villa_prix_t3 character varying,
+    chif_pav_villa_prix_t4 character varying,
+    chif_pav_villa_prix_t5 character varying,
+    chif_pav_villa_prix_t6 character varying,
+    chif_pav_villa_prix_t7 character varying,
+    chif_pav_villa_prix_t8 character varying,
     code_tva character varying,
     taux_meuble character varying,
     referent_as_client integer,
     com_as_sur_ca_client character varying,
     cell_dev_ref_responsable integer,
     com_cell_dev_ref_responsable character varying,
-    "Cell_dev_ref_agent" integer,
+    cell_dev_ref_agent integer,
     com_cell_dev_ref_agent character varying,
-    "Cell_tech_Ref_agent" integer,
+    cell_tech_ref_agent integer,
     "com_cell_tech_Ref_agent" character varying,
-    "CELL_TECH_ref_responsable" integer,
-    "COM_CELL_TECH_ref_responsable" character varying,
-    "CELL_TECH_ref_suiveur" integer,
-    "com_CELL_TECH_ref_suiveur" character varying,
-    "CELL_planif_ref_responsable" integer,
-    "com_CELL_planif_ref_responsable" character varying,
-    "CELL_PLANIF_ref_suiveur" integer,
-    "com_CELL_PLANIF_ref_suiveur" character varying,
-    "CELL_PLANIF_ref_agent_saisie" integer,
-    "com_CELL_PLANIF_ref_agent_saisie" character varying,
+    cell_tech_ref_responsable integer,
+    com_cell_tech_ref_responsable character varying,
+    cell_tech_ref_suiveur integer,
+    com_cell_tech_ref_suiveur character varying,
+    cell_planif_ref_responsable integer,
+    com_cell_planif_ref_responsable character varying,
+    cell_planif_ref_suiveur integer,
+    com_cell_planif_ref_suiveur character varying,
+    cell_planif_ref_agent_saisie integer,
+    com_cell_planif_ref_agent_saisie character varying,
     prix_autre character varying,
     commentaire_libre character varying,
     date timestamp without time zone,
@@ -2635,6 +2636,9 @@ COPY public."Expert" (id, sexe, nom, trigramme, "TYPE", "date_entrée", siret, e
 1533	Mr.	Admin	\N	Admin	2021-03-09 06:35:09.593692	\N	test0001@gmail.com	12345	\N	\N	$2b$12$bPC/2lJtZ/i9MbnWzFrJdu6sJ8OZ2xrjhk0qZq4bxoUBEebpafRuy	t
 1534	Mr.	Admin	\N	Admin	2021-03-09 06:35:50.450871	\N	test0001@gmail.com	12345	\N	\N	$2b$12$hv//AmOCRiVETudbCu/UBeTxEvvJWuqBi0ip7bx/jAx4bRlml2vai	t
 1535	Mr.	Admin	\N	Admin	2021-03-12 12:19:15.77888	\N	test0001@gmail.com	12345	\N	\N	$2b$12$2Pim7j2EY7iG/zBOdHhuw.Lx4z6worg8NVW/CpidolVqEpouExp0u	t
+1536	Mr.	Admin	\N	Admin	2021-03-17 09:58:48.734732	\N	test0001@gmail.com	12345	\N	\N	$2b$12$p83oViIY94.iR6iRMO62iOgltZ451Y//RgIezGWpLzBkNZ.oa4yby	t
+1537	Mr.	Admin	\N	Admin	2021-03-17 09:59:52.767141	\N	test0001@gmail.com	12345	\N	\N	$2b$12$zW/ncM/wXUR9dC1ik5NKO.CARsIMr5nGCYGYhl/axGkXzJFRLIGQi	t
+1538	Mr.	Admin	\N	Admin	2021-03-17 10:00:19.999671	\N	test0001@gmail.com	12345	\N	\N	$2b$12$TjSdBPtESzdkiYNAD7gf3OaQEefH2xa5QrYFT6vwGfn9ypzvqFzmm	t
 \.
 
 
@@ -4172,7 +4176,7 @@ COPY public."Expert_History" (id, expert_id, actif_parti, type_certification, da
 -- Data for Name: Facturation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Facturation" (id, "Facture_no", "Date_", "Pays", "Destinataire", "Montant", "TVA", "Total", "Type", "Proprietaire", "Locataire", "Ville", "Surface", "Tarif", "Appt_Pav", "Visibility", expediteur) FROM stdin;
+COPY public."Facturation" (id, "Facture_no", "Date_", "Pays", "Destinataire", expediteur, "Montant", "TVA", "Total", "Type", "Proprietaire", "Locataire", "Ville", "Surface", "Tarif", "Appt_Pav", "Visibility") FROM stdin;
 \.
 
 
@@ -4181,23 +4185,21 @@ COPY public."Facturation" (id, "Facture_no", "Date_", "Pays", "Destinataire", "M
 --
 
 COPY public."Mission" (id, "Reference_BAILLEUR", "NRO_FACTURE", "ID_CONCESS", "DATE_REALISE_EDL", "PRIX_HT_EDL", "TVA_EDL", "PRIX_TTC_EDL", "ID_INTERV", "Reference_LOCATAIRE", "CA_HT_AS", "TVA_AS", "CA_TTC_AS", "CA_HT_AC", "CA_TTC_AC", "CA_HT_TRUST", "TVA_TRUST", "Date_chiffrage_regle", "Prix_ht_chiffrage", "POURCENTAGE_suiveur_chiffrage", "POURCENTAGE_AS_chiffrage", "POURCENTAGE_manager_chiffrage", "ID_manager_chiffrage", "POURCENTAGE_agent_chiffrage", "ID_agent_chiffrage", "TYPE_EDL", "DATE_FACTURE", "NOMPROPRIO", "DATE_FACT_REGLEE", "DATE_COM_REGLEE_AS", "MONTANT_COM_REGLEE_AS", "DATE_COM_REGLEE_AC", "MONTANT_COM_REGLEE_AC", "TYPE_LOGEMENT", "NBRE_EDL_ABOONEMENT", "MAIL_CONTACT_ENVOI_FACT", "DATE_saisie_enregistrement", "CODE_AMEXPERT", "COMMENTAIRE_FACTURE", "TYPE_PAIEMENT", "N_REMISE_DE_CHEQUE", "SAISIE_TRAITE_PAR", "infos_et_TRAITEMENT", "LOGEMENT_MEUBLE", "CODE_FACTURATION", "TYPE_DE_BIEN", surface_logement1, "ETAGE", "POINTAGE", "DATE_POINTAGE", "DEVEL", "DATE_EXTRACTION_COMPTABLE", "POURCENTAGE_COM_AS_DU_CLIENT", "ID_Respon_Cell_Dev", "POURCENTAGE_Respon_Cell_Dev", "ID_agent_Cell_Dev", "POURCENTAGE_Agent_Cell_Dev", "ID_Agent_CellTech", "POURCENTAGE_Agent_Cell_Tech", "ID_Respon_Cell_Tech", "POURCENTAGE_Respon_Cell_Tech", "ID_Suiveur_Cell_Tech", "POURCENTAGE_Suiveur_Cell_Tech", "ID_Respon_Cell_Planif", "POURCENTAGE_Respon_Cell_Planif", "ID_Suiveur_Cell_Planif", "POURCENTAGE_Suiveur_Cell_Planif", "ID_Agent_saisie_Cell_Planif", "POURCENTAGE_Agent_saisie_CEll_planif", "Visibility") FROM stdin;
-2	1	0	18	2020-10-02 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-3	1	0	18	2020-10-02 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-4	1	0	18	2020-10-05 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-5	1	0	18	2020-10-06 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-6	1	0	18	2020-10-06 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-7	1	0	18	2020-10-08 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-9	1	0	18	2020-10-10 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-10	1	0	18	2020-10-14 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-11	1	0	18	2020-10-15 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-12	1	0	18	2020-10-16 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-13	1	0	18	2020-10-22 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-14	1	0	18	2020-10-22 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-15	1	0	18	2020-10-27 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-16	1	0	18	2020-10-29 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-18	1	0	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-19	1	0	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-20	1	0	18	2020-10-31 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+20	1	1-21-03	18	2020-10-31 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+19	1	1-21-03	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+15	1	1-21-03	18	2020-10-27 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+2	1	1-21-03	18	2020-10-02 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+14	1	1-21-03	18	2020-10-22 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+18	1	1-21-03	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+16	1	1-21-03	18	2020-10-29 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+4	1	1-21-03	18	2020-10-05 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+5	1	1-21-03	18	2020-10-06 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+6	1	1-21-03	18	2020-10-06 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+10	1	1-21-03	18	2020-10-14 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+11	1	1-21-03	18	2020-10-15 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+12	1	1-21-03	18	2020-10-16 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+13	1	1-21-03	18	2020-10-22 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+3	1	1-21-03	18	2020-10-02 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 22	1	0	18	2020-11-02 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 23	1	0	18	2020-11-02 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 24	1	0	18	2020-11-02 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
@@ -4210,42 +4212,36 @@ COPY public."Mission" (id, "Reference_BAILLEUR", "NRO_FACTURE", "ID_CONCESS", "D
 32	1	0	18	2020-11-09 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 33	1	0	18	2020-11-12 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 34	1	0	18	2020-11-13 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-21	1	0	18	2020-10-31 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-37	1	0	18	2020-11-25 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+21	1	1-21-03	18	2020-10-31 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 38	1	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 39	1	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 40	1	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 41	1	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-42	1	0	18	2020-10-02 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-44	1	0	18	2020-10-14 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-45	1	0	18	2020-10-21 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-46	1	0	18	2020-10-22 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-47	1	0	18	2020-10-23 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-48	1	0	18	2020-10-28 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-49	1	0	18	2020-10-28 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-50	1	0	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-51	1	0	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+69	2	0	15	2020-10-26 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+50	1	1-21-03	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+49	1	1-21-03	18	2020-10-28 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+37	1	0	18	2020-11-25 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+42	1	1-21-03	18	2020-10-02 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+44	1	1-21-03	18	2020-10-14 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+60	1	1-21-03	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+45	1	1-21-03	18	2020-10-21 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+46	1	1-21-03	18	2020-10-22 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 54	1	0	18	2020-11-02 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 55	1	0	18	2020-11-14 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 56	1	0	18	2020-11-25 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 57	1	0	18	2020-11-26 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 58	4	0	33	2020-11-04 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 59	4	0	33	2020-11-20 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-53	1	0	18	2020-10-31 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+53	1	1-21-03	18	2020-10-31 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 62	1	0	18	2020-11-07 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 63	1	0	18	2020-11-09 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 64	1	0	18	2020-11-10 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 65	1	0	18	2020-11-13 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-60	1	0	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-67	2	0	15	2020-10-23 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-68	2	0	15	2020-10-24 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-69	2	0	15	2020-10-26 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-66	1	0	18	2020-10-01 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-26	1	0	18	2020-11-03 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-35	1	0	18	2020-11-19 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-36	1	0	18	2020-11-19 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-61	1	0	18	2020-11-03 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-72	2	0	15	2020-11-03 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+47	1	1-21-03	18	2020-10-23 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+51	1	1-21-03	18	2020-10-30 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+67	2	0	15	2020-10-23 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+68	2	0	15	2020-10-24 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+66	1	1-21-03	18	2020-10-01 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 73	2	0	15	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 74	1	0	18	2020-11-16 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 75	1	0	18	2020-11-21 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
@@ -4253,7 +4249,7 @@ COPY public."Mission" (id, "Reference_BAILLEUR", "NRO_FACTURE", "ID_CONCESS", "D
 77	1	0	18	2020-11-27 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 78	1	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 80	1	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-52	1	0	18	2020-10-31 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+8	1	1-21-03	18	2020-10-09 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 82	3	0	18	2020-10-20 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 83	3	0	18	2020-10-29 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 84	3	0	18	2020-11-02 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
@@ -4267,15 +4263,23 @@ COPY public."Mission" (id, "Reference_BAILLEUR", "NRO_FACTURE", "ID_CONCESS", "D
 93	4	0	33	2020-11-13 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 94	4	0	33	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 95	4	0	33	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-81	1	0	18	2020-10-08 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-43	1	0	18	2020-10-10 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-8	1	0	18	2020-10-09 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-1	1	0	18	2020-10-01 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-70	2	0	15	2020-10-27 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-71	2	0	15	2020-10-28 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+1	1	1-21-03	18	2020-10-01 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+26	1	0	18	2020-11-03 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+52	1	1-21-03	18	2020-10-31 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+43	1	1-21-03	18	2020-10-10 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+81	1	1-21-03	18	2020-10-08 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+35	1	0	18	2020-11-19 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+36	1	0	18	2020-11-19 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+61	1	0	18	2020-11-03 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+72	2	0	15	2020-11-03 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+48	1	1-21-03	18	2020-10-28 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+17	1	1-21-03	18	2020-10-29 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+9	1	1-21-03	18	2020-10-10 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+7	1	1-21-03	18	2020-10-08 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2021-03-18 08:06:04.0312	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 79	1	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 88	3	0	18	2020-11-30 00:00:00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
-17	1	0	18	2020-10-29 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+71	2	0	15	2020-10-28 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
+70	2	0	15	2020-10-27 00:00:00	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.15	0	0	0	0	0	0	PAV-T4	0	0	0	0	0	0	0	0	\N	0	TN100 PAV T4	0	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	t
 \.
 
 
@@ -4300,15 +4304,11 @@ COPY public."Tarif_base" (id, maison_appartement, "Type", "Prix_EDL", "Prix_Chif
 -- Data for Name: Tarifs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Tarifs" (id, reference_client, "EDL_APPT_prix_F1", "EDL_APPT_prix_F2", "EDL_APPT_prix_F3", "EDL_APPT_prix_F4", "EDL_APPT_prix_F5", "EDL_APPT_prix_F6", "EDL_PAV_villa_prix_T1", "EDL_PAV_villa_prix_T2", "EDL_PAV_villa_prix_T3", "EDL_PAV_villa_prix_T4", "EDL_PAV_villa_prix_T5", "EDL_PAV_villa_prix_T6", "EDL_PAV_villa_prix_T7", "EDL_PAV_villa_prix_T8", "CHIF_APPT_prix_stu", "CHIF_APPT_prix_F1", "CHIF_APPT_prix_F2", "CHIF_APPT_prix_F3", "CHIF_APPT_prix_F4", "CHIF_APPT_prix_F5", "CHIF_PAV_villa_prix_T1", "CHIF_PAV_villa_prix_T2", "CHIF_PAV_villa_prix_T3", "CHIF_PAV_villa_prix_T4", "CHIF_PAV_villa_prix_T5", "CHIF_PAV_villa_prix_T6", "CHIF_PAV_villa_prix_T7", "CHIF_PAV_villa_prix_T8", code_tva, taux_meuble, referent_as_client, com_as_sur_ca_client, cell_dev_ref_responsable, com_cell_dev_ref_responsable, "Cell_dev_ref_agent", com_cell_dev_ref_agent, "Cell_tech_Ref_agent", "com_cell_tech_Ref_agent", "CELL_TECH_ref_responsable", "COM_CELL_TECH_ref_responsable", "CELL_TECH_ref_suiveur", "com_CELL_TECH_ref_suiveur", "CELL_planif_ref_responsable", "com_CELL_planif_ref_responsable", "CELL_PLANIF_ref_suiveur", "com_CELL_PLANIF_ref_suiveur", "CELL_PLANIF_ref_agent_saisie", "com_CELL_PLANIF_ref_agent_saisie", prix_autre, commentaire_libre, date, visibility) FROM stdin;
-1	1	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	18	0.14999999999999997	18	0.01	42	0.04	3	0.01	15	0.01	42	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:53:46.01549	t
-2	2	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	15	0.24999999999999997	0	0.0	0		0		0		0		11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:53:46.067458	t
-3	3	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	18	0.14999999999999997	18	0.01	42	0.04	3	0.01	15	0.01	42	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:53:46.088447	t
-4	4	80	85	90	110	120	130	120	120	130	150	180	190	220	250	15	15	20	20	25	25	25	25	25	35	35	35	45	45	0	0.5	33	0.14999999999999997	24	0.01	24	0.04	3	0.01	15	0.01	18	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:53:46.108434	t
-5	1	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	18	0.14999999999999997	18	0.01	42	0.04	3	0.01	15	0.01	42	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:54:28.892012	t
-6	2	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	15	0.24999999999999997	0	0.0	0		0		0		0		11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:54:28.920996	t
-7	3	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	18	0.14999999999999997	18	0.01	42	0.04	3	0.01	15	0.01	42	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:54:28.944985	t
-8	4	80	85	90	110	120	130	120	120	130	150	180	190	220	250	15	15	20	20	25	25	25	25	25	35	35	35	45	45	0	0.5	33	0.14999999999999997	24	0.01	24	0.04	3	0.01	15	0.01	18	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-13 07:54:28.96497	t
+COPY public."Tarifs" (id, reference_client, edl_prix_std, edl_appt_prix_f1, edl_appt_prix_f2, edl_appt_prix_f3, edl_appt_prix_f4, edl_appt_prix_f5, edl_appt_prix_f6, edl_pav_villa_prix_t1, edl_pav_villa_prix_t2, edl_pav_villa_prix_t3, edl_pav_villa_prix_t4, edl_pav_villa_prix_t5, edl_pav_villa_prix_t6, edl_pav_villa_prix_t7, edl_pav_villa_prix_t8, chif_appt_prix_stu, chif_appt_prix_f1, chif_appt_prix_f2, chif_appt_prix_f3, chif_appt_prix_f4, chif_appt_prix_f5, chif_pav_villa_prix_t1, chif_pav_villa_prix_t2, chif_pav_villa_prix_t3, chif_pav_villa_prix_t4, chif_pav_villa_prix_t5, chif_pav_villa_prix_t6, chif_pav_villa_prix_t7, chif_pav_villa_prix_t8, code_tva, taux_meuble, referent_as_client, com_as_sur_ca_client, cell_dev_ref_responsable, com_cell_dev_ref_responsable, cell_dev_ref_agent, com_cell_dev_ref_agent, cell_tech_ref_agent, "com_cell_tech_Ref_agent", cell_tech_ref_responsable, com_cell_tech_ref_responsable, cell_tech_ref_suiveur, com_cell_tech_ref_suiveur, cell_planif_ref_responsable, com_cell_planif_ref_responsable, cell_planif_ref_suiveur, com_cell_planif_ref_suiveur, cell_planif_ref_agent_saisie, com_cell_planif_ref_agent_saisie, prix_autre, commentaire_libre, date, visibility) FROM stdin;
+1	1	80	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	18	0.14999999999999997	18	0.01	42	0.04	3	0.01	15	0.01	42	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-17 10:06:21.220199	t
+2	2	80	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	15	0.24999999999999997	0	0.0	0		0		0		0		11	0.01	77	0.02	77	0.02	\N	\N	2021-03-17 10:06:21.315146	t
+3	3	80	80	85	90	100	100	100	0	98	118	150	180	190	220	250	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	18	0.14999999999999997	18	0.01	42	0.04	3	0.01	15	0.01	42	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-17 10:06:21.344126	t
+4	4	80	80	85	90	110	120	130	120	120	130	150	180	190	220	250	15	15	20	20	25	25	25	25	25	35	35	35	45	45	0	0.5	33	0.14999999999999997	24	0.01	24	0.04	3	0.01	15	0.01	18	0.03	11	0.01	77	0.02	77	0.02	\N	\N	2021-03-17 10:06:21.370112	t
 \.
 
 
@@ -4326,7 +4326,7 @@ a91344953523
 --
 
 COPY public.facturation_client (id, n_facture, client, "Montant_HT", "Date_de_creation", "Date_reglement_client", "Statut", "Observations_suivi_paiement", "Date_première_relance", "Date_seconde_relance", "Date_mise_en_demeure", visibility) FROM stdin;
-1	\N	1	5400	2021-03-13 08:45:26.764295		paye	Sortant	\N	\N	\N	t
+1	1-21-03	1	5400	2021-03-18 08:06:04.0312	\N	paye	\N	\N	\N	\N	t
 \.
 
 
@@ -4335,6 +4335,42 @@ COPY public.facturation_client (id, n_facture, client, "Montant_HT", "Date_de_cr
 --
 
 COPY public.facturation_mission (id, ref_mission, fact_mission, visibility) FROM stdin;
+1	81	1	t
+2	66	1	t
+3	60	1	t
+4	53	1	t
+5	52	1	t
+6	51	1	t
+7	50	1	t
+8	49	1	t
+9	48	1	t
+10	47	1	t
+11	46	1	t
+12	45	1	t
+13	44	1	t
+14	43	1	t
+15	42	1	t
+16	21	1	t
+17	20	1	t
+18	19	1	t
+19	18	1	t
+20	17	1	t
+21	16	1	t
+22	15	1	t
+23	14	1	t
+24	13	1	t
+25	12	1	t
+26	11	1	t
+27	10	1	t
+28	9	1	t
+29	8	1	t
+30	7	1	t
+31	6	1	t
+32	5	1	t
+33	4	1	t
+34	3	1	t
+35	2	1	t
+36	1	1	t
 \.
 
 
@@ -5133,7 +5169,7 @@ SELECT pg_catalog.setval('public."Expert_History_id_seq"', 1522, true);
 -- Name: Expert_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Expert_id_seq"', 1535, true);
+SELECT pg_catalog.setval('public."Expert_id_seq"', 1538, true);
 
 
 --
@@ -5168,7 +5204,7 @@ SELECT pg_catalog.setval('public."Tarif_base_id_seq"', 1, false);
 -- Name: Tarifs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Tarifs_id_seq"', 8, true);
+SELECT pg_catalog.setval('public."Tarifs_id_seq"', 4, true);
 
 
 --
@@ -5182,7 +5218,7 @@ SELECT pg_catalog.setval('public.facturation_client_id_seq', 1, true);
 -- Name: facturation_mission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.facturation_mission_id_seq', 1, false);
+SELECT pg_catalog.setval('public.facturation_mission_id_seq', 36, true);
 
 
 --
@@ -5413,6 +5449,30 @@ ALTER TABLE ONLY public."Expert_History"
 
 
 --
+-- Name: Facturation Facturation_Destinataire_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Facturation"
+    ADD CONSTRAINT "Facturation_Destinataire_fkey" FOREIGN KEY ("Destinataire") REFERENCES public."Client"(id);
+
+
+--
+-- Name: Facturation Facturation_Locataire_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Facturation"
+    ADD CONSTRAINT "Facturation_Locataire_fkey" FOREIGN KEY ("Locataire") REFERENCES public."Client"(id);
+
+
+--
+-- Name: Facturation Facturation_Proprietaire_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Facturation"
+    ADD CONSTRAINT "Facturation_Proprietaire_fkey" FOREIGN KEY ("Proprietaire") REFERENCES public."Client"(id);
+
+
+--
 -- Name: Facturation Facturation_expediteur_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5533,59 +5593,11 @@ ALTER TABLE ONLY public."Negotiateur_History"
 
 
 --
--- Name: Tarifs Tarifs_CELL_PLANIF_ref_agent_saisie_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: Tarifs Tarifs_cell_dev_ref_agent_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_CELL_PLANIF_ref_agent_saisie_fkey" FOREIGN KEY ("CELL_PLANIF_ref_agent_saisie") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: Tarifs Tarifs_CELL_PLANIF_ref_suiveur_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_CELL_PLANIF_ref_suiveur_fkey" FOREIGN KEY ("CELL_PLANIF_ref_suiveur") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: Tarifs Tarifs_CELL_TECH_ref_responsable_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_CELL_TECH_ref_responsable_fkey" FOREIGN KEY ("CELL_TECH_ref_responsable") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: Tarifs Tarifs_CELL_TECH_ref_suiveur_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_CELL_TECH_ref_suiveur_fkey" FOREIGN KEY ("CELL_TECH_ref_suiveur") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: Tarifs Tarifs_CELL_planif_ref_responsable_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_CELL_planif_ref_responsable_fkey" FOREIGN KEY ("CELL_planif_ref_responsable") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: Tarifs Tarifs_Cell_dev_ref_agent_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_Cell_dev_ref_agent_fkey" FOREIGN KEY ("Cell_dev_ref_agent") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: Tarifs Tarifs_Cell_tech_Ref_agent_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Tarifs"
-    ADD CONSTRAINT "Tarifs_Cell_tech_Ref_agent_fkey" FOREIGN KEY ("Cell_tech_Ref_agent") REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "Tarifs_cell_dev_ref_agent_fkey" FOREIGN KEY (cell_dev_ref_agent) REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -5594,6 +5606,54 @@ ALTER TABLE ONLY public."Tarifs"
 
 ALTER TABLE ONLY public."Tarifs"
     ADD CONSTRAINT "Tarifs_cell_dev_ref_responsable_fkey" FOREIGN KEY (cell_dev_ref_responsable) REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_cell_planif_ref_agent_saisie_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_cell_planif_ref_agent_saisie_fkey" FOREIGN KEY (cell_planif_ref_agent_saisie) REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_cell_planif_ref_responsable_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_cell_planif_ref_responsable_fkey" FOREIGN KEY (cell_planif_ref_responsable) REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_cell_planif_ref_suiveur_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_cell_planif_ref_suiveur_fkey" FOREIGN KEY (cell_planif_ref_suiveur) REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_cell_tech_ref_agent_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_cell_tech_ref_agent_fkey" FOREIGN KEY (cell_tech_ref_agent) REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_cell_tech_ref_responsable_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_cell_tech_ref_responsable_fkey" FOREIGN KEY (cell_tech_ref_responsable) REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Tarifs Tarifs_cell_tech_ref_suiveur_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tarifs"
+    ADD CONSTRAINT "Tarifs_cell_tech_ref_suiveur_fkey" FOREIGN KEY (cell_tech_ref_suiveur) REFERENCES public."Expert"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

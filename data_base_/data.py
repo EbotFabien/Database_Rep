@@ -220,22 +220,22 @@ def tarif_client(loc):
             if cli :
                 taf_base =Tarifs(reference_client=cli.id,code_tva=int(name[2]),
                 referent_as_client=int(name[3]),com_as_sur_ca_client=name[4],cell_dev_ref_responsable=name[5],
-                com_cell_dev_ref_responsable=name[6],Cell_dev_ref_agent=int(name[7]),com_cell_dev_ref_agent=name[8],
-                Cell_tech_Ref_agent=int(name[9]),com_cell_tech_Ref_agent=name[10],CELL_TECH_ref_responsable=int(name[11]),
-                COM_CELL_TECH_ref_responsable=name[12],CELL_TECH_ref_suiveur=int(name[13]),
-                com_CELL_TECH_ref_suiveur=name[14],CELL_planif_ref_responsable=int(name[15]),
-                com_CELL_planif_ref_responsable=name[16],CELL_PLANIF_ref_suiveur=int(name[17]),
-                com_CELL_PLANIF_ref_suiveur=name[18],CELL_PLANIF_ref_agent_saisie=int(name[19]),
-                com_CELL_PLANIF_ref_agent_saisie=name[20],taux_meuble=name[21],EDL_PRIX_STD=int(name[22]),
-                EDL_APPT_prix_F1=int(name[23]),EDL_APPT_prix_F2=int(name[24]),EDL_APPT_prix_F3=int(name[25]),EDL_APPT_prix_F4=int(name[26]),
-                EDL_APPT_prix_F5=int(name[27]),EDL_APPT_prix_F6=int(name[28]),EDL_PAV_villa_prix_T1=int(name[29]), EDL_PAV_villa_prix_T2=int(name[30]),
-                EDL_PAV_villa_prix_T3=int(name[31]),EDL_PAV_villa_prix_T4=int(name[32]),EDL_PAV_villa_prix_T5=int(name[33]),EDL_PAV_villa_prix_T6=int(name[34]),
-                EDL_PAV_villa_prix_T7=int(name[35]),EDL_PAV_villa_prix_T8=int(name[36]),CHIF_APPT_prix_stu=int(name[37]),
-                CHIF_APPT_prix_F1=int(name[38]),CHIF_APPT_prix_F2=int(name[39]),CHIF_APPT_prix_F3=int(name[40]),
-                CHIF_APPT_prix_F4=int(name[41]),CHIF_APPT_prix_F5=int(name[42]),CHIF_PAV_villa_prix_T1=int(name[43]),
-                CHIF_PAV_villa_prix_T2=int(name[44]),CHIF_PAV_villa_prix_T3=int(name[45]),CHIF_PAV_villa_prix_T4=int(name[46]),
-                CHIF_PAV_villa_prix_T5=int(name[47]),CHIF_PAV_villa_prix_T6=int(name[48]),CHIF_PAV_villa_prix_T7=int(name[49]),
-                CHIF_PAV_villa_prix_T8=int(name[50]))
+                com_cell_dev_ref_responsable=name[6],cell_dev_ref_agent=int(name[7]),com_cell_dev_ref_agent=name[8],
+                cell_tech_ref_agent=int(name[9]),com_cell_tech_Ref_agent=name[10],cell_tech_ref_responsable=int(name[11]),
+                com_cell_tech_ref_responsable=name[12],cell_tech_ref_suiveur=int(name[13]),
+                com_cell_tech_ref_suiveur=name[14],cell_planif_ref_responsable=int(name[15]),
+                com_cell_planif_ref_responsable=name[16],cell_planif_ref_suiveur=int(name[17]),
+                com_cell_planif_ref_suiveur=name[18],cell_planif_ref_agent_saisie=int(name[19]),
+                com_cell_planif_ref_agent_saisie=name[20],taux_meuble=name[21],edl_prix_std=int(name[22]),
+                edl_appt_prix_f1=int(name[23]),edl_appt_prix_f2=int(name[24]),edl_appt_prix_f3=int(name[25]),edl_appt_prix_f4=int(name[26]),
+                edl_appt_prix_f5=int(name[27]),edl_appt_prix_f6=int(name[28]),edl_pav_villa_prix_t1=int(name[29]), edl_pav_villa_prix_t2=int(name[30]),
+                edl_pav_villa_prix_t3=int(name[31]),edl_pav_villa_prix_t4=int(name[32]),edl_pav_villa_prix_t5=int(name[33]),edl_pav_villa_prix_t6=int(name[34]),
+                edl_pav_villa_prix_t7=int(name[35]),edl_pav_villa_prix_t8=int(name[36]),chif_appt_prix_stu=int(name[37]),
+                chif_appt_prix_f1=int(name[38]),chif_appt_prix_f2=int(name[39]),chif_appt_prix_f3=int(name[40]),
+                chif_appt_prix_f4=int(name[41]),chif_appt_prix_f5=int(name[42]),chif_pav_villa_prix_t1=int(name[43]),
+                chif_pav_villa_prix_t2=int(name[44]),chif_pav_villa_prix_t3=int(name[45]),chif_pav_villa_prix_t4=int(name[46]),
+                chif_pav_villa_prix_t5=int(name[47]),chif_pav_villa_prix_t6=int(name[48]),chif_pav_villa_prix_t7=int(name[49]),
+                chif_pav_villa_prix_t8=int(name[50]))
                 
                 db.session.add(taf_base)
                 db.session.commit()
@@ -277,17 +277,11 @@ def Missions(loc):
         db.session.commit()
         
 
-def mission_date(loc):
-    wb_obj = openpyxl.load_workbook(loc)
-    sheet=wb_obj.active
+def mission_date():
     mission_=list(Mission.query.all())
-    for i in range(1,40):
-        for a in range(0,40):
-            mission_[a].DATE_REALISE_EDL =sheet["M"][i].value
-            mission_[a].Date_chiffrage_regle =sheet["AG"][i].value
-            mission_[a].DATE_FACTURE = sheet["AP"][i].value
-            mission_[a].DATE_FACT_REGLEE = sheet["AS"][i].value
-            db.session.commit()
+    for m in mission_:
+        m.NRO_FACTURE='0'
+        db.session.commit()
 
 
 

@@ -402,43 +402,39 @@ class Tarifs(db.Model):
 
     id = db.Column(db.Integer,primary_key=True)
     reference_client= db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
-    #ID_Tarif= db.Column(db.Integer, ForeignKey('Tarif_base.id', onupdate="CASCADE", ondelete="CASCADE"))   
-    #data_tarif= data_client=db.relationship("Client", 
-        #primaryjoin=(ID_Tarif == Tarif_base.id),
-        #backref=db.backref('data_tarif',  uselist=False),  uselist=False)
-
+    
     data_client=db.relationship("Client", 
         primaryjoin=(reference_client == Client.id),
         backref=db.backref('data_client',  uselist=False),  uselist=False)
-    EDL_PRIX_STD=db.column(db.String)     
-    EDL_APPT_prix_F1=db.Column(db.String) 
-    EDL_APPT_prix_F2=db.Column(db.String) 
-    EDL_APPT_prix_F3=db.Column(db.String) 
-    EDL_APPT_prix_F4=db.Column(db.String) 
-    EDL_APPT_prix_F5=db.Column(db.String) 
-    EDL_APPT_prix_F6=db.Column(db.String) 
-    EDL_PAV_villa_prix_T1=db.Column(db.String) 
-    EDL_PAV_villa_prix_T2=db.Column(db.String) 
-    EDL_PAV_villa_prix_T3=db.Column(db.String) 
-    EDL_PAV_villa_prix_T4=db.Column(db.String) 
-    EDL_PAV_villa_prix_T5=db.Column(db.String) 
-    EDL_PAV_villa_prix_T6=db.Column(db.String) 
-    EDL_PAV_villa_prix_T7=db.Column(db.String) 
-    EDL_PAV_villa_prix_T8=db.Column(db.String) 
-    CHIF_APPT_prix_stu=db.Column(db.String) 
-    CHIF_APPT_prix_F1 =db.Column(db.String) 
-    CHIF_APPT_prix_F2 =db.Column(db.String) 
-    CHIF_APPT_prix_F3 =db.Column(db.String) 
-    CHIF_APPT_prix_F4 =db.Column(db.String) 
-    CHIF_APPT_prix_F5 =db.Column(db.String) 
-    CHIF_PAV_villa_prix_T1=db.Column(db.String) 
-    CHIF_PAV_villa_prix_T2=db.Column(db.String) 
-    CHIF_PAV_villa_prix_T3=db.Column(db.String) 
-    CHIF_PAV_villa_prix_T4=db.Column(db.String) 
-    CHIF_PAV_villa_prix_T5=db.Column(db.String) 
-    CHIF_PAV_villa_prix_T6=db.Column(db.String) 
-    CHIF_PAV_villa_prix_T7=db.Column(db.String) 
-    CHIF_PAV_villa_prix_T8=db.Column(db.String) 
+    edl_prix_std=db.Column(db.String)     
+    edl_appt_prix_f1=db.Column(db.String) 
+    edl_appt_prix_f2=db.Column(db.String) 
+    edl_appt_prix_f3=db.Column(db.String) 
+    edl_appt_prix_f4=db.Column(db.String) 
+    edl_appt_prix_f5=db.Column(db.String) 
+    edl_appt_prix_f6=db.Column(db.String) 
+    edl_pav_villa_prix_t1=db.Column(db.String) 
+    edl_pav_villa_prix_t2=db.Column(db.String) 
+    edl_pav_villa_prix_t3=db.Column(db.String) 
+    edl_pav_villa_prix_t4=db.Column(db.String) 
+    edl_pav_villa_prix_t5=db.Column(db.String) 
+    edl_pav_villa_prix_t6=db.Column(db.String) 
+    edl_pav_villa_prix_t7=db.Column(db.String) 
+    edl_pav_villa_prix_t8=db.Column(db.String) 
+    chif_appt_prix_stu=db.Column(db.String) 
+    chif_appt_prix_f1 =db.Column(db.String) 
+    chif_appt_prix_f2 =db.Column(db.String) 
+    chif_appt_prix_f3 =db.Column(db.String) 
+    chif_appt_prix_f4 =db.Column(db.String) 
+    chif_appt_prix_f5 =db.Column(db.String) 
+    chif_pav_villa_prix_t1=db.Column(db.String) 
+    chif_pav_villa_prix_t2=db.Column(db.String) 
+    chif_pav_villa_prix_t3=db.Column(db.String) 
+    chif_pav_villa_prix_t4=db.Column(db.String) 
+    chif_pav_villa_prix_t5=db.Column(db.String) 
+    chif_pav_villa_prix_t6=db.Column(db.String) 
+    chif_pav_villa_prix_t7=db.Column(db.String) 
+    chif_pav_villa_prix_t8=db.Column(db.String) 
     code_tva=db.Column(db.String)
     taux_meuble=db.Column(db.String)
     referent_as_client=db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
@@ -455,53 +451,53 @@ class Tarifs(db.Model):
 
     com_cell_dev_ref_responsable = db.Column(db.String)
 
-    Cell_dev_ref_agent =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
-    Cell_dev_ref_data=db.relationship("Expert", 
-        primaryjoin=(Cell_dev_ref_agent == Expert.id),
-        backref=db.backref('Cell_dev_ref_data',  uselist=False),  uselist=False)
+    cell_dev_ref_agent =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    cell_dev_ref_data=db.relationship("Expert", 
+        primaryjoin=(cell_dev_ref_agent == Expert.id),
+        backref=db.backref('cell_dev_ref_data',  uselist=False),  uselist=False)
 
     com_cell_dev_ref_agent = db.Column(db.String)
     
-    Cell_tech_Ref_agent=db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
-    Cell_tech_Ref_agent__data=db.relationship("Expert", 
-        primaryjoin=(Cell_tech_Ref_agent == Expert.id),
-        backref=db.backref('Cell_tech_Ref_agent__data',  uselist=False),  uselist=False)
+    cell_tech_ref_agent=db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    cell_tech_ref_agent__data=db.relationship("Expert", 
+        primaryjoin=(cell_tech_ref_agent == Expert.id),
+        backref=db.backref('cell_tech_ref_agent__data',  uselist=False),  uselist=False)
 
     com_cell_tech_Ref_agent = db.Column(db.String)
 
-    CELL_TECH_ref_responsable =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
-    CELL_TECH_ref_responsable__data=db.relationship("Expert", 
-        primaryjoin=(CELL_TECH_ref_responsable == Expert.id),
-        backref=db.backref('CELL_TECH_ref_responsable__data',  uselist=False),  uselist=False)
+    cell_tech_ref_responsable =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    cell_tech_ref_responsable__data=db.relationship("Expert", 
+        primaryjoin=(cell_tech_ref_responsable == Expert.id),
+        backref=db.backref('cell_tech_ref_responsable__data',  uselist=False),  uselist=False)
 
-    COM_CELL_TECH_ref_responsable  = db.Column(db.String)
+    com_cell_tech_ref_responsable  = db.Column(db.String)
 
-    CELL_TECH_ref_suiveur=db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
-    CELL_TECH_ref_suiveur__data=db.relationship("Expert", 
-        primaryjoin=(CELL_TECH_ref_suiveur == Expert.id),
-        backref=db.backref('CELL_TECH_ref_suiveur__data',  uselist=False),  uselist=False)
-    com_CELL_TECH_ref_suiveur = db.Column(db.String)
+    cell_tech_ref_suiveur=db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    cell_tech_ref_suiveur__data=db.relationship("Expert", 
+        primaryjoin=(cell_tech_ref_suiveur == Expert.id),
+        backref=db.backref('cell_tech_ref_suiveur__data',  uselist=False),  uselist=False)
+    com_cell_tech_ref_suiveur = db.Column(db.String)
 
-    CELL_planif_ref_responsable =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
-    CELL_planif_ref_responsable_data=db.relationship("Expert", 
-        primaryjoin=(CELL_planif_ref_responsable == Expert.id),
-        backref=db.backref('CELL_planif_ref_responsable_data',  uselist=False),  uselist=False)
+    cell_planif_ref_responsable =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    cell_planif_ref_responsable_data=db.relationship("Expert", 
+        primaryjoin=(cell_planif_ref_responsable  == Expert.id),
+        backref=db.backref('cell_planif_ref_responsable_data',  uselist=False),  uselist=False)
 
-    com_CELL_planif_ref_responsable = db.Column(db.String)
+    com_cell_planif_ref_responsable = db.Column(db.String)
 
-    CELL_PLANIF_ref_suiveur =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
-    CELL_PLANIF_ref_suiveur__data=db.relationship("Expert", 
-        primaryjoin=(CELL_PLANIF_ref_suiveur  == Expert.id),
-        backref=db.backref('CELL_PLANIF_ref_suiveur__data',  uselist=False),  uselist=False)
+    cell_planif_ref_suiveur =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    cell_planif_ref_suiveur__data=db.relationship("Expert", 
+        primaryjoin=(cell_planif_ref_suiveur  == Expert.id),
+        backref=db.backref('cell_planif_ref_suiveur__data',  uselist=False),  uselist=False)
 
-    com_CELL_PLANIF_ref_suiveur = db.Column(db.String)
+    com_cell_planif_ref_suiveur = db.Column(db.String)
 
-    CELL_PLANIF_ref_agent_saisie =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
-    CELL_PLANIF_ref_agent_saisie__data=db.relationship("Expert", 
-        primaryjoin=(CELL_PLANIF_ref_agent_saisie  == Expert.id),
-        backref=db.backref('CELL_PLANIF_ref_agent_saisie__data',  uselist=False),  uselist=False)
+    cell_planif_ref_agent_saisie =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    cell_planif_ref_agent_saisie__data=db.relationship("Expert", 
+        primaryjoin=(cell_planif_ref_agent_saisie  == Expert.id),
+        backref=db.backref('cell_planif_ref_agent_saisie__data',  uselist=False),  uselist=False)
 
-    com_CELL_PLANIF_ref_agent_saisie = db.Column(db.String)
+    com_cell_planif_ref_agent_saisie = db.Column(db.String)
 
     prix_autre= db.Column(db.String)
     commentaire_libre= db.Column(db.String)
@@ -752,6 +748,12 @@ class facturation_mission(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     ref_mission = db.Column(db.Integer, ForeignKey('Mission.id', onupdate="CASCADE", ondelete="CASCADE")) 
     fact_mission = db.Column(db.Integer, ForeignKey('facturation_client.id', onupdate="CASCADE", ondelete="CASCADE"))
+    mission__data_=db.relationship("Mission", 
+        primaryjoin=(ref_mission == Mission.id),
+        backref=db.backref('mission__data_',  uselist=False),  uselist=False)
+    facturation_client__data_=db.relationship("facturation_client", 
+        primaryjoin=(fact_mission == facturation_client.id),
+        backref=db.backref('facturation_client__data_',  uselist=False),  uselist=False)
     visibility =db.Column(db.Boolean,default=True)
 
     def __repr__(self):

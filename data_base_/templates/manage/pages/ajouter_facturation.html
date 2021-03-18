@@ -54,14 +54,14 @@
                                         {{form.Demarrer.label(class="form-control-label")}}
                                     
                                         {% if form.Demarrer.errors %}
-                                            {{ form.Demarrer(class="input is-small is-invalid",value=mission[0].DATE_REALISE_EDL) }}
+                                            {{ form.Demarrer(class="input is-small is-invalid",value=start) }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Demarrer.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                             {% else %}
-                                                {{form.Demarrer(class="input is-small",value=mission[0].DATE_REALISE_EDL)}}
+                                                {{form.Demarrer(class="input is-small",value=start)}}
                                             {% endif %}
                                     </div>
                                 </div>
@@ -70,14 +70,14 @@
                                         {{form.Fin.label(class="form-control-label")}}
                                     
                                         {% if form.Fin.errors %}
-                                            {{ form.Fin(class="input is-small is-invalid",value=mission[-1].DATE_REALISE_EDL)}}
+                                            {{ form.Fin(class="input is-small is-invalid",value=end)}}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Fin.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                             {% else %}
-                                                {{form.Fin(class="input is-small",value=mission[-1].DATE_REALISE_EDL)}}
+                                                {{form.Fin(class="input is-small",value=end)}}
                                             {% endif %}
                                     </div>
                                 </div>
@@ -101,22 +101,6 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-12">
-                                        {{form.Date_reglement_client.label(class="form-control-label")}}
-
-                                        {% if form.Date_reglement_client.errors %}
-                                            {{ form.Date_reglement_client(class="input is-small is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Date_reglement_client.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Date_reglement_client(class="input is-small")}}
-                                            {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
                                         {{form.Statut.label(class="form-control-label")}}
 
                                         {% if form.Statut.errors %}
@@ -131,23 +115,6 @@
                                             {% endif %}
                                     </div>
                                 </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-12 mb-3 mb-sm-0">
-                                            {{form.Observations_suivi_paiement.label(class="form-control-label")}}
-    
-                                            {% if form.Observations_suivi_paiement.errors %}
-                                                {{ form.Observations_suivi_paiement(class="input is-small is-invalid") }}
-                                                <div class="invalid-feedback">
-                                                    {% for error in form.Observations_suivi_paiement.errors %}
-                                                        <span>{{ error }}</span>
-                                                    {% endfor %}
-                                                </div>
-                                                {% else %}
-                                                    {{form.Observations_suivi_paiement(class="input is-small")}}
-                                                {% endif %}
-                                        </div>
-                                        
-                                    </div>
                                     
                                 <div class="form-group">
                                     {{form.submit(class="button is-small is-success is-fullwidth")}}   

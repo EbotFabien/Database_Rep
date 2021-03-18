@@ -203,14 +203,14 @@ class Facturation_Form(FlaskForm):
                              render_kw={'readonly':True})
 
 
-    Date_reglement_client=DateField("Date_reglement_client")
+   # Date_reglement_client=DateField("Date_reglement_client")
 
     
     Statut=SelectField('Statut',
                              choices=[('paye', 'paye'), ('attente', 'attente')])
     
-    Observations_suivi_paiement=SelectField('Type_',
-                             choices=[('Entrant', 'Entrant'), ('Sortant', 'Sortant')])
+    #Observations_suivi_paiement=SelectField('Type_',
+                            # choices=[('Entrant', 'Entrant'), ('Sortant', 'Sortant')])
 
 
     submit = SubmitField('enregistrer')
