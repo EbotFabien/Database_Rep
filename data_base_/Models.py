@@ -49,9 +49,10 @@ class Expert(db.Model,UserMixin):
     nom = db.Column(db.String)
     trigramme=db.Column(db.String)
     TYPE=db.Column(db.String)
-    date_entrée=db.Column(db.DateTime,default=datetime.utcnow)
+    date_entree=db.Column(db.DateTime,default=datetime.utcnow)
     siret=db.Column(db.String) 
     email = db.Column(db.String)#unique
+    email_perso = db.Column(db.String)
     numero = db.Column(db.String)
     code_tva=db.Column(db.String)
     taux_tva=db.Column(db.String)
@@ -310,6 +311,7 @@ class Expert_History(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     expert_id= db.Column(db.Integer, ForeignKey('Expert.id'))
     actif_parti=db.Column(db.String)
+    secteur=db.Column(db.String)
     type_certification=db.Column(db.String)
     date_certification_initiale=db.Column(db.DateTime)
     date_renouv_certification=db.Column(db.DateTime)
@@ -320,8 +322,11 @@ class Expert_History(db.Model):
     login_extranet=db.Column(db.String)
     pwd_extranet=db.Column(db.String) 
     pwd_gsuite=db.Column(db.String)
+    login_google=db.Column(db.String)
+    pwd_google=db.Column(db.String)
     ville=db.Column(db.String)
     observations_de_suivi=db.Column(db.String)
+    date_sortie=db.Column(db.DateTime)
     date=db.Column(db.DateTime(),default=datetime.utcnow)
     visibility =db.Column(db.Boolean,default=True)
 
@@ -523,21 +528,23 @@ class Mission(db.Model):
         primaryjoin=(Reference_BAILLEUR == Client.id),
         backref=db.backref('Bailleur__data',  uselist=False),  uselist=False)
     NRO_FACTURE	 = db.Column(db.String)
-    ID_CONCESS	 = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
-    CONCESS__data=db.relationship("Expert", 
-        primaryjoin=(ID_CONCESS == Expert.id),
+    ABONNEMENT	 = db.Column(db.String)
+    ID_AS	 = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
+    AS__data=db.relationship("Expert", 
+        primaryjoin=(ID_AS == Expert.id),
         backref=db.backref('CONCESS__data',  uselist=False),  uselist=False)
+    PRIX_HT_EDL	 = db.Column(db.String)  
     DATE_REALISE_EDL =db.Column(db.DateTime(),default=datetime.utcnow) 	
-    PRIX_HT_EDL	 = db.Column(db.String) 
-    TVA_EDL	 = db.Column(db.String) 
-    PRIX_TTC_EDL= db.Column(db.String) 
     ID_INTERV = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     INTERV__data=db.relationship("Expert", 
         primaryjoin=(ID_INTERV == Expert.id),
         backref=db.backref('INTERV__data',  uselist=False),  uselist=False)	
     Reference_LOCATAIRE	 =  db.Column(db.String) 
+    Adresse1_Bien	 = db.Column(db.String)  
+    Adresse2_Bien	 = db.Column(db.String) 
+    CP_Bien	 = db.Column(db.String)  
+    Ville_Bien	 = db.Column(db.String)  
       
-  #addresse cp bien ,addresse bien 
     CA_HT_AS = db.Column(db.String) 	
     TVA_AS	 = db.Column(db.String) 
     CA_TTC_AS = db.Column(db.String) 	
@@ -560,32 +567,18 @@ class Mission(db.Model):
         primaryjoin=(ID_agent_chiffrage == Expert.id),
         backref=db.backref('agent_chiffrage__data',  uselist=False),  uselist=False)
     TYPE_EDL = db.Column(db.String) 	
-    DATE_FACTURE = db.Column(db.String) 	
+    DATE_FACTURE = db.Column(db.String) 
+    TITREPROPRIO = db.Column(db.String) 		
     NOMPROPRIO = db.Column(db.String) 	
     DATE_FACT_REGLEE = db.Column(db.String) 	
-    DATE_COM_REGLEE_AS = db.Column(db.String) 	
-    MONTANT_COM_REGLEE_AS = db.Column(db.String)  	
-    DATE_COM_REGLEE_AC = db.Column(db.String) 	
-    MONTANT_COM_REGLEE_AC = db.Column(db.String) 	
     TYPE_LOGEMENT = db.Column(db.String) 	
-    NBRE_EDL_ABOONEMENT = db.Column(db.String) 	
-    MAIL_CONTACT_ENVOI_FACT = db.Column(db.String) 	
-    DATE_saisie_enregistrement = db.Column(db.String) 
     CODE_AMEXPERT = db.Column(db.String) 	
-    COMMENTAIRE_FACTURE = db.Column(db.String) 	
-    TYPE_PAIEMENT = db.Column(db.String) 	
-    N_REMISE_DE_CHEQUE = db.Column(db.String) 	
-    SAISIE_TRAITE_PAR = db.Column(db.String) 	
-    infos_et_TRAITEMENT = db.Column(db.String) 	
+    COMMENTAIRE_FACTURE = db.Column(db.String) 	 	
     LOGEMENT_MEUBLE = db.Column(db.String) 	
     CODE_FACTURATION = db.Column(db.String) 	
     TYPE_DE_BIEN = db.Column(db.String) 	
-    surface_logement1 = db.Column(db.String) 	
-    ETAGE = db.Column(db.String) 	
-    POINTAGE = db.Column(db.String) 	
-    DATE_POINTAGE = db.Column(db.String) 	
-    DEVEL = db.Column(db.String) 	
-    DATE_EXTRACTION_COMPTABLE = db.Column(db.String) 	
+    surface_logement1 = db.Column(db.String) 		
+    Ref_commande = db.Column(db.String) 	
     POURCENTAGE_COM_AS_DU_CLIENT = db.Column(db.String) 	
     ID_Respon_Cell_Dev	 = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     Respon_Cell_Dev__data=db.relationship("Expert", 
@@ -627,86 +620,11 @@ class Mission(db.Model):
         primaryjoin=(ID_Agent_saisie_Cell_Planif == Expert.id),
         backref=db.backref('Agent_saisie_Cell_Planif__data',  uselist=False),  uselist=False)  	
     POURCENTAGE_Agent_saisie_CEll_planif  = db.Column(db.String) 
-    #date =db.Column(db.DateTime(),default=datetime.utcnow)
     Visibility =db.Column(db.Boolean,default=True)
     
 
     
-    def __init__(self,Reference_BAILLEUR,NRO_FACTURE,ID_CONCESS,DATE_REALISE_EDL,PRIX_HT_EDL,TVA_EDL,PRIX_TTC_EDL,ID_INTERV,Reference_LOCATAIRE,CA_HT_AS,TVA_AS,CA_TTC_AS,CA_HT_AC,CA_TTC_AC,CA_HT_TRUST,TVA_TRUST,Date_chiffrage_regle,Prix_ht_chiffrage,POURCENTAGE_suiveur_chiffrage,POURCENTAGE_AS_chiffrage,
-    POURCENTAGE_manager_chiffrage,ID_manager_chiffrage,POURCENTAGE_agent_chiffrage,ID_agent_chiffrage,TYPE_EDL,DATE_FACTURE,NOMPROPRIO,DATE_FACT_REGLEE,DATE_COM_REGLEE_AS,
-    MONTANT_COM_REGLEE_AS,DATE_COM_REGLEE_AC,MONTANT_COM_REGLEE_AC,TYPE_LOGEMENT,NBRE_EDL_ABOONEMENT,MAIL_CONTACT_ENVOI_FACT,DATE_saisie_enregistrement,CODE_AMEXPERT,COMMENTAIRE_FACTURE,TYPE_PAIEMENT,
-    N_REMISE_DE_CHEQUE,SAISIE_TRAITE_PAR,infos_TRAITEMENT,LOGEMENT_MEUBLE,CODE_FACTURATION,TYPE_DE_BIEN,surface_logement,ETAGE,POINTAGE,DATE_POINTAGE,DEVEL,DATE_EXTRACTION_COMPTABLE,
-    POURCENTAGE_COM_AS_DU_CLIENT,ID_Respon_Cell_Dev,POURCENTAGE_Respon_Cell_Dev,ID_agent_Cell_Dev,POURCENTAGE_Agent_Cell_Dev,ID_Agent_CellTech,POURCENTAGE_Agent_Cell_Tech,
-    ID_Respon_Cell_Tech,POURCENTAGE_Respon_Cell_Tech,ID_Suiveur_Cell_Tech,POURCENTAGE_Suiveur_Cell_Tech,ID_Respon_Cell_Planif ,POURCENTAGE_Respon_Cell_Planif,ID_Suiveur_Cell_Planif,	
-    POURCENTAGE_Suiveur_Cell_Planif,ID_Agent_saisie_Cell_Planif,POURCENTAGE_Agent_saisie_CEll_planif):
-        self.Reference_BAILLEUR =Reference_BAILLEUR
-        self.NRO_FACTURE=NRO_FACTURE
-        self.ID_CONCESS =ID_CONCESS
-        self.DATE_REALISE_EDL =DATE_REALISE_EDL
-        self.PRIX_HT_EDL = PRIX_HT_EDL
-        self.TVA_EDL =TVA_EDL
-        self.PRIX_TTC_EDL=PRIX_TTC_EDL
-        self.ID_INTERV=ID_INTERV 
-        self.Reference_LOCATAIRE = Reference_LOCATAIRE
-        self.CA_HT_AS = CA_HT_AS
-        self.TVA_AS = TVA_AS
-        self.CA_TTC_AS = CA_TTC_AS
-        self.CA_HT_AC = CA_HT_AC
-        self.CA_TTC_AC = CA_TTC_AC
-        self.CA_HT_TRUST =CA_HT_TRUST
-        self.TVA_TRUST = TVA_TRUST
-        self.Date_chiffrage_regle = Date_chiffrage_regle
-        self.Prix_ht_chiffrage = Prix_ht_chiffrage
-        self.POURCENTAGE_suiveur_chiffrage = POURCENTAGE_suiveur_chiffrage
-        self.POURCENTAGE_AS_chiffrage = POURCENTAGE_AS_chiffrage
-        self.POURCENTAGE_manager_chiffrage = POURCENTAGE_manager_chiffrage
-        self.ID_manager_chiffrage = ID_manager_chiffrage
-        self.POURCENTAGE_agent_chiffrage = POURCENTAGE_agent_chiffrage
-        self.ID_agent_chiffrage = ID_agent_chiffrage
-        self.TYPE_EDL = TYPE_EDL
-        self.DATE_FACTURE = DATE_FACTURE
-        self.NOMPROPRIO = NOMPROPRIO
-        self.DATE_FACT_REGLEE = DATE_FACT_REGLEE
-        self.DATE_COM_REGLEE_AS = DATE_COM_REGLEE_AS
-        self.MONTANT_COM_REGLEE_AS = MONTANT_COM_REGLEE_AS
-        self.DATE_COM_REGLEE_AC = DATE_COM_REGLEE_AC
-        self.MONTANT_COM_REGLEE_AC =MONTANT_COM_REGLEE_AC
-        self.TYPE_LOGEMENT = TYPE_LOGEMENT
-        self.NBRE_EDL_ABOONEMENT = NBRE_EDL_ABOONEMENT
-        self.MAIL_CONTACT_ENVOI_FACT = MAIL_CONTACT_ENVOI_FACT
-        self.DATE_saisie_enregistrement =DATE_saisie_enregistrement
-        self.CODE_AMEXPERT = CODE_AMEXPERT
-        self.COMMENTAIRE_FACTURE = COMMENTAIRE_FACTURE
-        self.TYPE_PAIEMENT = TYPE_PAIEMENT
-        self.N_REMISE_DE_CHEQUE = N_REMISE_DE_CHEQUE
-        self.SAISIE_TRAITE_PAR = SAISIE_TRAITE_PAR
-        self.infos_TRAITEMENT = infos_TRAITEMENT
-        self.LOGEMENT_MEUBLE = LOGEMENT_MEUBLE
-        self.CODE_FACTURATION = CODE_FACTURATION
-        self.TYPE_DE_BIEN = TYPE_DE_BIEN
-        self.surface_logement = surface_logement
-        self.ETAGE = ETAGE
-        self.POINTAGE = POINTAGE
-        self.DATE_POINTAGE = DATE_POINTAGE
-        self.DEVEL = DEVEL
-        self.DATE_EXTRACTION_COMPTABLE = DATE_EXTRACTION_COMPTABLE
-        self.POURCENTAGE_COM_AS_DU_CLIENT = POURCENTAGE_COM_AS_DU_CLIENT
-        self.ID_Respon_Cell_Dev = ID_Respon_Cell_Dev
-        self.POURCENTAGE_Respon_Cell_Dev = POURCENTAGE_Respon_Cell_Dev
-        self.ID_agent_Cell_Dev = ID_agent_Cell_Dev
-        self.POURCENTAGE_Agent_Cell_Dev = POURCENTAGE_Agent_Cell_Dev
-        self.ID_Agent_CellTech = ID_Agent_CellTech
-        self.POURCENTAGE_Agent_Cell_Tech = POURCENTAGE_Agent_Cell_Tech
-        self.ID_Respon_Cell_Tech = ID_Respon_Cell_Tech
-        self.POURCENTAGE_Respon_Cell_Tech = POURCENTAGE_Respon_Cell_Tech
-        self.ID_Suiveur_Cell_Tech = ID_Suiveur_Cell_Tech
-        self.POURCENTAGE_Suiveur_Cell_Tech = POURCENTAGE_Suiveur_Cell_Tech
-        self.ID_Respon_Cell_Planif  = ID_Respon_Cell_Planif 
-        self.POURCENTAGE_Respon_Cell_Planif = POURCENTAGE_Respon_Cell_Planif
-        self.ID_Suiveur_Cell_Planif = ID_Suiveur_Cell_Planif
-        self.POURCENTAGE_Suiveur_Cell_Planif = POURCENTAGE_Suiveur_Cell_Planif
-        self.ID_Agent_saisie_Cell_Planif = ID_Agent_saisie_Cell_Planif
-        self.POURCENTAGE_Agent_saisie_CEll_planif = POURCENTAGE_Agent_saisie_CEll_planif
+    
 
 
     def __repr__(self):

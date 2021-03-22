@@ -2,7 +2,7 @@ from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base
 from Database_project.project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form)
 from Database_project.project.data_base_ import bcrypt
-from Database_project.project.data_base_.data  import Missions,expert__,insert_client,mission_date,tarif_client
+from Database_project.project.data_base_.data  import Missions,expert__,insert_client,tarif_client
 from Database_project.project.data_base_.utils import send_reset_email
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
@@ -191,7 +191,7 @@ def choose(id):
             end=datetime.combine(start+timedelta(days=30),datetime.min.time())
             price=list()
 
-            mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE=='0')).order_by(asc(Mission.id)).all())#check query
+            mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE==None)).order_by(asc(Mission.id)).all())#check query
             
             if mission_ == price:
                 flash(f'cette date a deja ete facture','success')
@@ -208,10 +208,10 @@ def choose(id):
                         if mission.CODE_FACTURATION[0:2] == 'TS':
                             price.append(mission.CODE_FACTURATION[3:-1])
                         if mission.CODE_FACTURATION[0:2] == 'TN':
-                           
+                            
                             if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '1'   :
                                 
-                                tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR)
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
                                 if mission.CODE_FACTURATION[2:5] == 150:#check print# fix
                                     meuble=int(tarif.edl_appt_prix_f1)/2
                                     mission.PRIX_HT_EDL = int(tarif.edl_appt_prix_f1) + int(meuble)
@@ -225,41 +225,41 @@ def choose(id):
                                     price.append(int(tarif.edl_appt_prix_f1))
                             if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '2':
                                 
-                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id)
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == 150:#check print
                                     meuble=int(tarif.edl_appt_prix_f2)/2
                                     mission.PRIX_HT_EDL = int(tarif.edl_appt_prix_f2) + int(meuble)
                                     db.session.commit()
-                                    price.append(mission.PRIX_HT_EDL)
+                                    price.append(int(mission.PRIX_HT_EDL))
                                 else:
                                     mission.PRIX_HT_EDL = tarif.edl_appt_prix_f2
                                     db.session.commit()
                                     price.append(int(tarif.edl_appt_prix_f2))
                             if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '3':
-                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id)
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == 150:#check print
                                     meuble=int(tarif.edl_appt_prix_f3)/2
                                     mission.PRIX_HT_EDL = int(tarif.edl_appt_prix_f3) + int(meuble)
                                     db.session.commit()
-                                    price.append(mission.PRIX_HT_EDL)
+                                    price.append(int(mission.PRIX_HT_EDL))
                                 else:
                                     mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
                                     db.session.commit()
                                     price.append(int(tarif.edl_appt_prix_f3))
                             if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '4':
                                 
-                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id)
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == 150:#check print
                                     meuble=int(tarif.edl_appt_prix_f4)/2
                                     mission.PRIX_HT_EDL = int(tarif.edl_appt_prix_f4) + int(meuble)
                                     db.session.commit()
-                                    price.append(mission.PRIX_HT_EDL)
+                                    price.append(int(mission.PRIX_HT_EDL))
                                 else:
                                     mission.PRIX_HT_EDL = tarif.edl_appt_prix_f4
                                     db.session.commit()
                                     price.append(int(tarif.edl_appt_prix_f4))
                             if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '5':
-                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id)
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == 150:#check print
                                     meuble=int(tarif.edl_appt_prix_f5)/2
                                     mission.PRIX_HT_EDL = int(tarif.edl_appt_prix_f5) + int(meuble)
@@ -270,41 +270,41 @@ def choose(id):
                                     db.session.commit()
                                     price.append(int(tarif.edl_appt_prix_f5))
                             if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '6':
-                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id)
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == 150:#check print
                                     meuble=int(tarif.edl_appt_prix_f6)/2
                                     mission.PRIX_HT_EDL = int(tarif.edl_appt_prix_f6) + int(meuble)
                                     db.session.commit()
-                                    price.append(mission.PRIX_HT_EDL)
+                                    price.append(int(mission.PRIX_HT_EDL))
                                 else:
                                     mission.PRIX_HT_EDL = tarif.edl_appt_prix_f6
                                     db.session.commit()
                                     price.append(int(tarif.edl_appt_prix_f6))
                             if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '7':
-                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id)
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == 150:#check print
                                     meuble=int(tarif.EDL_APPT_prix_F7)/2
                                     mission.PRIX_HT_EDL = int(tarif.edl_appt_prix_f7) + int(meuble)
                                     db.session.commit()
-                                    price.append(mission.PRIX_HT_EDL)
+                                    price.append(int(mission.PRIX_HT_EDL))
                                 else:
                                     mission.PRIX_HT_EDL = tarif.edl_appt_prix_f7
                                     db.session.commit()
                                     price.append(int(tarif.edl_appt_prix_f7))
 
                             if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '1' :
-                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id)
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == 150:
                                     meuble=int(tarif.edl_pav_villa_prix_t1)/2
                                     mission.PRIX_HT_EDL = int(tarif.edl_pav_villa_prix_t1) + int(meuble)
                                     db.session.commit()
-                                    price.append(mission.PRIX_HT_EDL)
+                                    price.append(int(mission.PRIX_HT_EDL))
                                 else:
                                     mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t1
                                     db.session.commit()
                                     price.append(int(tarif.edl_pav_villa_prix_t1))
                             if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '2' :
-                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id)
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == 150:
                                     meuble=int(tarif.edl_pav_villa_prix_t2)/2
                                     mission.PRIX_HT_EDL = int(tarif.edl_pav_villa_prix_t2) + int(meuble)
@@ -315,7 +315,7 @@ def choose(id):
                                     db.session.commit()
                                     price.append(int(tarif.edl_pav_villa_prix_t2))
                             if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '3' :
-                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id)
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == 150:
                                     meuble=int(tarif.edl_pav_villa_prix_t3)/2
                                     mission.PRIX_HT_EDL = int(tarif.edl_pav_villa_prix_t3) + int(meuble)
@@ -339,7 +339,7 @@ def choose(id):
                                     db.session.commit()
                                     price.append(int(tarif.edl_pav_villa_prix_t4))
                             if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '5' :
-                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id)
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == 150:
                                     meuble=int(tarif.edl_pav_villa_prix_t5)/2
                                     mission.PRIX_HT_EDL = int(tarif.edl_pav_villa_prix_t5) + int(meuble)
@@ -350,7 +350,29 @@ def choose(id):
                                     db.session.commit()
                                     price.append(int(tarif.edl_pav_villa_prix_t5))
                             if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '6' :
-                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id)
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == 150:
+                                    meuble=int(tarif.edl_pav_villa_prix_t6)/2
+                                    mission.PRIX_HT_EDL = int(tarif.edl_pav_villa_prix_t6) + int(meuble)
+                                    db.session.commit()
+                                    price.append(int(mission.PRIX_HT_EDL))
+                                else:
+                                    mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
+                                    db.session.commit()
+                                    price.append(int(tarif.edl_pav_villa_prix_t6))#goes up to 8  '''
+                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '7' :
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == 150:
+                                    meuble=int(tarif.edl_pav_villa_prix_t6)/2
+                                    mission.PRIX_HT_EDL = int(tarif.edl_pav_villa_prix_t6) + int(meuble)
+                                    db.session.commit()
+                                    price.append(int(mission.PRIX_HT_EDL))
+                                else:
+                                    mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
+                                    db.session.commit()
+                                    price.append(int(tarif.edl_pav_villa_prix_t6))#goes up to 8  '''
+                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '8' :
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == 150:
                                     meuble=int(tarif.edl_pav_villa_prix_t6)/2
                                     mission.PRIX_HT_EDL = int(tarif.edl_pav_villa_prix_t6) + int(meuble)
@@ -386,7 +408,7 @@ def create_facture():
         db.session.add(facture)
         db.session.commit()
         factura=str(facture.Date_de_creation)
-        facture.n_facture=str(facture.id)+'-'+str(factura[2:4])+'-'+str(factura[5:7])
+        facture.n_facture=str(facture.id)+'-'+str(factura[2:4])+str(factura[5:7])+'-C'
         db.session.commit()
         for i in mission_:
             i.NRO_FACTURE = facture.n_facture
@@ -409,9 +431,9 @@ def show_fac(id):
 @login_required
 def client_mission(id):
     if current_user.TYPE == "Admin":
-        mission_=list(Mission.query.filter(and_(Mission.Visibility==True,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE=='0')).order_by(desc(Mission.id)).all())
+        mission_=list(Mission.query.filter(and_(Mission.Visibility==True,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE==None)).order_by(desc(Mission.id)).all())
         return render_template('manage/pages/client_mission.html',missions=mission_,legend="mission", highlight='mission')# design a page for clients to see missions by their mission id and date only
-#add a button on this page to add facturation
+    
     return redirect(url_for('users.main'))
 
 @users.route('/client/<int:id>/facture')
@@ -932,12 +954,15 @@ def login():
     #db.session.commit()
     #db.drop_all()
     #db.create_all()
+    expert1=Expert(sexe='0',nom='0',numero=0,TYPE='0', email='0' )
     expert=Expert(sexe='Mr.',nom='Admin',numero=12345,TYPE='Admin', email='test0001@gmail.com' )
+    db.session.add(expert1)
     db.session.add(expert)
-    db.session.commit()
+    #db.session.commit()
+    #expert1.id =0
     hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
     expert.password=hashed_password
-    db.session.commit()
+    #db.session.commit()
 
     if current_user.is_authenticated:
        return redirect(url_for('users.main'))
@@ -1370,7 +1395,7 @@ def uploader_():
             # set the file path
             uploaded_file.save(file_path)
             # save the file
-            #expert__('Interv',loc)
+            #expert__(loc)
             #expert__('CONCESS',loc)
            #''' expert__('Manager_chiffrage',loc)
            # expert__('Agent_chiffrage',loc)
@@ -1385,9 +1410,9 @@ def uploader_():
             #insert_client('professionelle',loc)
            # insert_client('Locataire',loc)
            # insert_client('Prop',loc)
-            #Missions(loc) #learn how to check a whole row for this tables
+            Missions(loc) #learn how to check a whole row for this tables
             #tarif_client(loc)
-            mission_date()
+            #mission_date()
             flash(f"Vous avez importer les donnees avec success",'success')
             return redirect(url_for('users.up'))
       return redirect(url_for('users.main'))

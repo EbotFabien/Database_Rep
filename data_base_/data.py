@@ -46,165 +46,32 @@ def insert_client(A,loc):
         
 #to be fixed
 
-def expert__(A,loc):
+def expert__(loc):
 
-    wb = xlrd.open_workbook(loc)
-    sheet = wb.sheet_by_index(0)
+    wb_obj = openpyxl.load_workbook(loc)
+    sheet=wb_obj.active
 
-    sheet.cell_value(0, 0)
-    for i in range(0,400):
-        name=sheet.row_values(i+1)
-        if A == 'Interv':
-            if name[17] == '' or name[17] == 'XX':
-                print('no data here')
-            else:
-                cli=Expert.query.filter_by(nom=str(name[17].lower())).first()
-                if cli is None:
-                    expert=Expert(sexe=name[16],nom=name[17],numero='222000000',TYPE=A, email='test@gmail.com')    
-                    db.session.add(expert)
-                    db.session.commit()
-                    history=Expert_History(expert_id=expert.id)
-                    db.session.add(history)
-                    db.session.commit()
-                else:
-                    print('already exist')
-
-        if A == 'CONCESS':
-            if name[11] == '' or name[11] == 'XX':
-                print('no data here')
-            else:
-                cli=Expert.query.filter_by(nom=str(name[11].lower())).first()
-                if cli is None:
-                    expert=Expert(sexe=name[10],nom=name[11],numero='222000000',TYPE=A, email='test@gmail.com')      
-                    db.session.add(expert)
-                    db.session.commit()
-                    history=Expert_History(expert_id=expert.id)
-                    db.session.add(history)
-                    db.session.commit()
-                else:
-                    print('already exist')
-
-        if A == 'Manager_chiffrage':
-            if name[37] == '' or name[37] == 'XX':
-                print('no data here')
-            else:
-                cli=Expert.query.filter_by(NOM=str(name[37].lower())).first()
-                if cli is None:
-                    expert=Expert('',name[37].lower(),A,'','')
-                    db.session.add(expert)
-                    db.session.commit()
-                else:
-                    print('already exist')
+    
+    for i in range(1,100):
         
-        if A == 'Agent_chiffrage':
-            if name[39] == '' or name[39] == 'XX':
-                print('no data here')
-            else:
-                cli=Expert.query.filter_by(NOM=str(name[39].lower())).first()
-                if cli is None:
-                    expert=Expert('',name[39].lower(),A,'','')
-                    db.session.add(expert)
-                    db.session.commit()
-                else:
-                    print('already exist')
-
-        if A == 'Respon Cell Dev':
-            if name[69] == '' or name[69] == 'XX':
-                print('no data here')
-            else:
-                cli=Expert.query.filter_by(NOM=str(name[69].lower()).lower()).first()
-                if cli is None:
-                    expert=Expert('',name[69].lower(),A,'','')
-                    db.session.add(expert)
-                    db.session.commit()
-                else:
-                    print('already exist')
-
         
+  
+        cli=Expert.query.filter_by(nom=str(sheet["D"][i].value.lower())).first()
+    
+        if cli is None:
+            expert=Expert(sexe='M',nom=sheet["D"][i].value.lower(),numero=sheet["R"][i].value,TYPE=sheet["B"][i].value,
+            email=sheet["S"][i].value,email_perso=sheet["T"][i].value,code_tva=sheet["P"][i].value,taux_tva=sheet["Q"][i].value,siret=sheet["K"][i].value,date_entree=sheet["F"][i].value,
+            trigramme=sheet["E"][i].value)    
+            db.session.add(expert)
+            db.session.commit()
+            history=Expert_History(expert_id=expert.id,secteur=sheet["C"][i].value,adresse=sheet["L"][i].value,cp=sheet["N"][i].value,
+            ville=sheet["O"][i].value,login_backof=sheet["U"][i].value,pwd_backof=sheet["V"][i].value,login_extranet=sheet["Y"][i].value,
+            pwd_extranet=sheet["Z"][i].value,login_google=sheet["AA"][i].value,pwd_google=sheet["AB"][i].value,observations_de_suivi=sheet["AE"][i].value)
+            db.session.add(history)
+            db.session.commit()
+        else:
+            print('already exist')
 
-        if A == 'agent Cell Dev':
-            if name[71] == '' or name[71] == 'XX':
-                print('no data here')
-            else:
-                cli=Expert.query.filter_by(NOM=str(name[71].lower())).first()
-                if cli is None:
-                    expert=Expert('',name[71].lower(),A,'','')
-                    db.session.add(expert)
-                    db.session.commit()
-                else:
-                    print('already exist')
-
-        if A == 'Agent CellTech':
-            if name[73] == '' or name[73] == 'XX':
-                print('no data here')
-            else:
-                cli=Expert.query.filter_by(NOM=str(name[73].lower())).first()
-                if cli is None:
-                    expert=Expert('',name[73].lower(),A,'','')
-                    db.session.add(expert)
-                    db.session.commit()
-                else:
-                    print('already exist')
-
-        if A == 'Respon Cell Tech':
-            if name[75] == '' or name[75] == 'XX':
-                print('no data here')
-            else:
-                cli=Expert.query.filter_by(NOM=str(name[75].lower())).first()
-                if cli is None:
-                    expert=Expert('',name[75].lower(),A,'','')
-                    db.session.add(expert)
-                    db.session.commit()
-                else:
-                    print('already exist')
-
-        if A == 'Suiveur Cell Tech':
-            if name[77] == '' or name[77] == 'XX':
-                print('no data here')
-            else:
-                cli=Expert.query.filter_by(NOM=str(name[77].lower())).first()
-                if cli is None:
-                    expert=Expert('',name[77].lower(),A,'','')
-                    db.session.add(expert)
-                    db.session.commit()
-                else:
-                    print('already exist')
-
-        if A == 'Respon Cell Planif':
-            if name[79] == '' or name[79] == 'XX':
-                print('no data here')
-            else:
-                cli=Expert.query.filter_by(NOM=str(name[79].lower())).first()
-                if cli is None:
-                    expert=Expert('',name[79].lower(),A,'','')
-                    db.session.add(expert)
-                    db.session.commit()
-                else:
-                    print('already exist')
-
-        if A == 'Suiveur Cell Planif':
-            if name[81] == '' or name[81] == 'XX':
-                print('no data here')
-            else:
-                cli=Expert.query.filter_by(NOM=str(name[81].lower())).first()
-                if cli is None:
-                    expert=Expert('',name[81].lower(),A,'','')
-                    db.session.add(expert)
-                    db.session.commit()
-                else:
-                    print('already exist')
-
-        if A == 'Agent saisie Cell Planif':
-            if name[83] == '' or name[83] == 'XX':
-                print('no data here')
-            else:
-                cli=Expert.query.filter_by(NOM=str(name[83].lower())).first()
-                if cli is None:
-                    expert=Expert('',name[83].lower(),A,'','')
-                    db.session.add(expert)
-                    db.session.commit()
-                else:
-                    print('already exist')
         
 
 def tarif_client(loc):
@@ -249,39 +116,181 @@ def Missions(loc):
     wb_obj = openpyxl.load_workbook(loc)
     sheet=wb_obj.active
     
-    for i in range(1,110):
+    for i in range(1,118):
         
         cli=Client.query.filter_by(reference=int(sheet["B"][i].value)).first()
+        AS=Expert.query.filter_by(nom=str(sheet["E"][i].value.lower())).first()
+        if AS is not None:
+            SA= AS.id
+        if AS is None :
+            SA= 0
+
+        INTERV=Expert.query.filter_by(nom=str(sheet["H"][i].value.lower())).first()
+        if INTERV is not None:
+            IV= INTERV.id
+        if INTERV is None  :
+            IV= 0
+
+        M_C=Expert.query.filter_by(nom=str(sheet["Z"][i].value.lower())).first()
+        if M_C is not None:
+            MC= M_C.id
+        if M_C is None  :
+            MC= 0
+
+        A_C=Expert.query.filter_by(nom=str(sheet["AB"][i].value.lower())).first()
+        if A_C is not None:
+            AC= A_C.id
+        if A_C is None  :
+            AC= 0
+
+        if sheet["AQ"][i].value is None:
+            RCD=0
+        else:
+            R_CD=Expert.query.filter_by(nom=str(sheet["AQ"][i].value.lower())).first()
+            if R_CD is not None:
+                RCD= R_CD.id
+            if R_CD is None  :
+                RCD= 0
+
+        if sheet["AS"][i].value is None:
+            ACD=0
+        else:
+            A_CD=Expert.query.filter_by(nom=str(sheet["AS"][i].value.lower())).first()
+            if A_CD is not None:
+                ACD= A_CD.id
+            if A_CD is None  :
+                ACD= 0
+
+        if sheet["AU"][i].value is None:
+            ACT=0
+        else:
+            A_CT=Expert.query.filter_by(nom=str(sheet["AU"][i].value.lower())).first()
+            if A_CT is not None:
+                ACT= A_CT.id
+            if A_CT is None  :
+                ACT= 0
+
+        if sheet["AW"][i].value is None:
+            RCT=0
+        else:
+            R_CT=Expert.query.filter_by(nom=str(sheet["AW"][i].value.lower())).first()
+            if R_CT is not None:
+                RCT= R_CT.id
+            if R_CT is None  :
+                RCT= 0
+
+        if sheet["AY"][i].value is None:
+            SCT=0
+        else:
+            S_CT=Expert.query.filter_by(nom=str(sheet["AY"][i].value.lower())).first()
+            if S_CT is not None:
+                SCT= S_CT.id
+            if S_CT is None  :
+                SCT= 0
+
+        if sheet["BA"][i].value is None:
+            RCP=0
+        else:
+            R_CP=Expert.query.filter_by(nom=str(sheet["BA"][i].value.lower())).first()
+            if R_CP is not None:
+                RCP= R_CP.id
+            if R_CP is None  :
+                RCP= 0
+
+        if sheet["BC"][i].value is None:
+            SCP=0
+        else:
+            S_CP=Expert.query.filter_by(nom=str(sheet["BC"][i].value.lower())).first()
+            if S_CP is not None:
+                SCP= S_CP.id
+            if S_CP is None  :
+                SCP= 0
+
+        if sheet["BE"][i].value is None:
+            ASCP=0
+        else:
+            AS_CP=Expert.query.filter_by(nom=str(sheet["BE"][i].value.lower())).first()
+            if AS_CP is not None:
+                ASCP= AS_CP.id
+            if AS_CP is None  :
+                ASCP= 0
+
         if cli:
-            mission=Mission(cli.id,0,int(sheet["E"][i].value),sheet["G"][i].value,0,
-                    0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,
-                    0,0,0,0,0,0,
-                    0,0,0,0,0,0,
-                    0,0,0,0,0,0,
-                    0,0,
-                    0,0,0,0,0,0,
-                    0,0,0,0,0,0,
-                    0,0,0,0,0,0,
-                    0,0,0,
-                    0,0,0)
+            mission=Mission(Reference_BAILLEUR=cli.id,
+            ABONNEMENT	 = sheet["D"][i].value ,
+            ID_AS	 = SA ,
+        
+            PRIX_HT_EDL	 = sheet["D"][i].value ,  
+            DATE_REALISE_EDL =sheet["G"][i].value , 	
+            ID_INTERV = IV ,
+            
+            Reference_LOCATAIRE	 =  sheet["I"][i].value ,
+            Adresse1_Bien	 = sheet["J"][i].value ,  
+            Adresse2_Bien	 = sheet["K"][i].value , 
+            CP_Bien	 = sheet["L"][i].value ,  
+            Ville_Bien	 = sheet["M"][i].value , 
+            
+            CA_HT_AS = sheet["N"][i].value , 	
+            TVA_AS	 = sheet["O"][i].value , 
+            CA_TTC_AS = sheet["P"][i].value , 	
+            CA_HT_AC = sheet["Q"][i].value , 	
+            CA_TTC_AC	 = sheet["R"][i].value , 
+            CA_HT_TRUST	 = sheet["S"][i].value , 
+            TVA_TRUST	 = sheet["T"][i].value ,
+            Date_chiffrage_regle = sheet["U"][i].value ,
+            Prix_ht_chiffrage	 = sheet["V"][i].value , 
+            POURCENTAGE_suiveur_chiffrage	 = sheet["W"][i].value ,
+            POURCENTAGE_AS_chiffrage = sheet["X"][i].value ,	
+            POURCENTAGE_manager_chiffrage  = sheet["Y"][i].value , 	
+            ID_manager_chiffrage  = MC ,
+                
+            POURCENTAGE_agent_chiffrage = sheet["AA"][i].value ,	
+            ID_agent_chiffrage  = AC ,	
+            
+            TYPE_EDL = sheet["AC"][i].value ,	
+            TITREPROPRIO = sheet["AE"][i].value , 		
+            NOMPROPRIO = sheet["AF"][i].value , 	
+            DATE_FACT_REGLEE = sheet["AG"][i].value ,	
+            TYPE_LOGEMENT = sheet["AH"][i].value , 	
+            CODE_AMEXPERT = sheet["AI"][i].value , 	
+            COMMENTAIRE_FACTURE = sheet["AJ"][i].value , 	
+            LOGEMENT_MEUBLE =sheet["AK"][i].value , 	
+            CODE_FACTURATION = sheet["AL"][i].value , 	
+            TYPE_DE_BIEN = sheet["AM"][i].value , 	
+            surface_logement1 = sheet["AN"][i].value , 		
+            Ref_commande = sheet["AO"][i].value , 	
+            POURCENTAGE_COM_AS_DU_CLIENT = sheet["AP"][i].value , 	
+            ID_Respon_Cell_Dev	 =RCD ,
+            
+            POURCENTAGE_Respon_Cell_Dev = sheet["AR"][i].value , 	
+            ID_agent_Cell_Dev = ACD, 	
+            
+            POURCENTAGE_Agent_Cell_Dev = sheet["AT"][i].value ,	
+            ID_Agent_CellTech = ACT,  	
+            
+            POURCENTAGE_Agent_Cell_Tech = sheet["AV"][i].value , 	
+            ID_Respon_Cell_Tech = RCT, #######
+                
+            POURCENTAGE_Respon_Cell_Tech = sheet["AX"][i].value ,	
+            ID_Suiveur_Cell_Tech  = SCT ,
+            
+            POURCENTAGE_Suiveur_Cell_Tech	 = sheet["AZ"][i].value , 
+            ID_Respon_Cell_Planif = RCP,
+            
+            POURCENTAGE_Respon_Cell_Planif  = sheet["BB"][i].value ,
+            ID_Suiveur_Cell_Planif  = SCP,
+            
+            POURCENTAGE_Suiveur_Cell_Planif	 = sheet["BD"][i].value , 
+            ID_Agent_saisie_Cell_Planif  = ASCP,
+                
+            POURCENTAGE_Agent_saisie_CEll_planif  = sheet["BF"][i].value  )
 
             db.session.add(mission)
             db.session.commit()
-    mission_=list(Mission.query.all())
-    for a in range(0,110):
-        mission_[a].TYPE_LOGEMENT =sheet["AH"][i].value
-        mission_[a].DATE_FACTURE = sheet["AP"][i].value
-        mission_[a].CODE_FACTURATION = sheet["AL"][i].value
-        db.session.commit()
+    
         
 
-def mission_date():
-    mission_=list(Mission.query.all())
-    for m in mission_:
-        m.NRO_FACTURE='0'
-        db.session.commit()
+
 
 
 

@@ -19,8 +19,8 @@
                             <h4>Information des concernées</h4>
 							<p>N° du client: <strong>{{mission.Bailleur__data.reference}}</strong></p>
 							<p>Societe: <strong>{{mission.Bailleur__data.societe}}</strong></p>
-                            <p>N° du Concensionnaire: <strong>{{mission.ID_CONCESS}}</strong></p>
-							<p>Nom : <strong>{{mission.CONCESS__data.nom}}</strong></p>
+                            <p>N° du Concensionnaire: <strong>{{mission.ID_AS}}</strong></p>
+							<p>Nom : <strong>{{mission.AS__data.nom}}</strong></p>
 							<p>ID Interv: <strong>{{mission.ID_INTERV}}</strong></p>
 							<p>Nom : <strong>{{mission.INTERV__data.nom}}</strong></p>
                             <p>Reference Locataire: <strong>{{mission.Reference_LOCATAIRE}}</strong></p>
@@ -33,10 +33,12 @@
 							<p>Date chiffrage regle: <strong>{{mission.Date_chiffrage_regle}}</strong></p>
 						</div>
 						<div class="col-md-4">
-                            <h4>TAX</h4>
+                            <h4>Prix</h4>
 							<p>Prix HT EDL: <strong>{{mission.PRIX_HT_EDL}}</strong></p>
-                            <p>TVA EDL: <strong>{{mission.TVA_EDL}}</strong></p>
-							<p>Prix TTC EDL: <strong>{{mission.PRIX_TTC_EDL}}</strong></p>
+                            <p>Code Facturation: <strong>{{mission.CODE_FACTURATION }}</strong></p>
+							<p>Type Logement: <strong>{{mission.TYPE_LOGEMENT }}</strong></p>
+							<p>Surface Logement: <strong>{{mission.surface_logement1  }}</strong></p>
+							<p>No Facture: <strong>{{mission.NRO_FACTURE  }}</strong></p>
 							
 						</div>
 					</div>
