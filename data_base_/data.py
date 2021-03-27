@@ -220,7 +220,7 @@ def Missions(loc):
             ABONNEMENT	 = sheet["D"][i].value ,
             ID_AS	 = SA ,
         
-            PRIX_HT_EDL	 = sheet["D"][i].value ,  
+          
             DATE_REALISE_EDL =sheet["G"][i].value , 	
             ID_INTERV = IV ,
             
@@ -237,7 +237,6 @@ def Missions(loc):
             CA_TTC_AC	 = sheet["R"][i].value , 
             CA_HT_TRUST	 = sheet["S"][i].value , 
             TVA_TRUST	 = sheet["T"][i].value ,
-            Date_chiffrage_regle = sheet["U"][i].value ,
             Prix_ht_chiffrage	 = sheet["V"][i].value , 
             POURCENTAGE_suiveur_chiffrage	 = sheet["W"][i].value ,
             POURCENTAGE_AS_chiffrage = sheet["X"][i].value ,	
@@ -250,10 +249,10 @@ def Missions(loc):
             TYPE_EDL = sheet["AC"][i].value ,	
             TITREPROPRIO = sheet["AE"][i].value , 		
             NOMPROPRIO = sheet["AF"][i].value , 	
-            DATE_FACT_REGLEE = sheet["AG"][i].value ,	
+           # DATE_FACT_REGLEE = sheet["AG"][i].value ,	
             TYPE_LOGEMENT = sheet["AH"][i].value , 	
             CODE_AMEXPERT = sheet["AI"][i].value , 	
-            COMMENTAIRE_FACTURE = sheet["AJ"][i].value , 	
+            #COMMENTAIRE_FACTURE = sheet["AJ"][i].value , 	
             LOGEMENT_MEUBLE =sheet["AK"][i].value , 	
             CODE_FACTURATION = sheet["AL"][i].value , 	
             TYPE_DE_BIEN = sheet["AM"][i].value , 	
@@ -283,14 +282,46 @@ def Missions(loc):
             POURCENTAGE_Suiveur_Cell_Planif	 = sheet["BD"][i].value , 
             ID_Agent_saisie_Cell_Planif  = ASCP,
                 
-            POURCENTAGE_Agent_saisie_CEll_planif  = sheet["BF"][i].value  )
+            POURCENTAGE_Agent_saisie_CEll_planif  = sheet["BF"][i].value )
 
             db.session.add(mission)
             db.session.commit()
     
         
 
+def fix_mission():
+    mission=Mission.query.all()
+    for i in mission:
+        if i.CODE_FACTURATION[-1]=='M':
+            print(i.CODE_FACTURATION)
+            i.CODE_FACTURATION[2:5] == 150
+            A=i.CODE_FACTURATION[0:-1]
+            i.CODE_FACTURATION = A
+            print(i.CODE_FACTURATION)
+            db.session.commit()
 
+        if i.TYPE_LOGEMENT[-1] == 'M':
+            print(i.TYPE_LOGEMENT)
+            i.CODE_FACTURATION[2:5] == 150
+            print(i.CODE_FACTURATION)
+            B=i.TYPE_LOGEMENT[0:-1] 
+            i.TYPE_LOGEMENT = B
+            print(i.TYPE_LOGEMENT)
+            db.session.commit()
+
+def Base(loc):
+    wb_obj = openpyxl.load_workbook(loc)
+    sheet=wb_obj.active
+    A=['F','G','H','I','J','K','L']
+
+    for i in A:
+        base_appt=Tarif_base(pav_appartement='APPT',Type=sheet[i][24].value,surface=sheet[i][25].value,Prix_EDL=sheet[i][26].value)
+        base_pav=Tarif_base(pav_appartement='PAV',Type=sheet[i][28].value,surface=sheet[i][29].value,Prix_EDL=sheet[i][30].value)
+        db.session.add(base_appt)
+        db.session.add(base_pav)
+        db.session.commit()
+        
+    
 
 
 

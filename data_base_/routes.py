@@ -2,7 +2,7 @@ from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base
 from Database_project.project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form)
 from Database_project.project.data_base_ import bcrypt
-from Database_project.project.data_base_.data  import Missions,expert__,insert_client,tarif_client
+from Database_project.project.data_base_.data  import Missions,expert__,insert_client,tarif_client,fix_mission,Base
 from Database_project.project.data_base_.utils import send_reset_email
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
@@ -1410,9 +1410,12 @@ def uploader_():
             #insert_client('professionelle',loc)
            # insert_client('Locataire',loc)
            # insert_client('Prop',loc)
-            Missions(loc) #learn how to check a whole row for this tables
+            #Missions(loc) #learn how to check a whole row for this tables
+            #fix_mission()
+            Base(loc)
             #tarif_client(loc)
             #mission_date()
+            
             flash(f"Vous avez importer les donnees avec success",'success')
             return redirect(url_for('users.up'))
       return redirect(url_for('users.main'))

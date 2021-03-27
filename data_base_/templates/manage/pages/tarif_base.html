@@ -34,7 +34,7 @@
 		                    <tr>
 		                        <th scope="col">id</th>
 		                        <!-- <th scope="col" title="Details_du_rendezvous">dd-rdv</th> -->
-		                        <th scope="col" >Maison/Appartement</th>
+		                        <th scope="col" >Pavillon/Appartement</th>
 		                        <th scope="col" >Type</th> 
 		                        <th scope="col" >Prix_EDL</th> 
                                 <th scope="col" >surface</th> 
@@ -47,7 +47,7 @@
 		                {%for tarif in tarifs %}
 		                    <tr>
 		                        <th scope="row">{{tarif.id}}</th>
-		                        <td>{{tarif.maison_appartement}}</td>
+		                        <td>{{tarif.pav_appartement}}</td>
 								<td>{{tarif.Type}}</td>
 								<td>{{tarif.Prix_EDL}}</td> 
                                 <td>{{tarif.surface}}</td> 

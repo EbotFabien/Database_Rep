@@ -95,20 +95,19 @@
             </li>
             {% endif %}
             {% if current_user.TYPE == 'Admin' %}
-            <!-- <li class="nav-item">
+             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFacturatuion"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fa fa-euro"></i>
-                    <span>Facturation</span>
+                    <span>Tarif</span>
                 </a>
                 <div id="collapseFacturatuion" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="/ajouter/facturation">ajoutez</a>
-                        <a class="collapse-item" href="/facturation">tout afficher</a>
+                        <a class="collapse-item" href="/tarifs">tout afficher</a>
                     </div>
                 </div>
-            </li> -->
+            </li> 
             {% endif %}
 
             {% if current_user.TYPE == 'Admin' %}
