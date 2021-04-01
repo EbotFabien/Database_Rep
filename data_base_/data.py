@@ -299,6 +299,13 @@ def fix_mission():
             i.CODE_FACTURATION = A
             print(i.CODE_FACTURATION)
             db.session.commit()
+        
+        
+        if i.TYPE_LOGEMENT[-1] == ' ':
+            print( i.TYPE_LOGEMENT)
+            B=i.TYPE_LOGEMENT[0:-1] 
+            i.TYPE_LOGEMENT = B
+            db.session.commit()
 
         if i.TYPE_LOGEMENT[-1] == 'M':
             print(i.TYPE_LOGEMENT)
@@ -308,6 +315,20 @@ def fix_mission():
             i.TYPE_LOGEMENT = B
             print(i.TYPE_LOGEMENT)
             db.session.commit()
+
+        if len(i.TYPE_LOGEMENT[0:4]) < 3 :
+            i.Coherence="Codification de Type de logement incorrect,impossible de la facture" 
+            db.session.commit()
+        else:
+            i.Coherence="Coherent"
+            db.session.commit()
+
+
+def reset():
+    mission=Mission.query.all()
+    for i in mission:
+        i.NRO_FACTURE = None
+        db.session.commit()
 
 def Base(loc):
     wb_obj = openpyxl.load_workbook(loc)

@@ -620,6 +620,8 @@ class Mission(db.Model):
         primaryjoin=(ID_Agent_saisie_Cell_Planif == Expert.id),
         backref=db.backref('Agent_saisie_Cell_Planif__data',  uselist=False),  uselist=False)  	
     POURCENTAGE_Agent_saisie_CEll_planif  = db.Column(db.String) 
+
+    Coherence  = db.Column(db.String)
     Visibility =db.Column(db.Boolean,default=True)
     
 
