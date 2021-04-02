@@ -2,6 +2,7 @@ from Database_project.project.data_base_ import db
 from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
 import xlrd
 import openpyxl
+import pandas
 
 def insert_client(A,loc):
     
@@ -112,11 +113,16 @@ def tarif_client(loc):
             print('esit')
 
 def Missions(loc):
-
+    
+    pd_xl_file = pandas.ExcelFile(loc)
+    df = pd_xl_file.parse("Feuil1")
+    dimensions = str(df.shape)
+    Range=int(dimensions[1:4])+1#fixthis
     wb_obj = openpyxl.load_workbook(loc)
     sheet=wb_obj.active
+    reference=[]
     
-    for i in range(1,118):
+    for i in range(1,Range):
         
         cli=Client.query.filter_by(reference=int(sheet["B"][i].value)).first()
         AS=Expert.query.filter_by(nom=str(sheet["E"][i].value.lower())).first()
@@ -217,6 +223,7 @@ def Missions(loc):
 
         if cli:
             mission=Mission(Reference_BAILLEUR=cli.id,
+            old=sheet["A"][i].value,
             ABONNEMENT	 = sheet["D"][i].value ,
             ID_AS	 = SA ,
         
@@ -286,7 +293,9 @@ def Missions(loc):
 
             db.session.add(mission)
             db.session.commit()
-    
+        else:
+            reference.append(int(sheet["B"][i].value))# make a table for historique des donnees 
+            print(reference)
         
 
 def fix_mission():

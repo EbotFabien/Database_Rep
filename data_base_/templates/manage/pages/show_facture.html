@@ -25,7 +25,7 @@
 						</div>
 
                         <div class="col-md-4">
-                            <p>Date de creation de la Facture: <strong>{{facture[0].facturation_client__data_.Date_de_creation}}</strong></p>
+                            <p>Date de creation de la Facture: <strong>{{facture[0].facturation_client__data_.Date_de_creation|string|truncate(14, True)}}</strong></p>
                             <p>Statut: <strong>{{facture[0].facturation_client__data_.Statut}}</strong></p>
 
 						</div>
@@ -47,13 +47,13 @@
                                     <th>Type</th>
                                     <th>Surface</th>
                                     <th>Tarif ht</th>
-                                    <th>Coherence</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
                                     {%for fac in facture %}
                                         <tr>
-                                            <td>{{fac.mission__data_.id}}</td>
+                                            <td>{{fac.mission__data_.old}}</td>
                                             <td>{{fac.mission__data_.DATE_REALISE_EDL}}</td>
                                             <td>{{fac.mission__data_.TYPE_EDL}}</td>
                                             <td>{{fac.mission__data_.NOMPROPRIO}}</td>
@@ -63,7 +63,6 @@
                                             <td>{{fac.mission__data_.TYPE_LOGEMENT}}</td>
                                             <td>{{fac.mission__data_.surface_logement1}}</td>
                                             <td>{{fac.mission__data_.PRIX_HT_EDL}}</td>   
-                                            <td>{{fac.mission__data_.Coherence}}</td> 
                                         </tr>    
                                     {%endfor%}
                                 </tbody>

@@ -504,7 +504,8 @@ class Facturation_Form(FlaskForm):
                              render_kw={'readonly':True})
 
 
-   # Date_reglement_client=DateField("Date_reglement_client")
+    Non_Facture=StringField('Mission Non Facture',
+                             render_kw={'readonly':True})
 
     
     Statut=SelectField('Statut',

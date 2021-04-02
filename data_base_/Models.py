@@ -88,7 +88,7 @@ class Client_History(db.Model):
 
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     client_id = db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   	
-    adresse  = db.Column(db.String)	
+    adresse  = db.Column(db.String)
     etat_client=db.Column(db.Boolean,default=True)
     cp 	 = db.Column(db.String)
     ville  = db.Column(db.String)
@@ -98,7 +98,7 @@ class Client_History(db.Model):
     visibility =db.Column(db.Boolean,default=True)
 
 
-
+ #adresse2
 
         
 
@@ -524,6 +524,7 @@ class Mission(db.Model):
 
     id = db.Column(db.Integer,primary_key=True)
     Reference_BAILLEUR	= db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
+    old= db.Column(db.String)
     Bailleur__data=db.relationship("Client", 
         primaryjoin=(Reference_BAILLEUR == Client.id),
         backref=db.backref('Bailleur__data',  uselist=False),  uselist=False)

@@ -190,15 +190,17 @@ def choose(id):
             start=datetime.combine(form.Demarrer.data,datetime.min.time())
             end=datetime.combine(start+timedelta(days=30),datetime.min.time())
             price=list()
+            no_fac=list()
 
-            mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE==None,Mission.Coherence=="Coherent")).order_by(asc(Mission.id)).all())#check query
+            mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE==None)).order_by(asc(Mission.id)).all())#check query
             
             if mission_ == price:
                 flash(f'cette date a deja ete facture','success')
                 return redirect(url_for('users.choose',id=id))
             if mission_:
                 for mission in mission_:
-                    
+                    if mission.Coherence !="Coherent":
+                        no_fac.append(mission)
                     if mission.CODE_FACTURATION is None:
 
                         flash(f'SVP Generez une code  Facturation pour cette mission','success')
@@ -387,8 +389,9 @@ def choose(id):
 
                    
                 add_sum=sum(price)
+                length=len(no_fac)
 
-                return render_template('manage/pages/ajouter_facturation.html', mission=mission_,form=form2,sum=add_sum,start=start,end=end)
+                return render_template('manage/pages/ajouter_facturation.html', mission=mission_,form=form2,sum=add_sum,start=start,end=end,length=length)
             else:
                 flash(f'choisisez une date existante','danger')
                 return redirect(url_for('users.choose',id=id))
@@ -403,7 +406,7 @@ def choose(id):
 def create_facture():
     if current_user.TYPE == "Admin":
         form=Facturation_Form()
-        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Coherence=="Coherent",Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())#check query
+        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())#check query
 
         facture=facturation_client(Montant_HT=request.form['Montant_HT'],Statut=request.form['Statut'],
         client=request.form['Reference_client'])
@@ -413,11 +416,12 @@ def create_facture():
         facture.n_facture=str(facture.id)+'-'+str(factura[2:4])+str(factura[5:7])+'-C'
         db.session.commit()
         for i in mission_:
-            i.NRO_FACTURE = facture.n_facture
-            i.DATE_FACTURE = facture.Date_de_creation
-            fact_m=facturation_mission(ref_mission=i.id,fact_mission=facture.id)
-            db.session.add(fact_m)
-            db.session.commit()
+            if i.Coherence =="Coherent":
+                i.NRO_FACTURE = facture.n_facture
+                i.DATE_FACTURE = facture.Date_de_creation
+                fact_m=facturation_mission(ref_mission=i.id,fact_mission=facture.id)
+                db.session.add(fact_m)
+                db.session.commit()
         return redirect(url_for('users.facturation',id=request.form['Reference_client']))
       
     return redirect(url_for('users.main'))
@@ -427,7 +431,7 @@ def create_facture():
 def show_fac(id):
     if current_user.TYPE == "Admin":
         facture = facturation_mission.query.filter_by(fact_mission=id).all()
-        return render_template('manage/pages/show_facture.html', facture=facture)
+        return render_template('manage/pages/show_facture.html', facture=facture )
 
 @users.route('/client/<int:id>/mission')
 @login_required
@@ -1413,9 +1417,9 @@ def uploader_():
            # insert_client('Locataire',loc)
            # insert_client('Prop',loc)
             #Missions(loc) #learn how to check a whole row for this tables
-            #fix_mission()
+            fix_mission()
            # Base(loc)
-            reset()
+            #reset()
             #tarif_client(loc)
             #mission_date()
             
