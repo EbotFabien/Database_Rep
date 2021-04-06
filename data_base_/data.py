@@ -6,41 +6,31 @@ import pandas
 
 def insert_client(A,loc):
     
+    wb_obj = openpyxl.load_workbook(loc)
+    sheet=wb_obj.active
 
-    wb = xlrd.open_workbook(loc)
-    sheet = wb.sheet_by_index(0)
     
-    sheet.cell_value(0, 0)
-    for i in range(0,5):
-        name=sheet.row_values(i+1)
+
+    for i in range(1,sheet.max_row):
         
         if A == 'professionelle':
             
-            if name[3] == '' or name[3] == 'XX':
+            if sheet["D"][i].value == '' or sheet["D"][i].value == 'XX':
                 print('no data here')
             else:
-                cli=Client.query.filter_by(nom=str(name[3].lower())).first()#arrange sort by reference
+                
+                cli=Client.query.filter_by(reference=int(sheet["A"][i].value)).first()
                 if cli is None:
-                    client=Client(TYPE=A,societe=name[1].lower(),sexe=name[2].lower(),nom=name[3].lower(),email='test@gmail.com',numero='6777650822',siret='22222222222')
+                    client=Client(reference=int(sheet["A"][i].value),TYPE=A,societe=sheet["B"][i].value,titre=sheet["C"][i].value,nom=sheet["D"][i].value.lower(),date_creation=sheet["K"][i].value)
                     db.session.add(client)
                     db.session.commit()   
-                    client.reference=int(name[0])
-                    db.session.commit()
-                    history=Client_History(client_id=client.id,adresse=name[4],cp=name[6],ville=name[7],pays='')
+                    history=Client_History(client_id=client.id,adresse1=sheet["E"][i].value,adresse2=sheet["F"][i].value,cp=sheet["G"][i].value,ville=sheet["H"][i].value,login_extranet=sheet["M"][i].value,mpd_extranet=sheet["N"][i].value)
                     db.session.add(history)
                     db.session.commit()
-                else:
-                    print('already exist')
+                    if sheet["L"][i].value != None :
+                        history.date=sheet["L"][i].value
+                        db.session.commit()
 
-        if A == 'particulier':
-            if name[43] == '' or name[43] == 'XX':
-                print('no data here')
-            else:
-                cli=Client.query.filter_by(NOM=str(name[43].lower())).first()
-                if cli is None:
-                    cli2=Client('',A,'',name[42].lower(),name[43].lower(),'','','','','','','','','')
-                    db.session.add(cli2)
-                    db.session.commit()
                 else:
                     print('already exist')
 
@@ -53,26 +43,28 @@ def expert__(loc):
     sheet=wb_obj.active
 
     
-    for i in range(1,100):
+    for i in range(1,sheet.max_row):
         
         
   
         cli=Expert.query.filter_by(nom=str(sheet["D"][i].value.lower())).first()
     
         if cli is None:
-            expert=Expert(sexe='M',nom=sheet["D"][i].value.lower(),numero=sheet["R"][i].value,TYPE=sheet["B"][i].value,
+            expert=Expert(genre='M',old=sheet["A"][i].value,nom=sheet["D"][i].value.lower(),numero=sheet["R"][i].value,TYPE=sheet["B"][i].value,
             email=sheet["S"][i].value,email_perso=sheet["T"][i].value,code_tva=sheet["P"][i].value,taux_tva=sheet["Q"][i].value,siret=sheet["K"][i].value,date_entree=sheet["F"][i].value,
             trigramme=sheet["E"][i].value)    
             db.session.add(expert)
             db.session.commit()
-            history=Expert_History(expert_id=expert.id,secteur=sheet["C"][i].value,adresse=sheet["L"][i].value,cp=sheet["N"][i].value,
+            #expert.new="Expert"+str(expert.id)
+            #db.session.commit()
+            history=Expert_History(expert_id=expert.id,secteur=sheet["C"][i].value,adresse1=sheet["L"][i].value,adresse2=sheet["M"][i].value,cp=sheet["N"][i].value,
             ville=sheet["O"][i].value,login_backof=sheet["U"][i].value,pwd_backof=sheet["V"][i].value,login_extranet=sheet["Y"][i].value,
             pwd_extranet=sheet["Z"][i].value,login_google=sheet["AA"][i].value,pwd_google=sheet["AB"][i].value,observations_de_suivi=sheet["AE"][i].value)
             db.session.add(history)
             db.session.commit()
         else:
             print('already exist')
-
+#talk about date sortie(Format)
         
 
 def tarif_client(loc):
@@ -94,16 +86,16 @@ def tarif_client(loc):
                 com_cell_tech_ref_suiveur=name[14],cell_planif_ref_responsable=int(name[15]),
                 com_cell_planif_ref_responsable=name[16],cell_planif_ref_suiveur=int(name[17]),
                 com_cell_planif_ref_suiveur=name[18],cell_planif_ref_agent_saisie=int(name[19]),
-                com_cell_planif_ref_agent_saisie=name[20],taux_meuble=name[21],edl_prix_std=int(name[22]),
-                edl_appt_prix_f1=int(name[23]),edl_appt_prix_f2=int(name[24]),edl_appt_prix_f3=int(name[25]),edl_appt_prix_f4=int(name[26]),
-                edl_appt_prix_f5=int(name[27]),edl_appt_prix_f6=int(name[28]),edl_pav_villa_prix_t1=int(name[29]), edl_pav_villa_prix_t2=int(name[30]),
-                edl_pav_villa_prix_t3=int(name[31]),edl_pav_villa_prix_t4=int(name[32]),edl_pav_villa_prix_t5=int(name[33]),edl_pav_villa_prix_t6=int(name[34]),
-                edl_pav_villa_prix_t7=int(name[35]),edl_pav_villa_prix_t8=int(name[36]),chif_appt_prix_stu=int(name[37]),
-                chif_appt_prix_f1=int(name[38]),chif_appt_prix_f2=int(name[39]),chif_appt_prix_f3=int(name[40]),
-                chif_appt_prix_f4=int(name[41]),chif_appt_prix_f5=int(name[42]),chif_pav_villa_prix_t1=int(name[43]),
-                chif_pav_villa_prix_t2=int(name[44]),chif_pav_villa_prix_t3=int(name[45]),chif_pav_villa_prix_t4=int(name[46]),
-                chif_pav_villa_prix_t5=int(name[47]),chif_pav_villa_prix_t6=int(name[48]),chif_pav_villa_prix_t7=int(name[49]),
-                chif_pav_villa_prix_t8=int(name[50]))
+                com_cell_planif_ref_agent_saisie=name[20],taux_meuble=name[21],edl_prix_std=float(name[22]),
+                edl_appt_prix_f1=float(name[23]),edl_appt_prix_f2=float(name[24]),edl_appt_prix_f3=float(name[25]),edl_appt_prix_f4=float(name[26]),
+                edl_appt_prix_f5=float(name[27]),edl_appt_prix_f6=float(name[28]),edl_pav_villa_prix_t1=float(name[29]), edl_pav_villa_prix_t2=float(name[30]),
+                edl_pav_villa_prix_t3=float(name[31]),edl_pav_villa_prix_t4=float(name[32]),edl_pav_villa_prix_t5=float(name[33]),edl_pav_villa_prix_t6=float(name[34]),
+                edl_pav_villa_prix_t7=float(name[35]),edl_pav_villa_prix_t8=float(name[36]),chif_appt_prix_stu=float(name[37]),
+                chif_appt_prix_f1=float(name[38]),chif_appt_prix_f2=float(name[39]),chif_appt_prix_f3=float(name[40]),
+                chif_appt_prix_f4=float(name[41]),chif_appt_prix_f5=float(name[42]),chif_pav_villa_prix_t1=float(name[43]),
+                chif_pav_villa_prix_t2=float(name[44]),chif_pav_villa_prix_t3=float(name[45]),chif_pav_villa_prix_t4=float(name[46]),
+                chif_pav_villa_prix_t5=float(name[47]),chif_pav_villa_prix_t6=float(name[48]),chif_pav_villa_prix_t7=float(name[49]),
+                chif_pav_villa_prix_t8=float(name[50]))
                 
                 db.session.add(taf_base)
                 db.session.commit()
@@ -114,15 +106,12 @@ def tarif_client(loc):
 
 def Missions(loc):
     
-    pd_xl_file = pandas.ExcelFile(loc)
-    df = pd_xl_file.parse("Feuil1")
-    dimensions = str(df.shape)
-    Range=int(dimensions[1:4])+1#fixthis
     wb_obj = openpyxl.load_workbook(loc)
     sheet=wb_obj.active
+    
     reference=[]
     
-    for i in range(1,Range):
+    for i in range(1,sheet.max_row):
         
         cli=Client.query.filter_by(reference=int(sheet["B"][i].value)).first()
         AS=Expert.query.filter_by(nom=str(sheet["E"][i].value.lower())).first()

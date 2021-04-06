@@ -17,17 +17,26 @@
 	        </div>
 	        <div class="card-body">
 	            <div class="table-responsive">
+                    {% with messages = get_flashed_messages(with_categories=true)%}
+                            {% if messages %}
+                            {%for category,message in messages%}
+                            <div class="alert alert-{{category}} is-small">
+                                {{message}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
 	                <table class="table" id="dataTable" style="width:100%">
                         <thead class="">
                         <tr>
                             <th scope="col">id</th>
                             <th scope="col">N° Facture</th>
                             <th scope="col">Montant HT</th>
-                            <th scope="col">Statut</th> 
-                            <th scope="col">Email de relance</th>
+                            <th scope="col">Mission Reussi</th> 
+                            <th scope="col">Mission Echoue</th>
                             <th scope="col">Date de creation</th> 
                             
-                            <th></th>
+                            <th></th> 
                             <th></th>
                         </tr>
                         </thead>
@@ -37,8 +46,8 @@
                                     <th scope="row">{{facturation.id}}</th>
                                     <td>{{facturation.n_facture}}</td>
                                     <td>{{facturation.Montant_HT}}</td>
-                                    <td>{{facturation.Statut}}</td> 
-                                    <td>{{facturation.client__data_.email}}</td>
+                                    <td>{{facturation.missions_s}}</td> 
+                                    <td>{{facturation.missions_f}}</td>
                                     <td>{{facturation.Date_de_creation}}</td> 
                                       
                                     <td style="">

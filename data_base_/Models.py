@@ -4,7 +4,9 @@ from itsdangerous import  TimedJSONWebSignatureSerializer as Serializer
 from datetime import datetime
 from sqlalchemy import ForeignKeyConstraint,ForeignKey,UniqueConstraint
 from flask_login import UserMixin
+from sqlalchemy import Float
 import json
+
 
 
 @login_manager.user_loader
@@ -12,13 +14,16 @@ def load_user(user_id):
     return Expert.query.get(int(user_id))
 
 class Client(db.Model):
+    __table_args__ = {'extend_existing': True}
+
+
     __tablename__ = 'Client'
 
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     reference = db.Column(db.Integer) 	
     TYPE = db.Column(db.String) 
     societe = db.Column(db.String) 	
-    sexe = db.Column(db.String) 	
+    titre = db.Column(db.String) 	
     nom = db.Column(db.String)
     email = db.Column(db.String)
     numero = db.Column(db.String)
@@ -42,10 +47,14 @@ class Client(db.Model):
         return '<Client %r>' %self.id
 
 class Expert(db.Model,UserMixin):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'Expert'
 
     id = db.Column(db.Integer,primary_key=True)
-    sexe  = db.Column(db.String)	
+    old= db.Column(db.String)
+    new= db.Column(db.String)
+    genre  = db.Column(db.String)	
     nom = db.Column(db.String)
     trigramme=db.Column(db.String)
     TYPE=db.Column(db.String)
@@ -60,12 +69,7 @@ class Expert(db.Model,UserMixin):
     visibility =db.Column(db.Boolean,default=True)
     
     
- #   def __init__(self,sexe,nom,TYPE,email,numero):
-      #  self.sexe =sexe
-      #  self.nom =nom
-      #  self.TYPE=TYPE
-      #  self.email=email
-      #  self.numero  =numero
+
 
     def get_reset_token(self,expire_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'],expire_sec)
@@ -84,15 +88,20 @@ class Expert(db.Model,UserMixin):
         return '<Expert %r>' %self.id
         
 class Client_History(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'Client_History'
 
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     client_id = db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   	
-    adresse  = db.Column(db.String)
+    adresse1  = db.Column(db.String)
+    adresse2 = db.Column(db.String)
     etat_client=db.Column(db.Boolean,default=True)
     cp 	 = db.Column(db.String)
     ville  = db.Column(db.String)
     pays= db.Column(db.String)
+    login_extranet= db.Column(db.String)
+    mpd_extranet = db.Column(db.String)
     abonnement=db.Column(db.String)
     date =db.Column(db.DateTime(),default=datetime.utcnow)
     visibility =db.Column(db.Boolean,default=True)
@@ -106,6 +115,8 @@ class Client_History(db.Model):
         return '<Client_History %r>' %self.id
 
 class Client_negotiateur(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'Client_negotiateur'
 
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
@@ -139,6 +150,8 @@ class Client_negotiateur(db.Model):
         return '<Client_negotiateur %r>' %self.id
 
 class Negotiateur_History(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'Negotiateur_History'
 
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
@@ -159,6 +172,8 @@ class Negotiateur_History(db.Model):
         return '<Negotiateur_History %r>' %self.id
 
 class suivi_client(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'suivi_client'
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     client = db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
@@ -185,13 +200,15 @@ class suivi_client(db.Model):
         return '<suivi_client %r>' %self.id
 
 class prospect(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'prospect'
 
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     reference = db.Column(db.String) 	
     TYPE = db.Column(db.String) 
     societe = db.Column(db.String) 	
-    sexe = db.Column(db.String) 	
+    titre = db.Column(db.String) 	
     nom = db.Column(db.String)
     email = db.Column(db.String)
     numero = db.Column(db.String)
@@ -215,6 +232,8 @@ class prospect(db.Model):
 
 
 class prospect_History(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'prospect_History'
 
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
@@ -232,6 +251,8 @@ class prospect_History(db.Model):
         return '<prospect_History %r>' %self.id
 
 class suivi_prospect(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'suivi_prospect'
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     prospect_id = db.Column(db.Integer, ForeignKey('prospect.id', onupdate="CASCADE", ondelete="CASCADE"))   
@@ -257,6 +278,8 @@ class suivi_prospect(db.Model):
         return '<suivi_prospect %r>' %self.id
 
 class Facturation(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'Facturation'
 
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
@@ -306,6 +329,8 @@ class Facturation(db.Model):
 
 
 class Expert_History(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'Expert_History'
 
     id = db.Column(db.Integer,primary_key=True)
@@ -315,7 +340,8 @@ class Expert_History(db.Model):
     type_certification=db.Column(db.String)
     date_certification_initiale=db.Column(db.DateTime)
     date_renouv_certification=db.Column(db.DateTime)
-    adresse = db.Column(db.String)
+    adresse1 = db.Column(db.String)
+    adresse2 = db.Column(db.String)
     cp=db.Column(db.String)
     login_backof=db.Column(db.String)
     pwd_backof=db.Column(db.String) 
@@ -335,6 +361,8 @@ class Expert_History(db.Model):
         return '<Expert_History %r>' %self.id
 
 class Agenda(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'Agenda'
 
     id = db.Column(db.Integer,primary_key=True)
@@ -371,6 +399,8 @@ class Agenda(db.Model):
     
 
 class Agenda_expert(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'Agenda_expert'
 
 
@@ -389,6 +419,7 @@ class Agenda_expert(db.Model):
 
 
 class Tarif_base(db.Model):
+    __table_args__ = {'extend_existing': True}
 
     __tablename__ = 'Tarif_base'
 
@@ -403,6 +434,8 @@ class Tarif_base(db.Model):
         return '<Tarif_base %r>' %self.id
 
 class Tarifs(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'Tarifs'
 
     id = db.Column(db.Integer,primary_key=True)
@@ -411,35 +444,35 @@ class Tarifs(db.Model):
     data_client=db.relationship("Client", 
         primaryjoin=(reference_client == Client.id),
         backref=db.backref('data_client',  uselist=False),  uselist=False)
-    edl_prix_std=db.Column(db.String)     
-    edl_appt_prix_f1=db.Column(db.String) 
-    edl_appt_prix_f2=db.Column(db.String) 
-    edl_appt_prix_f3=db.Column(db.String) 
-    edl_appt_prix_f4=db.Column(db.String) 
-    edl_appt_prix_f5=db.Column(db.String) 
-    edl_appt_prix_f6=db.Column(db.String) 
-    edl_pav_villa_prix_t1=db.Column(db.String) 
-    edl_pav_villa_prix_t2=db.Column(db.String) 
-    edl_pav_villa_prix_t3=db.Column(db.String) 
-    edl_pav_villa_prix_t4=db.Column(db.String) 
-    edl_pav_villa_prix_t5=db.Column(db.String) 
-    edl_pav_villa_prix_t6=db.Column(db.String) 
-    edl_pav_villa_prix_t7=db.Column(db.String) 
-    edl_pav_villa_prix_t8=db.Column(db.String) 
-    chif_appt_prix_stu=db.Column(db.String) 
-    chif_appt_prix_f1 =db.Column(db.String) 
-    chif_appt_prix_f2 =db.Column(db.String) 
-    chif_appt_prix_f3 =db.Column(db.String) 
-    chif_appt_prix_f4 =db.Column(db.String) 
-    chif_appt_prix_f5 =db.Column(db.String) 
-    chif_pav_villa_prix_t1=db.Column(db.String) 
-    chif_pav_villa_prix_t2=db.Column(db.String) 
-    chif_pav_villa_prix_t3=db.Column(db.String) 
-    chif_pav_villa_prix_t4=db.Column(db.String) 
-    chif_pav_villa_prix_t5=db.Column(db.String) 
-    chif_pav_villa_prix_t6=db.Column(db.String) 
-    chif_pav_villa_prix_t7=db.Column(db.String) 
-    chif_pav_villa_prix_t8=db.Column(db.String) 
+    edl_prix_std=db.Column(Float)     
+    edl_appt_prix_f1=db.Column(Float) 
+    edl_appt_prix_f2=db.Column(Float) 
+    edl_appt_prix_f3=db.Column(Float) 
+    edl_appt_prix_f4=db.Column(Float) 
+    edl_appt_prix_f5=db.Column(Float) 
+    edl_appt_prix_f6=db.Column(Float) 
+    edl_pav_villa_prix_t1=db.Column(Float) 
+    edl_pav_villa_prix_t2=db.Column(Float) 
+    edl_pav_villa_prix_t3=db.Column(Float) 
+    edl_pav_villa_prix_t4=db.Column(Float) 
+    edl_pav_villa_prix_t5=db.Column(Float) 
+    edl_pav_villa_prix_t6=db.Column(Float) 
+    edl_pav_villa_prix_t7=db.Column(Float) 
+    edl_pav_villa_prix_t8=db.Column(Float) 
+    chif_appt_prix_stu=db.Column(Float) 
+    chif_appt_prix_f1 =db.Column(Float) 
+    chif_appt_prix_f2 =db.Column(Float) 
+    chif_appt_prix_f3 =db.Column(Float) 
+    chif_appt_prix_f4 =db.Column(Float) 
+    chif_appt_prix_f5 =db.Column(Float) 
+    chif_pav_villa_prix_t1=db.Column(Float) 
+    chif_pav_villa_prix_t2=db.Column(Float) 
+    chif_pav_villa_prix_t3=db.Column(Float) 
+    chif_pav_villa_prix_t4=db.Column(Float) 
+    chif_pav_villa_prix_t5=db.Column(Float) 
+    chif_pav_villa_prix_t6=db.Column(Float) 
+    chif_pav_villa_prix_t7=db.Column(Float) 
+    chif_pav_villa_prix_t8=db.Column(Float) 
     code_tva=db.Column(db.String)
     taux_meuble=db.Column(db.String)
     referent_as_client=db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
@@ -520,6 +553,8 @@ class Tarifs(db.Model):
 
 
 class Mission(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'Mission'
 
     id = db.Column(db.Integer,primary_key=True)
@@ -534,7 +569,7 @@ class Mission(db.Model):
     AS__data=db.relationship("Expert", 
         primaryjoin=(ID_AS == Expert.id),
         backref=db.backref('CONCESS__data',  uselist=False),  uselist=False)
-    PRIX_HT_EDL	 = db.Column(db.String)  
+    PRIX_HT_EDL	 = db.Column(Float)  
     DATE_REALISE_EDL =db.Column(db.DateTime(),default=datetime.utcnow) 	
     ID_INTERV = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     INTERV__data=db.relationship("Expert", 
@@ -638,6 +673,8 @@ class Mission(db.Model):
 
 
 class facturation_client(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'facturation_client'
 
     id = db.Column(db.Integer,primary_key=True)
@@ -649,6 +686,8 @@ class facturation_client(db.Model):
     Montant_HT = db.Column(db.String)
     Date_de_creation=db.Column(db.DateTime(),default=datetime.utcnow)
     Date_reglement_client=db.Column(db.String)
+    missions_s=db.Column(db.String)
+    missions_f=db.Column(db.String)
     Statut=db.Column(db.String) #(payé ou en attente) differentes types de satus
     Observations_suivi_paiement=db.Column(db.String)
     Date_première_relance=db.Column(db.String) # date cree plus 15 jr
@@ -664,6 +703,8 @@ class facturation_client(db.Model):
 
 
 class facturation_mission(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     __tablename__ = 'facturation_mission'
 
     id = db.Column(db.Integer,primary_key=True)
@@ -682,8 +723,30 @@ class facturation_mission(db.Model):
 
 
 
-#class expert_constat(db.Model):
-  #  __tablename__ = 'expert_constat'
-  #Mission__data=db.relationship("Mission", 
-     #   primaryjoin=(ref_mission == Mission.id),
-     #   backref=db.backref('Mission__data',  uselist=False),  uselist=False)
+
+
+
+class Facturation_history(db.Model):
+    __table_args__ = {'extend_existing': True}
+
+    __tablename__ = 'Facturation_history'
+
+    id = db.Column(db.Integer,primary_key=True)
+    date=db.Column(db.DateTime())
+    mission = db.Column(db.Integer, ForeignKey('Mission.id', onupdate="CASCADE", ondelete="CASCADE"))
+    facture = db.Column(db.Integer, ForeignKey('facturation_client.id', onupdate="CASCADE", ondelete="CASCADE"))
+    mission__data=db.relationship("Mission", 
+        primaryjoin=(mission == Mission.id),
+        backref=db.backref('mission__data',  uselist=False),  uselist=False)
+    facturation_client__data=db.relationship("facturation_client", 
+        primaryjoin=(facture == facturation_client.id),
+        backref=db.backref('facturation_client__data',  uselist=False),  uselist=False)
+    done=db.Column(db.DateTime(),default=datetime.utcnow)
+    visibility =db.Column(db.Boolean,default=True)
+
+
+    def __repr__(self):
+        return '<Facturation_history %r>' %self.id
+
+
+    

@@ -503,10 +503,6 @@ class Facturation_Form(FlaskForm):
     Montant_HT =StringField('Montant_HT',
                              render_kw={'readonly':True})
 
-
-    Non_Facture=StringField('Mission Non Facture',
-                             render_kw={'readonly':True})
-
     
     Statut=SelectField('Statut',
                              choices=[('paye', 'paye'), ('attente', 'attente')])

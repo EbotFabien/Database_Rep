@@ -21,10 +21,13 @@
 							<p><strong>Nom: </strong> <small>{{client.nom}}</small><br>  
 							<p><strong>Reference: </strong> <small>{{client.reference}}</small><br>  
 							<strong>Tel:</strong> <small>{{client.numero}}</small> <strong>Email:</strong> <small>{{client.email}}</small> <br>
-					    	<strong>Adresse :</strong> <small>{{history.adresse}}</small>  <strong>Code Postal:</strong> <small>{{history.cp}}</small> <br> 
-							<strong>Societe :</strong> <small>{{client.societe}}</small>  <strong>Sexe:</strong> <small>{{client.sexe}}</small> <br> 
-							<strong>Siret :</strong> <small>{{client.siret}}</small>  <strong>Date_creation:</strong> <small>{{client.date_creation}}</small> <br>
-							<strong>Date historique:</strong> {{history.date}}
+					    	<strong>Adresse1 :</strong> <small>{{history.adresse1}}</small>  <strong>Adresse2:</strong> <small>{{history.adresse2}}</small> <br> 
+							<strong>Societe :</strong> <small>{{client.societe}}</small>  <strong>Titre:</strong> <small>{{client.titre}}</small> <br> 
+							<strong>Siret :</strong> <small>{{client.siret}}</small>  <strong>Code Postal:</strong> <small>{{history.cp}}</small> <br>
+							<strong>Login Extranet:</strong> <small>{{history.login_extranet}}</small>  <strong>MDP Extranet:</strong> <small>{{history.mpd_extranet}}</small> <br>
+							<strong>Ville:</strong> <small>{{history.ville}}</small>  <strong>Pays:</strong> <small>{{history.pays}}</small> <br>
+							<strong>ID_Tarif:</strong> <small>{{tarif.id}}</small>  <strong>AS:</strong> <small>{{tarif.referent__data.nom}}</small> <br>
+							<strong>Date historique:</strong> <small>{{history.date|string|truncate(13, True)}}</small>  <strong>Date_creation:</strong> <small>{{client.date_creation|string|truncate(13, True)}}</small> <br>
 					 		</p>
 						</div>
 						<div class="col-md-4">

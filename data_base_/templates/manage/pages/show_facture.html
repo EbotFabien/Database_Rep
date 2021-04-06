@@ -69,6 +69,44 @@
                             </table>
                             
 						</div>
+                        <div class="row"> 
+						
+                            <div class="col-md-12">
+                                <table class="table table-bordered" id="dataTable" style="width:100%">
+                                    <thead class="">
+                                    <tr>
+                                        <th>No Mission</th>
+                                        <th>DATE REALISE EDL</th>
+                                        <th>Type</th>
+                                        <th>Proprietaire</th>
+                                        <th>Locataire</th>
+                                        <th>ville</th>
+                                        <th>Appt-Pav</th>
+                                        <th>Type</th>
+                                        <th>Surface</th>
+                                        <th>Tarif ht</th>
+    
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for fac in failed %}
+                                            <tr>
+                                                <td>{{fac.mission__data.old}}</td>
+                                                <td>{{fac.mission__data.DATE_REALISE_EDL}}</td>
+                                                <td>{{fac.mission__data.TYPE_EDL}}</td>
+                                                <td>{{fac.mission__data.NOMPROPRIO}}</td>
+                                                <td>{{fac.mission__data.Reference_LOCATAIRE}}</td>
+                                                <td>{{fac.mission__data.Ville_Bien}}</td>
+                                                <td>{{fac.mission__data.TYPE_DE_BIEN}}</td>
+                                                <td>{{fac.mission__data.TYPE_LOGEMENT}}</td>
+                                                <td>{{fac.mission__data.surface_logement1}}</td>
+                                                <td>{{fac.mission__data.PRIX_HT_EDL}}</td>   
+                                            </tr>    
+                                        {%endfor%}
+                                    </tbody>
+                                </table>
+                                
+                            </div>
 					</div> <!-- row.// -->
 				</div> <!-- card-body .// -->
 				</article>
